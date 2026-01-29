@@ -113,7 +113,7 @@ services:
       SPRING_RABBITMQ_VIRTUAL_HOST: /
 
       # JWT Configuration
-      USER_SERVICE_URL: http://host.docker.internal:8081
+      USER_SERVICE_URL: http://host.docker.internal:8080
       JWT_ISSUER: iqscaffold-user-service
 
       # Email Configuration
@@ -157,7 +157,7 @@ services:
         -XX:MaxRAMPercentage=75.0
         -Djava.security.egd=file:/dev/./urandom
     ports:
-      - "8082:8082"
+      - "8080:8080"
     depends_on:
       postgres-billing:
         condition: service_healthy
