@@ -53,6 +53,14 @@
         <createIndex tableName="tenant_subscription" indexName="idx_tenant_subscription_plan_id">
             <column name="plan_id"/>
         </createIndex>
+
+        <rollback>
+            <dropIndex tableName="tenant_subscription" indexName="idx_tenant_subscription_plan_id"/>
+            <dropIndex tableName="tenant_subscription" indexName="idx_tenant_subscription_status"/>
+            <dropIndex tableName="tenant_subscription" indexName="idx_tenant_subscription_stripe_subscription_id"/>
+            <dropIndex tableName="tenant_subscription" indexName="idx_tenant_subscription_organization_id"/>
+            <dropTable tableName="tenant_subscription"/>
+        </rollback>
     </changeSet>
 
     <!-- Subscription Invoice Table -->
@@ -104,6 +112,15 @@
         <createIndex tableName="subscription_invoice" indexName="idx_subscription_invoice_due_date">
             <column name="due_date"/>
         </createIndex>
+
+        <rollback>
+            <dropIndex tableName="subscription_invoice" indexName="idx_subscription_invoice_due_date"/>
+            <dropIndex tableName="subscription_invoice" indexName="idx_subscription_invoice_status"/>
+            <dropIndex tableName="subscription_invoice" indexName="idx_subscription_invoice_stripe_invoice_id"/>
+            <dropIndex tableName="subscription_invoice" indexName="idx_subscription_invoice_tenant_subscription_id"/>
+            <dropForeignKeyConstraint baseTableName="subscription_invoice" constraintName="fk_subscription_invoice_tenant_subscription"/>
+            <dropTable tableName="subscription_invoice"/>
+        </rollback>
     </changeSet>
 
     <!-- Subscription Item Table (Line items for subscriptions) -->
@@ -136,6 +153,13 @@
         <createIndex tableName="subscription_item" indexName="idx_subscription_item_stripe_subscription_item_id">
             <column name="stripe_subscription_item_id"/>
         </createIndex>
+
+        <rollback>
+            <dropIndex tableName="subscription_item" indexName="idx_subscription_item_stripe_subscription_item_id"/>
+            <dropIndex tableName="subscription_item" indexName="idx_subscription_item_tenant_subscription_id"/>
+            <dropForeignKeyConstraint baseTableName="subscription_item" constraintName="fk_subscription_item_tenant_subscription"/>
+            <dropTable tableName="subscription_item"/>
+        </rollback>
     </changeSet>
 
     <!-- Tenant Subscription Audit Trail Table -->
@@ -166,6 +190,13 @@
         <createIndex tableName="tenant_subscription_audit_trail" indexName="idx_tenant_subscription_audit_trail_created_at">
             <column name="created_at"/>
         </createIndex>
+
+        <rollback>
+            <dropIndex tableName="tenant_subscription_audit_trail" indexName="idx_tenant_subscription_audit_trail_created_at"/>
+            <dropIndex tableName="tenant_subscription_audit_trail" indexName="idx_tenant_subscription_audit_trail_tenant_subscription_id"/>
+            <dropForeignKeyConstraint baseTableName="tenant_subscription_audit_trail" constraintName="fk_tenant_subscription_audit_trail_tenant_subscription"/>
+            <dropTable tableName="tenant_subscription_audit_trail"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

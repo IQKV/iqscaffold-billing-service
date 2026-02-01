@@ -60,6 +60,12 @@
         <createIndex tableName="subscription_plan" indexName="idx_subscription_plan_is_active" schemaName="public">
             <column name="is_active"/>
         </createIndex>
+
+        <rollback>
+            <dropIndex tableName="subscription_plan" indexName="idx_subscription_plan_is_active" schemaName="public"/>
+            <dropIndex tableName="subscription_plan" indexName="idx_subscription_plan_stripe_price_id" schemaName="public"/>
+            <dropTable tableName="subscription_plan" schemaName="public"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

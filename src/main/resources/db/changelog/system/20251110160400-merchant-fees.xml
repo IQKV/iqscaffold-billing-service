@@ -3,12 +3,16 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20251110160400-merchant-fees" author="iqscaffold">
         <addColumn tableName="merchant_stripe_config">
             <column name="application_fee_percent" type="decimal(5,2)"/>
         </addColumn>
+
+        <rollback>
+            <dropColumn tableName="merchant_stripe_config" columnName="application_fee_percent"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

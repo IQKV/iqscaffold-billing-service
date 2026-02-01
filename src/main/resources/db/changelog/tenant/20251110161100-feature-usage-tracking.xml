@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
   <changeSet id="20251110161100-create-feature-usage-log-table" author="iqscaffold">
     <comment>Create feature_usage_log table for tracking feature usage per tenant</comment>
@@ -62,6 +62,17 @@
       ON feature_usage_log (tenant_id, feature_key, timestamp) 
       WHERE timestamp > (NOW() - INTERVAL '30 days');
     </sql>
+
+    <rollback>
+      <sql>DROP INDEX IF EXISTS idx_feature_usage_recent;</sql>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_correlation_id"/>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_user_id"/>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_feature_timestamp"/>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_tenant_timestamp"/>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_timestamp"/>
+      <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_tenant_feature"/>
+      <dropTable tableName="feature_usage_log"/>
+    </rollback>
   </changeSet>
 
   <changeSet id="20251110161101-add-feature-usage-partitioning" author="iqscaffold">
@@ -79,6 +90,10 @@
       -- Note: Partitioning setup would typically be done via a separate script
       -- or automated process based on deployment requirements
     </sql>
+
+    <rollback>
+      <!-- No rollback needed for this changeset as it only contains comments -->
+    </rollback>
   </changeSet>
 
 </databaseChangeLog>

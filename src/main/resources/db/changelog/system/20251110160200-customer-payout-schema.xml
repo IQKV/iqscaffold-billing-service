@@ -3,7 +3,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20251110160200-customer-payout-schema" author="iqscaffold">
         <createTable tableName="stripe_customer">
@@ -36,6 +36,11 @@
             <column name="arrival_date" type="timestamp"/>
             <column name="merchant_account_id" type="varchar(255)"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="payout"/>
+            <dropTable tableName="stripe_customer"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

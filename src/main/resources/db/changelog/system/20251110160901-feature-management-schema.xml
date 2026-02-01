@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
   <changeSet id="20251110160901-create-feature-definition-table" author="iqscaffold">
     <comment>Create feature_definition table for platform-wide feature definitions</comment>
@@ -60,6 +60,17 @@
       ADD CONSTRAINT chk_feature_type 
       CHECK (type IN ('BOOLEAN', 'QUOTA', 'LIMIT', 'TIER'));
     </sql>
+
+    <rollback>
+      <sql>
+        ALTER TABLE public.feature_definition DROP CONSTRAINT IF EXISTS chk_feature_type;
+      </sql>
+      <dropIndex tableName="feature_definition" indexName="idx_feature_definition_sort_order" schemaName="public"/>
+      <dropIndex tableName="feature_definition" indexName="idx_feature_definition_deprecated" schemaName="public"/>
+      <dropIndex tableName="feature_definition" indexName="idx_feature_definition_category" schemaName="public"/>
+      <dropIndex tableName="feature_definition" indexName="idx_feature_definition_type" schemaName="public"/>
+      <dropTable tableName="feature_definition" schemaName="public"/>
+    </rollback>
   </changeSet>
 
   <changeSet id="20251110160902-create-plan-feature-table" author="iqscaffold">
@@ -122,6 +133,16 @@
     <createIndex tableName="plan_feature" indexName="idx_plan_feature_enabled" schemaName="public">
       <column name="enabled"/>
     </createIndex>
+
+    <rollback>
+      <dropIndex tableName="plan_feature" indexName="idx_plan_feature_enabled" schemaName="public"/>
+      <dropIndex tableName="plan_feature" indexName="idx_plan_feature_feature_key" schemaName="public"/>
+      <dropIndex tableName="plan_feature" indexName="idx_plan_feature_plan_id" schemaName="public"/>
+      <dropForeignKeyConstraint baseTableName="plan_feature" constraintName="fk_plan_feature_feature_key"/>
+      <dropForeignKeyConstraint baseTableName="plan_feature" constraintName="fk_plan_feature_plan_id"/>
+      <dropPrimaryKey tableName="plan_feature" schemaName="public"/>
+      <dropTable tableName="plan_feature" schemaName="public"/>
+    </rollback>
   </changeSet>
 
   <changeSet id="20251110160903-insert-default-features" author="iqscaffold">
@@ -257,6 +278,17 @@
       <column name="updated_at" valueDate="now()"/>
       <column name="created_by" value="system"/>
     </insert>
+
+    <rollback>
+      <!-- Remove all default feature definitions -->
+      <delete tableName="feature_definition" schemaName="public">
+        <where>created_by = 'system' AND feature_key IN (
+          'basic_dashboard', 'advanced_analytics', 'data_export', 'api_calls_monthly', 
+          'storage_quota', 'max_team_members', 'third_party_integrations', 
+          'support_level', 'sso_integration', 'audit_logging'
+        )</where>
+      </delete>
+    </rollback>
   </changeSet>
 
 </databaseChangeLog>
