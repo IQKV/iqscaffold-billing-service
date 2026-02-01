@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
-    <changeSet id="006-1-create-payment-gateway-config-table" author="iqscaffold">
+    <changeSet id="20251110160700-create-payment-gateway-config-table" author="iqscaffold">
         <comment>Create payment_gateway_config table for tenant-specific gateway configurations</comment>
 
         <createTable tableName="payment_gateway_config" schemaName="public">
@@ -55,7 +55,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="006-2-add-unique-constraint-tenant-provider" author="iqscaffold">
+    <changeSet id="20251110160701-add-unique-constraint-tenant-provider" author="iqscaffold">
         <comment>Add unique constraint for tenant_id and gateway_provider combination</comment>
 
         <addUniqueConstraint
@@ -72,7 +72,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="006-3-create-gateway-config-indexes" author="iqscaffold">
+    <changeSet id="20251110160702-create-gateway-config-indexes" author="iqscaffold">
         <comment>Create indexes for payment_gateway_config table</comment>
 
         <!-- Index for tenant lookups -->
@@ -106,7 +106,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="006-4-add-comments-to-gateway-config-table" author="iqscaffold">
+    <changeSet id="20251110160703-add-comments-to-gateway-config-table" author="iqscaffold">
         <comment>Add descriptive comments to payment_gateway_config table and columns</comment>
 
         <setTableRemarks tableName="payment_gateway_config" schemaName="public"

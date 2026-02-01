@@ -5,16 +5,20 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <include file="db/changelog/system/001-merchants.xml"/>
-    <include file="db/changelog/002-payment-gateway-abstraction.xml"/>
-    <include file="db/changelog/004-merchant-fees.xml"/>
-    <include file="db/changelog/20251110160000-add-organization-id-to-merchant-config.xml"/>
-    <include file="db/changelog/system/006-payment-gateway-config-table.xml"/>
-    <include file="db/changelog/system/007-subscription-schema.xml"/>
-    <include file="db/changelog/system/008-drop-legacy-features-column.xml"/>
-    <include file="db/changelog/system/008-feature-management-schema.xml"/>
+    <include file="db/changelog/system/20251110160000-merchants.xml"/>
+    <include file="db/changelog/system/20251110160001-payment-gateway-abstraction-v1.xml"/>
+    <include file="db/changelog/system/20251110160100-initial-payment-schema.xml"/>
+    <include file="db/changelog/system/20251110160200-customer-payout-schema.xml"/>
+    <include file="db/changelog/system/20251110160300-merchant-capabilities.xml"/>
+    <include file="db/changelog/system/20251110160400-merchant-fees.xml"/>
+    <include file="db/changelog/system/20251110160500-payment-gateway-abstraction.xml"/>
+    <include file="db/changelog/system/20251110160600-add-organization-id-to-merchant-config.xml"/>
+    <include file="db/changelog/system/20251110160700-payment-gateway-config-table.xml"/>
+    <include file="db/changelog/system/20251110160800-subscription-schema.xml"/>
+    <include file="db/changelog/system/20251110160900-drop-legacy-features-column.xml"/>
+    <include file="db/changelog/system/20251110160901-feature-management-schema.xml"/>
     
     <!-- Demo data for development and testing (context: demo) -->
-    <include file="db/changelog/demo/20250121000000-demo-billing-records.xml"/>
+    <include file="db/changelog/system/20250121000000-demo-billing-records.xml"/>
 
 </databaseChangeLog>

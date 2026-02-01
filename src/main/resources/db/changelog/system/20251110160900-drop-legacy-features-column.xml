@@ -14,7 +14,7 @@
         Since this is a greenfield project, we can safely remove this legacy column
         without any migration logic.
     -->
-    <changeSet id="008-drop-legacy-features-column" author="iqscaffold">
+    <changeSet id="20251110160900-drop-legacy-features-column" author="iqscaffold">
         <comment>Drop legacy JSON features column from subscription_plan table</comment>
         
         <preConditions onFail="MARK_RAN">
