@@ -642,7 +642,7 @@ SMTP_USERNAME=billing@iqscaffold.com
 SMTP_PASSWORD=email_password
 
 # Service Integration
-IQSCAFFOLD_USER_SERVICE_URL=http://user-service:8080
+IQSCAFFOLD_USER_SERVICE_URL=http://iqscaffold-user-service:8080
 ```
 
 ## Observability & Monitoring
