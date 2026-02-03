@@ -57,7 +57,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values-dev.yaml \
   --set image.tag=wip \
   --set externalServices.postgresql.password=${INFRA_DATABASE_PASSWORD} \
-  --set externalServices.rabbitmq.password=${INFRA_MESSAGING_PASSWORD} \
+  --set externalServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
   --set config.billing.stripe.webhookSecret=${STRIPE_WEBHOOK_SECRET} \
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
@@ -69,7 +69,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values-production.yaml \
   --set image.tag=${DRONE_TAG} \
   --set externalServices.postgresql.password=${INFRA_DATABASE_PASSWORD} \
-  --set externalServices.rabbitmq.password=${INFRA_MESSAGING_PASSWORD} \
+  --set externalServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
   --set config.billing.stripe.publicKey=${STRIPE_PUBLIC_KEY} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
   --set config.billing.stripe.webhookSecret=${STRIPE_WEBHOOK_SECRET} \
@@ -137,7 +137,7 @@ helm upgrade --install billing-service ./ \
 | Stripe Secret Key     | `STRIPE_SECRET_KEY`        | ✅       | Stripe API secret key           |
 | Stripe Webhook Secret | `STRIPE_WEBHOOK_SECRET`    | ✅       | Stripe webhook endpoint secret  |
 | Encryption Master Key | `ENCRYPTION_MASTER_KEY`    | ✅       | Data encryption key (32+ chars) |
-| RabbitMQ Password     | `INFRA_MESSAGING_PASSWORD` | ⚠️       | Message broker password         |
+| RabbitMQ Password     | `INFRA_RABBITMQ_PASSWORD` | ⚠️       | Message broker password         |
 | Redis Password        | `REDIS_PASSWORD`           | ⚠️       | Cache password                  |
 | Stripe Public Key     | `STRIPE_PUBLIC_KEY`        | ⚠️       | Stripe publishable key          |
 | Stripe Connect Client | `STRIPE_CONNECT_CLIENT_ID` | ⚠️       | Stripe Connect application ID   |
