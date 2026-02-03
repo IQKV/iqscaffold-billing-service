@@ -6,6 +6,11 @@ spring:
     hikari:
       pool-name: BillingServiceHikariPool-Production
 
+iqscaffold:
+  liquibase:
+    # Exclude demo context to prevent demo data in production
+    contexts: "!demo"
+
 logging:
   level:
     root: WARN
