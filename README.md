@@ -23,6 +23,7 @@
 - [Authorization & Access Control](#authorization--access-control)
 - [Development & Testing](#development--testing)
 - [Gateway Configuration Examples](#gateway-configuration-examples)
+- [Deployment Guide](docs/deployment/README.md)
 
 ## Business Purpose
 
