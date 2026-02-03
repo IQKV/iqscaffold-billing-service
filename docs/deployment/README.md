@@ -56,8 +56,8 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values.yaml \
   --values ./values-dev.yaml \
   --set image.tag=wip \
-  --set externalServices.postgresql.password=${INFRA_DATABASE_PASSWORD} \
-  --set externalServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
+  --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
+  --set infraServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
   --set config.billing.stripe.webhookSecret=${STRIPE_WEBHOOK_SECRET} \
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
@@ -68,8 +68,8 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values.yaml \
   --values ./values-production.yaml \
   --set image.tag=${DRONE_TAG} \
-  --set externalServices.postgresql.password=${INFRA_DATABASE_PASSWORD} \
-  --set externalServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
+  --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
+  --set infraServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
   --set config.billing.stripe.publicKey=${STRIPE_PUBLIC_KEY} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
   --set config.billing.stripe.webhookSecret=${STRIPE_WEBHOOK_SECRET} \
@@ -91,7 +91,7 @@ cd charts/IQKV/iqscaffold-billing-service
 # Deploy to development
 helm upgrade --install billing-service ./ \
   --values values-dev.yaml \
-  --set externalServices.postgresql.password="your-db-password" \
+  --set infraServices.postgresql.password="your-db-password" \
   --set config.billing.stripe.secretKey="sk_test_your_stripe_key" \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
   --namespace iqscaffold-dev-env \
@@ -114,9 +114,9 @@ helm upgrade --install billing-service ./ \
 ```bash
 helm upgrade --install billing-service ./ \
   --values values-production.yaml \
-  --set externalServices.postgresql.password="${DB_PASSWORD}" \
-  --set externalServices.redis.password="${REDIS_PASSWORD}" \
-  --set externalServices.rabbitmq.password="${RABBITMQ_PASSWORD}" \
+  --set infraServices.postgresql.password="${DB_PASSWORD}" \
+  --set infraServices.redis.password="${REDIS_PASSWORD}" \
+  --set infraServices.rabbitmq.password="${RABBITMQ_PASSWORD}" \
   --set config.billing.stripe.publicKey="${STRIPE_PUBLIC_KEY}" \
   --set config.billing.stripe.secretKey="${STRIPE_SECRET_KEY}" \
   --set config.billing.stripe.webhookSecret="${STRIPE_WEBHOOK_SECRET}" \
@@ -133,7 +133,7 @@ helm upgrade --install billing-service ./ \
 
 | Secret                | Environment Variable       | Required | Description                     |
 | --------------------- | -------------------------- | -------- | ------------------------------- |
-| Database Password     | `INFRA_DATABASE_PASSWORD`  | ✅       | PostgreSQL password             |
+| Database Password     | `INFRA_POSTGRESQL_PASSWORD`  | ✅       | PostgreSQL password             |
 | Stripe Secret Key     | `STRIPE_SECRET_KEY`        | ✅       | Stripe API secret key           |
 | Stripe Webhook Secret | `STRIPE_WEBHOOK_SECRET`    | ✅       | Stripe webhook endpoint secret  |
 | Encryption Master Key | `ENCRYPTION_MASTER_KEY`    | ✅       | Data encryption key (32+ chars) |
