@@ -57,10 +57,14 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values-dev.yaml \
   --set image.tag=wip \
   --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
+  --set infraServices.redis.password=${INFRA_REDIS_PASSWORD} \
   --set infraServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
+  --set config.billing.stripe.publicKey=${STRIPE_PUBLIC_KEY} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
   --set config.billing.stripe.webhookSecret=${STRIPE_WEBHOOK_SECRET} \
+  --set config.billing.stripe.connectClientId=${STRIPE_CONNECT_CLIENT_ID} \
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
+  --set config.email.smtp.password=${SMTP_PASSWORD} \
   --namespace iqscaffold-dev-env
 
 # Production (Tagged releases)
@@ -69,6 +73,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --values ./values-production.yaml \
   --set image.tag=${DRONE_TAG} \
   --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
+  --set infraServices.redis.password=${INFRA_REDIS_PASSWORD} \
   --set infraServices.rabbitmq.password=${INFRA_RABBITMQ_PASSWORD} \
   --set config.billing.stripe.publicKey=${STRIPE_PUBLIC_KEY} \
   --set config.billing.stripe.secretKey=${STRIPE_SECRET_KEY} \
@@ -92,8 +97,14 @@ cd charts/IQKV/iqscaffold-billing-service
 helm upgrade --install billing-service ./ \
   --values values-dev.yaml \
   --set infraServices.postgresql.password="your-db-password" \
-  --set config.billing.stripe.secretKey="sk_test_your_stripe_key" \
+  --set infraServices.redis.password="your-redis-password" \
+  --set infraServices.rabbitmq.password="your-rabbitmq-password" \
+  --set config.billing.stripe.publicKey="pk_test_your_stripe_public_key" \
+  --set config.billing.stripe.secretKey="sk_test_your_stripe_secret_key" \
+  --set config.billing.stripe.webhookSecret="whsec_your_webhook_secret" \
+  --set config.billing.stripe.connectClientId="ca_your_connect_client_id" \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
+  --set config.email.smtp.password="your-smtp-password" \
   --namespace iqscaffold-dev-env \
   --create-namespace
 ```
@@ -105,6 +116,15 @@ helm upgrade --install billing-service ./ \
 ```bash
 helm upgrade --install billing-service ./ \
   --values values-dev.yaml \
+  --set infraServices.postgresql.password="${DB_PASSWORD}" \
+  --set infraServices.redis.password="${REDIS_PASSWORD}" \
+  --set infraServices.rabbitmq.password="${RABBITMQ_PASSWORD}" \
+  --set config.billing.stripe.publicKey="${STRIPE_PUBLIC_KEY}" \
+  --set config.billing.stripe.secretKey="${STRIPE_SECRET_KEY}" \
+  --set config.billing.stripe.webhookSecret="${STRIPE_WEBHOOK_SECRET}" \
+  --set config.billing.stripe.connectClientId="${STRIPE_CONNECT_CLIENT_ID}" \
+  --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
+  --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --namespace iqscaffold-dev-env \
   --create-namespace
 ```
@@ -129,19 +149,66 @@ helm upgrade --install billing-service ./ \
 
 ### Configuration
 
+#### Drone CI Secrets
+
+The following secrets must be configured in Drone CI for automated deployments:
+
+```bash
+# Infrastructure Secrets
+drone secret add --repository IQKV/iqscaffold-billing-service --name INFRA_POSTGRESQL_PASSWORD --data "your-postgresql-password"
+drone secret add --repository IQKV/iqscaffold-billing-service --name INFRA_REDIS_PASSWORD --data "your-redis-password"
+drone secret add --repository IQKV/iqscaffold-billing-service --name INFRA_RABBITMQ_PASSWORD --data "your-rabbitmq-password"
+
+# Stripe Payment Secrets
+drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_PUBLIC_KEY --data "pk_live_your_stripe_public_key"
+drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_SECRET_KEY --data "sk_live_your_stripe_secret_key"
+drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_WEBHOOK_SECRET --data "whsec_your_webhook_secret"
+drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_CONNECT_CLIENT_ID --data "ca_your_connect_client_id"
+
+# Application Secrets
+drone secret add --repository IQKV/iqscaffold-billing-service --name ENCRYPTION_MASTER_KEY --data "your-32-char-encryption-master-key"
+drone secret add --repository IQKV/iqscaffold-billing-service --name SMTP_PASSWORD --data "your-smtp-password"
+
+# Repository and Registry Secrets (already configured)
+drone secret add --repository IQKV/iqscaffold-billing-service --name HELM_CHARTS_REPOSITORY --data "your-helm-charts-repo-url"
+drone secret add --repository IQKV/iqscaffold-billing-service --name NEXUS_DEPLOYER_USERNAME --data "your-nexus-username"
+drone secret add --repository IQKV/iqscaffold-billing-service --name NEXUS_DEPLOYER_PASSWORD --data "your-nexus-password"
+```
+
 #### Required Secrets
 
-| Secret                | Environment Variable       | Required | Description                     |
-| --------------------- | -------------------------- | -------- | ------------------------------- |
-| Database Password     | `INFRA_POSTGRESQL_PASSWORD`  | ✅       | PostgreSQL password             |
-| Stripe Secret Key     | `STRIPE_SECRET_KEY`        | ✅       | Stripe API secret key           |
-| Stripe Webhook Secret | `STRIPE_WEBHOOK_SECRET`    | ✅       | Stripe webhook endpoint secret  |
-| Encryption Master Key | `ENCRYPTION_MASTER_KEY`    | ✅       | Data encryption key (32+ chars) |
-| RabbitMQ Password     | `INFRA_RABBITMQ_PASSWORD` | ⚠️       | Message broker password         |
-| Redis Password        | `INFRA_REDIS_PASSWORD`           | ⚠️       | Cache password                  |
-| Stripe Public Key     | `STRIPE_PUBLIC_KEY`        | ⚠️       | Stripe publishable key          |
-| Stripe Connect Client | `STRIPE_CONNECT_CLIENT_ID` | ⚠️       | Stripe Connect application ID   |
-| SMTP Password         | `SMTP_PASSWORD`            | ⚠️       | Email service password          |
+| Secret                   | Environment Variable        | Required | Description                     |
+| ------------------------ | --------------------------- | -------- | ------------------------------- |
+| Database Password        | `INFRA_POSTGRESQL_PASSWORD` | ✅       | PostgreSQL password             |
+| Redis Password           | `INFRA_REDIS_PASSWORD`      | ✅       | Redis cache password            |
+| RabbitMQ Password        | `INFRA_RABBITMQ_PASSWORD`   | ✅       | Message broker password         |
+| Stripe Secret Key        | `STRIPE_SECRET_KEY`         | ✅       | Stripe API secret key           |
+| Stripe Webhook Secret    | `STRIPE_WEBHOOK_SECRET`     | ✅       | Stripe webhook endpoint secret  |
+| Encryption Master Key    | `ENCRYPTION_MASTER_KEY`     | ✅       | Data encryption key (32+ chars) |
+| Stripe Public Key        | `STRIPE_PUBLIC_KEY`         | ⚠️       | Stripe publishable key          |
+| Stripe Connect Client ID | `STRIPE_CONNECT_CLIENT_ID`  | ⚠️       | Stripe Connect application ID   |
+| SMTP Password            | `SMTP_PASSWORD`             | ⚠️       | Email service password          |
+
+**Legend:**
+
+- ✅ **Required**: Service will fail to start without this secret
+- ⚠️ **Optional**: Feature-specific, service starts but functionality may be limited
+
+#### Environment Variable Mapping
+
+The Helm chart maps Drone CI secrets to application environment variables:
+
+| Drone Secret                | Helm --set Parameter                    | Application Environment Variable         |
+| --------------------------- | --------------------------------------- | ---------------------------------------- |
+| `INFRA_POSTGRESQL_PASSWORD` | `infraServices.postgresql.password`     | `IQSCAFFOLD_DATABASE_PASSWORD`           |
+| `INFRA_REDIS_PASSWORD`      | `infraServices.redis.password`          | `IQSCAFFOLD_CACHE_REDIS_PASSWORD`        |
+| `INFRA_RABBITMQ_PASSWORD`   | `infraServices.rabbitmq.password`       | `IQSCAFFOLD_MESSAGING_RABBITMQ_PASSWORD` |
+| `STRIPE_PUBLIC_KEY`         | `config.billing.stripe.publicKey`       | `STRIPE_PUBLIC_KEY`                      |
+| `STRIPE_SECRET_KEY`         | `config.billing.stripe.secretKey`       | `STRIPE_SECRET_KEY`, `STRIPE_API_KEY`    |
+| `STRIPE_WEBHOOK_SECRET`     | `config.billing.stripe.webhookSecret`   | `STRIPE_WEBHOOK_SECRET`                  |
+| `STRIPE_CONNECT_CLIENT_ID`  | `config.billing.stripe.connectClientId` | `STRIPE_CLIENT_ID`                       |
+| `ENCRYPTION_MASTER_KEY`     | `config.encryption.masterKey`           | `GATEWAY_CONFIG_ENCRYPTION_KEY`          |
+| `SMTP_PASSWORD`             | `config.email.smtp.password`            | `SMTP_PASSWORD`                          |
 
 #### External Services
 
@@ -226,23 +293,72 @@ Production deployments include:
    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env
    ```
 
-2. **Stripe Webhook Validation Errors**
+2. **Redis Connection Issues**
+
+   ```bash
+   # Check Redis connectivity
+   kubectl exec -it deployment/iqscaffold-billing-service -n iqscaffold-dev-env -- \
+     redis-cli -h iqscaffold-infra-redis-master.iqscaffold-dev-env.svc.cluster.local ping
+   ```
+
+3. **Stripe Webhook Validation Errors**
 
    ```bash
    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env | grep "webhook"
    ```
 
-3. **Check Configuration**
+4. **Encryption Key Issues**
+
+   ```bash
+   # Check if encryption key is properly configured
+   kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
+   # Should return 32 or more characters
+   ```
+
+5. **Stripe Configuration Issues**
+
+   ```bash
+   # Verify Stripe secrets are set
+   kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
+   ```
+
+6. **Check Configuration**
 
    ```bash
    kubectl describe configmap iqscaffold-billing-service-config -n iqscaffold-dev-env
+   kubectl describe secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env
    ```
 
-4. **Test Health Endpoints**
+7. **Test Health Endpoints**
    ```bash
    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqscaffold-dev-env
    curl http://localhost:8081/actuator/health
    ```
+
+#### Missing Secrets Diagnosis
+
+If deployments fail due to missing secrets, check:
+
+```bash
+# List all secrets in namespace
+kubectl get secrets -n iqscaffold-dev-env
+
+# Check specific secret content
+kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
+
+# Verify Drone CI secrets are configured
+drone secret ls --repository IQKV/iqscaffold-billing-service
+```
+
+#### Stripe Webhook Testing
+
+```bash
+# Test webhook endpoint locally
+kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqscaffold-dev-env
+
+# Use Stripe CLI to forward webhooks
+stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
+```
 
 #### Rollback
 
