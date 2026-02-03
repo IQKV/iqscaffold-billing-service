@@ -138,7 +138,7 @@ helm upgrade --install billing-service ./ \
 | Stripe Webhook Secret | `STRIPE_WEBHOOK_SECRET`    | ✅       | Stripe webhook endpoint secret  |
 | Encryption Master Key | `ENCRYPTION_MASTER_KEY`    | ✅       | Data encryption key (32+ chars) |
 | RabbitMQ Password     | `INFRA_RABBITMQ_PASSWORD` | ⚠️       | Message broker password         |
-| Redis Password        | `REDIS_PASSWORD`           | ⚠️       | Cache password                  |
+| Redis Password        | `INFRA_REDIS_PASSWORD`           | ⚠️       | Cache password                  |
 | Stripe Public Key     | `STRIPE_PUBLIC_KEY`        | ⚠️       | Stripe publishable key          |
 | Stripe Connect Client | `STRIPE_CONNECT_CLIENT_ID` | ⚠️       | Stripe Connect application ID   |
 | SMTP Password         | `SMTP_PASSWORD`            | ⚠️       | Email service password          |
