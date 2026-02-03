@@ -101,6 +101,9 @@ appropriate tenant.
 
 ### Payment Processing Flow
 
+<details>
+<summary>Click to expand payment processing flow</summary>
+
 ```text
 Request Flow:
 1. Client           → POST /api/v1/payments (amount, currency)
@@ -113,6 +116,8 @@ Request Flow:
 8. Stripe Webhook   → Receive payment_intent.succeeded
 9. Billing Service  → Validate & update local state (PENDING -> SUCCEEDED)
 ```
+
+</details>
 
 ### Key Components
 
@@ -144,6 +149,9 @@ Request Flow:
 - **PaymentNotificationService**: Business logic integration for payment-related notifications.
 
 ## API Endpoints
+
+<details>
+<summary>Click to expand API endpoints</summary>
 
 ### Payment Operations
 
@@ -210,6 +218,8 @@ Request Flow:
   - `/api/v1/billing/webhooks/paypal` - PayPal webhook endpoint (PayPal-Transmission-Sig header)
   - `/api/v1/billing/webhooks/square` - Square webhook endpoint (X-Square-Signature header)
   - `/api/v1/billing/webhooks/braintree` - Braintree webhook endpoint (X-Braintree-Signature header)
+
+</details>
 
 ## Payment State Machine
 
@@ -433,6 +443,9 @@ The service implements a unified webhook handling system that works across all p
 
 ### Webhook Setup Instructions
 
+<details>
+<summary>Click to expand webhook setup instructions</summary>
+
 #### Stripe Webhook Configuration
 
 1. **Create Webhook Endpoint in Stripe Dashboard**:
@@ -488,6 +501,8 @@ The service implements a unified webhook handling system that works across all p
 1. **Configure Webhook in Braintree Control Panel**:
 
 - Go to Settings → Webhooks
+
+</details>
 - URL: `https://your-domain.com/api/v1/billing/webhooks/braintree`
 - Enable notifications for subscription and transaction events
 
@@ -510,6 +525,9 @@ The service supports per-tenant payment gateway configuration, allowing each ten
 - **Braintree**: Merchant account integration (future implementation)
 
 #### Configuration Structure
+
+<details>
+<summary>Click to expand configuration structure</summary>
 
 Each gateway configuration includes:
 
@@ -545,7 +563,12 @@ Each gateway configuration includes:
 - **Masked Responses**: API responses show only last 4 characters of sensitive data
 - **Automatic Fallback**: Falls back to global configuration if tenant config unavailable
 
+</details>
+
 ## Configuration
+
+<details>
+<summary>Click to expand configuration details</summary>
 
 The service uses type-safe properties via `BillingProperties` (record-based):
 
@@ -583,6 +606,9 @@ iqscaffold:
       host: ${SMTP_HOST}
       port: ${SMTP_PORT}
       username: ${SMTP_USERNAME}
+```
+
+</details>
       password: ${SMTP_PASSWORD}
       auth: true
       starttls: true
@@ -609,6 +635,9 @@ iqscaffold:
 ```
 
 ### Required Environment Variables
+
+<details>
+<summary>Click to expand environment variables</summary>
 
 ```bash
 # Gateway Encryption (Required for tenant-specific configs)
@@ -645,6 +674,8 @@ SMTP_PASSWORD=email_password
 # Service Integration
 IQSCAFFOLD_USER_SERVICE_URL=http://iqscaffold-user-service:8080
 ```
+
+</details>
 
 ## Observability & Monitoring
 
@@ -785,6 +816,9 @@ public ResponseEntity<Response> cancelSubscription(@PathVariable UUID id) {
 
 ## Gateway Configuration Examples
 
+<details>
+<summary>Click to expand gateway configuration examples</summary>
+
 ### Creating a Stripe Gateway Configuration
 
 ```bash
@@ -916,7 +950,11 @@ curl -X POST http://localhost:8080/api/v1/admin/billing/gateway-config/STRIPE/se
   "currentPeriodStart": "2026-01-11T08:00:00Z",
   "currentPeriodEnd": "2026-02-11T08:00:00Z",
   "trialStart": "2026-01-11T08:00:00Z",
-  "trialEnd": "2026-01-25T08:00:00Z",
+  "trialEnd": "2026-01-25T08:00:00Z"
+}
+```
+
+</details>
   "createdAt": "2026-01-11T08:00:00Z",
   "updatedAt": "2026-01-11T08:00:00Z"
 }
