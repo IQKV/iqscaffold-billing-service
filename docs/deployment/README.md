@@ -45,26 +45,26 @@ The service uses Drone CI/CD pipeline with 10 stages:
 <details>
 <summary>🔐 Required Drone Secrets</summary>
 
-| Secret Name | Purpose | Used In |
-|-------------|---------|---------|
-| `NEXUS_DEPLOYER_USERNAME` | Nexus repository authentication | Artifact publishing, dependency resolution |
-| `NEXUS_DEPLOYER_PASSWORD` | Nexus repository authentication | Artifact publishing, dependency resolution |
-| `SONAR_HOST` | SonarQube server URL | Static code analysis |
-| `SONAR_TOKEN` | SonarQube authentication token | Static code analysis |
-| `SLACK_WEBHOOK` | Slack notifications webhook URL | Build status notifications |
-| `GITHUB_API_ACCESS_TOKEN` | GitHub API access for releases | Release creation, changelog generation |
-| `SVC_CONTAINER_REGISTRY_USERNAME` | Container registry authentication | Docker image publishing |
-| `SVC_CONTAINER_REGISTRY_PASSWORD` | Container registry authentication | Docker image publishing |
-| `HELM_CHARTS_REPOSITORY` | Helm charts repository URL | Kubernetes deployments |
-| `INFRA_POSTGRESQL_PASSWORD` | PostgreSQL database password | Application configuration |
-| `INFRA_REDIS_PASSWORD` | Redis cache password | Application configuration |
-| `INFRA_RABBITMQ_PASSWORD` | RabbitMQ message broker password | Application configuration |
-| `STRIPE_PUBLIC_KEY` | Stripe publishable API key | Payment processing configuration |
-| `STRIPE_SECRET_KEY` | Stripe secret API key | Payment processing configuration |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook endpoint secret | Webhook signature validation |
-| `STRIPE_CONNECT_CLIENT_ID` | Stripe Connect application ID | Multi-party payment processing |
-| `ENCRYPTION_MASTER_KEY` | Data encryption master key | Sensitive data encryption at rest |
-| `SMTP_PASSWORD` | Email service password | Email notifications |
+| Secret Name                       | Purpose                           | Used In                                    |
+| --------------------------------- | --------------------------------- | ------------------------------------------ |
+| `NEXUS_DEPLOYER_USERNAME`         | Nexus repository authentication   | Artifact publishing, dependency resolution |
+| `NEXUS_DEPLOYER_PASSWORD`         | Nexus repository authentication   | Artifact publishing, dependency resolution |
+| `SONAR_HOST`                      | SonarQube server URL              | Static code analysis                       |
+| `SONAR_TOKEN`                     | SonarQube authentication token    | Static code analysis                       |
+| `SLACK_WEBHOOK`                   | Slack notifications webhook URL   | Build status notifications                 |
+| `GITHUB_API_ACCESS_TOKEN`         | GitHub API access for releases    | Release creation, changelog generation     |
+| `SVC_CONTAINER_REGISTRY_USERNAME` | Container registry authentication | Docker image publishing                    |
+| `SVC_CONTAINER_REGISTRY_PASSWORD` | Container registry authentication | Docker image publishing                    |
+| `HELM_CHARTS_REPOSITORY`          | Helm charts repository URL        | Kubernetes deployments                     |
+| `INFRA_POSTGRESQL_PASSWORD`       | PostgreSQL database password      | Application configuration                  |
+| `INFRA_REDIS_PASSWORD`            | Redis cache password              | Application configuration                  |
+| `INFRA_RABBITMQ_PASSWORD`         | RabbitMQ message broker password  | Application configuration                  |
+| `STRIPE_PUBLIC_KEY`               | Stripe publishable API key        | Payment processing configuration           |
+| `STRIPE_SECRET_KEY`               | Stripe secret API key             | Payment processing configuration           |
+| `STRIPE_WEBHOOK_SECRET`           | Stripe webhook endpoint secret    | Webhook signature validation               |
+| `STRIPE_CONNECT_CLIENT_ID`        | Stripe Connect application ID     | Multi-party payment processing             |
+| `ENCRYPTION_MASTER_KEY`           | Data encryption master key        | Sensitive data encryption at rest          |
+| `SMTP_PASSWORD`                   | Email service password            | Email notifications                        |
 
 </details>
 
@@ -80,6 +80,9 @@ The service uses Drone CI/CD pipeline with 10 stages:
 #### Deployment Commands
 
 The pipeline uses these Helm commands for deployment:
+
+<details>
+<summary>Helm Commands</summary>
 
 ```bash
 # Development (WIP branches)
@@ -114,6 +117,8 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --namespace iqscaffold-production-env
 ```
+
+</details>
 
 ### Manual Deployment
 
@@ -200,30 +205,7 @@ drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_CONN
 drone secret add --repository IQKV/iqscaffold-billing-service --name ENCRYPTION_MASTER_KEY --data "your-32-char-encryption-master-key"
 drone secret add --repository IQKV/iqscaffold-billing-service --name SMTP_PASSWORD --data "your-smtp-password"
 
-# Repository and Registry Secrets (already configured)
-drone secret add --repository IQKV/iqscaffold-billing-service --name HELM_CHARTS_REPOSITORY --data "your-helm-charts-repo-url"
-drone secret add --repository IQKV/iqscaffold-billing-service --name NEXUS_DEPLOYER_USERNAME --data "your-nexus-username"
-drone secret add --repository IQKV/iqscaffold-billing-service --name NEXUS_DEPLOYER_PASSWORD --data "your-nexus-password"
 ```
-
-#### Required Secrets
-
-| Secret                   | Environment Variable        | Required | Description                     |
-| ------------------------ | --------------------------- | -------- | ------------------------------- |
-| Database Password        | `INFRA_POSTGRESQL_PASSWORD` | ✅       | PostgreSQL password             |
-| Redis Password           | `INFRA_REDIS_PASSWORD`      | ✅       | Redis cache password            |
-| RabbitMQ Password        | `INFRA_RABBITMQ_PASSWORD`   | ✅       | Message broker password         |
-| Stripe Secret Key        | `STRIPE_SECRET_KEY`         | ✅       | Stripe API secret key           |
-| Stripe Webhook Secret    | `STRIPE_WEBHOOK_SECRET`     | ✅       | Stripe webhook endpoint secret  |
-| Encryption Master Key    | `ENCRYPTION_MASTER_KEY`     | ✅       | Data encryption key (32+ chars) |
-| Stripe Public Key        | `STRIPE_PUBLIC_KEY`         | ⚠️       | Stripe publishable key          |
-| Stripe Connect Client ID | `STRIPE_CONNECT_CLIENT_ID`  | ⚠️       | Stripe Connect application ID   |
-| SMTP Password            | `SMTP_PASSWORD`             | ⚠️       | Email service password          |
-
-**Legend:**
-
-- ✅ **Required**: Service will fail to start without this secret
-- ⚠️ **Optional**: Feature-specific, service starts but functionality may be limited
 
 #### Environment Variable Mapping
 
