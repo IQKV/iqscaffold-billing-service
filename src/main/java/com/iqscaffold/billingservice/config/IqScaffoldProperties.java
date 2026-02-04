@@ -14,7 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Configuration properties for IQ Scaffold Billing Service. All custom configuration properties use the 'iqscaffold.' prefix for clear namespace separation.
+ * Configuration properties for IQ Scaffold Billing Service. All custom
+ * configuration properties use the 'iqscaffold.' prefix for clear namespace
+ * separation.
  */
 @ConfigurationProperties(prefix = "iqscaffold")
 @Validated
@@ -23,8 +25,7 @@ public record IqScaffoldProperties(
     @Valid @NotNull I18n i18n,
     @Valid @NotNull Billing billing,
     @NotBlank String tenantIdHeader,
-    @NotBlank String userServiceUrl
-) {
+    @NotBlank String userServiceUrl) {
 
   /**
    * Email configuration properties with iqscaffold.email prefix.
@@ -32,8 +33,7 @@ public record IqScaffoldProperties(
   public record Email(
       @Valid @NotNull Smtp smtp,
       @Valid @NotNull Sender sender,
-      @Valid @NotNull Templates templates
-  ) {
+      @Valid @NotNull Templates templates) {
 
     public record Smtp(
         @NotBlank String host,
@@ -42,16 +42,14 @@ public record IqScaffoldProperties(
         String password,
         boolean auth,
         boolean starttls,
-        @NotNull Duration timeout
-    ) {
+        @NotNull Duration timeout) {
 
     }
 
     public record Sender(
         @NotBlank String fromEmail,
         @NotBlank String fromName,
-        @NotBlank String baseUrl
-    ) {
+        @NotBlank String baseUrl) {
 
     }
 
@@ -60,8 +58,7 @@ public record IqScaffoldProperties(
         @NotBlank String paymentSuccessfulTemplate,
         @NotBlank String paymentFailedTemplate,
         @NotBlank String paymentRefundedTemplate,
-        @NotBlank String invoiceGeneratedTemplate
-    ) {
+        @NotBlank String invoiceGeneratedTemplate) {
 
     }
   }
@@ -70,20 +67,18 @@ public record IqScaffoldProperties(
    * Internationalization configuration properties with iqscaffold.i18n prefix.
    */
   public record I18n(
-      @NotNull List<@Pattern(regexp = "^[a-z]{2}(-[A-Z]{2})?$",
-                             message = "Locale must be in format 'xx' or 'xx-XX'") String> supportedLocales,
-      @NotBlank @Pattern(regexp = "^[a-z]{2}(-[A-Z]{2})?$",
-                         message = "Default locale must be in format 'xx' or 'xx-XX'") String defaultLocale,
+      @NotNull List<@Pattern(regexp = "^[a-z]{2}(-[A-Z]{2})?$", message = "Locale must be in format 'xx' or 'xx-XX'") String> supportedLocales,
+      @NotBlank @Pattern(regexp = "^[a-z]{2}(-[A-Z]{2})?$", message = "Default locale must be in format 'xx' or 'xx-XX'") String defaultLocale,
       @NotBlank String messageBasename,
       @NotNull Duration messageCacheDuration,
       boolean fallbackToSystemLocale,
-      boolean useCodeAsDefaultMessage
-  ) {
+      boolean useCodeAsDefaultMessage) {
 
     public I18n {
       // Validation: default locale must be in supported locales
       if (supportedLocales != null && !supportedLocales.contains(defaultLocale)) {
-        throw new IllegalArgumentException("Default locale '" + defaultLocale + "' must be included in supported locales");
+        throw new IllegalArgumentException(
+            "Default locale '" + defaultLocale + "' must be included in supported locales");
       }
     }
 
@@ -115,7 +110,7 @@ public record IqScaffoldProperties(
      */
     public boolean isLocaleSupported(Locale locale) {
       return supportedLocales.contains(locale.toLanguageTag())
-             || supportedLocales.contains(locale.getLanguage());
+          || supportedLocales.contains(locale.getLanguage());
     }
   }
 
@@ -127,31 +122,28 @@ public record IqScaffoldProperties(
       @Valid @NotNull Payment payment,
       @Valid @NotNull Stripe stripe,
       @Valid @NotNull Notifications notifications,
-      @Valid @NotNull Subscription subscription
-  ) {
+      @Valid @NotNull Subscription subscription) {
 
     public record Security(
         @Valid @NotNull Jwt jwt,
-        @Valid @NotNull Encryption encryption
-    ) {
+        @Valid @NotNull Encryption encryption) {
       public record Jwt(
-          @NotBlank String jwkSetUri,
-          @NotBlank String issuer
-      ) {
+          String jwkSetUri,
+          @NotBlank String issuer,
+          String secretKey,
+          String algorithm) {
       }
 
       public record Encryption(
           @NotBlank String masterKey,
-          boolean useTenantSpecificConfig
-      ) {
+          boolean useTenantSpecificConfig) {
       }
     }
 
     public record Payment(
         @NotBlank @jakarta.validation.constraints.Pattern(regexp = "stripe|manual") String provider,
         boolean saasMode,
-        @Valid @NotNull Stripe stripe
-    ) {
+        @Valid @NotNull Stripe stripe) {
       public record Stripe(
           @NotBlank String apiKey,
           @NotBlank String webhookSecret,
@@ -164,8 +156,7 @@ public record IqScaffoldProperties(
         @NotBlank String publicKey,
         @NotBlank String secretKey,
         @NotBlank String webhookSecret,
-        @NotBlank String connectClientId
-    ) {
+        @NotBlank String connectClientId) {
 
     }
 
@@ -173,8 +164,7 @@ public record IqScaffoldProperties(
         boolean enableEmailNotifications,
         boolean enableWebhookNotifications,
         @NotNull Duration retryDelay,
-        @Min(1) @Max(10) int maxRetries
-    ) {
+        @Min(1) @Max(10) int maxRetries) {
 
     }
 
@@ -184,16 +174,11 @@ public record IqScaffoldProperties(
         @Min(0) @Max(30) int gracePeriodDays,
         @Min(1) @Max(10) int maxRetryAttempts,
         @Min(1) @Max(90) int autoCancelAfterDays,
-        @NotBlank @jakarta.validation.constraints.Pattern(
-            regexp = "CREATE_PRORATIONS|NONE|ALWAYS_INVOICE",
-            message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE"
-        ) String prorationBehavior,
-        @Valid @NotNull SubscriptionNotifications notifications
-    ) {
+        @NotBlank @jakarta.validation.constraints.Pattern(regexp = "CREATE_PRORATIONS|NONE|ALWAYS_INVOICE", message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE") String prorationBehavior,
+        @Valid @NotNull SubscriptionNotifications notifications) {
       public record SubscriptionNotifications(
           @Min(1) @Max(30) int trialEndingDaysNotice,
-          @NotNull List<@Min(1) @Max(30) Integer> paymentRetrySchedule
-      ) {
+          @NotNull List<@Min(1) @Max(30) Integer> paymentRetrySchedule) {
         public SubscriptionNotifications {
           // Validation: payment retry schedule must not be empty
           if (paymentRetrySchedule == null || paymentRetrySchedule.isEmpty()) {

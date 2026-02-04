@@ -273,6 +273,8 @@ iqscaffold:
       jwt:
         jwk-set-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service:8080}/.well-known/jwks.json
         issuer: ${JWT_ISSUER:iqscaffold-user-service}
+        secret-key: ${JWT_SECRET_KEY:change-me-in-production}
+        algorithm: HS256
       encryption:
         master-key: ${GATEWAY_CONFIG_ENCRYPTION_KEY:change-this-to-a-secure-random-key-in-production}
         use-tenant-specific-config: ${USE_TENANT_SPECIFIC_GATEWAY_CONFIG:false}

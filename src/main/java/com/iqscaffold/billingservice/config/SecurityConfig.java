@@ -21,7 +21,8 @@ public class SecurityConfig {
   private final IqScaffoldProperties iqScaffoldProperties;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  public SecurityConfig(final IqScaffoldProperties iqScaffoldProperties, final JwtAuthenticationFilter jwtAuthenticationFilter) {
+  public SecurityConfig(final IqScaffoldProperties iqScaffoldProperties,
+      final JwtAuthenticationFilter jwtAuthenticationFilter) {
     this.iqScaffoldProperties = iqScaffoldProperties;
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
@@ -45,7 +46,25 @@ public class SecurityConfig {
 
   @Bean
   public JwtDecoder jwtDecoder() {
-    return NimbusJwtDecoder.withJwkSetUri(iqScaffoldProperties.billing().security().jwt().jwkSetUri()).build();
+    var jwtProps = iqScaffoldProperties.billing().security().jwt();
+
+    if (isSymmetricConfigured()) {
+      var algorithm = jwtProps.algorithm() != null ? jwtProps.algorithm() : "HS256";
+      javax.crypto.SecretKey key = new javax.crypto.spec.SecretKeySpec(
+          jwtProps.secretKey().getBytes(), "Hmac" + algorithm.substring(2));
+      return NimbusJwtDecoder.withSecretKey(key).build();
+    }
+
+    var jwkSetUri = jwtProps.jwkSetUri();
+    if (jwkSetUri == null || jwkSetUri.isBlank()) {
+      throw new IllegalStateException("Neither secret-key nor jwk-set-uri is configured for JWT validation");
+    }
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+  }
+
+  private boolean isSymmetricConfigured() {
+    var secretKey = iqScaffoldProperties.billing().security().jwt().secretKey();
+    return secretKey != null && !secretKey.isBlank() && !"change-me-in-production".equals(secretKey);
   }
 
   @Bean

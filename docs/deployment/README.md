@@ -45,26 +45,27 @@ The service uses Drone CI/CD pipeline with 10 stages:
 <details>
 <summary>🔐 Required Drone Secrets</summary>
 
-| Secret Name                       | Purpose                           | Used In                                    |
-| --------------------------------- | --------------------------------- | ------------------------------------------ |
-| `NEXUS_DEPLOYER_USERNAME`         | Nexus repository authentication   | Artifact publishing, dependency resolution |
-| `NEXUS_DEPLOYER_PASSWORD`         | Nexus repository authentication   | Artifact publishing, dependency resolution |
-| `SONAR_HOST`                      | SonarQube server URL              | Static code analysis                       |
-| `SONAR_TOKEN`                     | SonarQube authentication token    | Static code analysis                       |
-| `SLACK_WEBHOOK`                   | Slack notifications webhook URL   | Build status notifications                 |
-| `GITHUB_API_ACCESS_TOKEN`         | GitHub API access for releases    | Release creation, changelog generation     |
-| `SVC_CONTAINER_REGISTRY_USERNAME` | Container registry authentication | Docker image publishing                    |
-| `SVC_CONTAINER_REGISTRY_PASSWORD` | Container registry authentication | Docker image publishing                    |
-| `HELM_CHARTS_REPOSITORY`          | Helm charts repository URL        | Kubernetes deployments                     |
-| `INFRA_POSTGRESQL_PASSWORD`       | PostgreSQL database password      | Application configuration                  |
-| `INFRA_REDIS_PASSWORD`            | Redis cache password              | Application configuration                  |
-| `INFRA_RABBITMQ_PASSWORD`         | RabbitMQ message broker password  | Application configuration                  |
-| `STRIPE_PUBLIC_KEY`               | Stripe publishable API key        | Payment processing configuration           |
-| `STRIPE_SECRET_KEY`               | Stripe secret API key             | Payment processing configuration           |
-| `STRIPE_WEBHOOK_SECRET`           | Stripe webhook endpoint secret    | Webhook signature validation               |
-| `STRIPE_CONNECT_CLIENT_ID`        | Stripe Connect application ID     | Multi-party payment processing             |
-| `ENCRYPTION_MASTER_KEY`           | Data encryption master key        | Sensitive data encryption at rest          |
-| `SMTP_PASSWORD`                   | Email service password            | Email notifications                        |
+| Secret Name                       | Purpose                              | Used In                                    |
+| --------------------------------- | ------------------------------------ | ------------------------------------------ |
+| `NEXUS_DEPLOYER_USERNAME`         | Nexus repository authentication      | Artifact publishing, dependency resolution |
+| `NEXUS_DEPLOYER_PASSWORD`         | Nexus repository authentication      | Artifact publishing, dependency resolution |
+| `SONAR_HOST`                      | SonarQube server URL                 | Static code analysis                       |
+| `SONAR_TOKEN`                     | SonarQube authentication token       | Static code analysis                       |
+| `SLACK_WEBHOOK`                   | Slack notifications webhook URL      | Build status notifications                 |
+| `GITHUB_API_ACCESS_TOKEN`         | GitHub API access for releases       | Release creation, changelog generation     |
+| `SVC_CONTAINER_REGISTRY_USERNAME` | Container registry authentication    | Docker image publishing                    |
+| `SVC_CONTAINER_REGISTRY_PASSWORD` | Container registry authentication    | Docker image publishing                    |
+| `HELM_CHARTS_REPOSITORY`          | Helm charts repository URL           | Kubernetes deployments                     |
+| `INFRA_POSTGRESQL_PASSWORD`       | PostgreSQL database password         | Application configuration                  |
+| `INFRA_REDIS_PASSWORD`            | Redis cache password                 | Application configuration                  |
+| `INFRA_RABBITMQ_PASSWORD`         | RabbitMQ message broker password     | Application configuration                  |
+| `STRIPE_PUBLIC_KEY`               | Stripe publishable API key           | Payment processing configuration           |
+| `STRIPE_SECRET_KEY`               | Stripe secret API key                | Payment processing configuration           |
+| `STRIPE_WEBHOOK_SECRET`           | Stripe webhook endpoint secret       | Webhook signature validation               |
+| `STRIPE_CONNECT_CLIENT_ID`        | Stripe Connect application ID        | Multi-party payment processing             |
+| `ENCRYPTION_MASTER_KEY`           | Data encryption master key           | Sensitive data encryption at rest          |
+| `SMTP_PASSWORD`                   | Email service password               | Email notifications                        |
+| `JWT_SECRET_KEY`                  | JWT symmetric validation key (HS256) | Request authentication validation          |
 
 </details>
 
@@ -99,6 +100,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.billing.stripe.connectClientId=${STRIPE_CONNECT_CLIENT_ID} \
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
+  --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
   --namespace iqscaffold-dev-env
 
 # Production (Tagged releases)
@@ -115,6 +117,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.billing.stripe.connectClientId=${STRIPE_CONNECT_CLIENT_ID} \
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
+  --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
   --namespace iqscaffold-production-env
 ```
 
@@ -141,6 +144,7 @@ helm upgrade --install billing-service ./ \
   --set config.billing.stripe.connectClientId="ca_your_connect_client_id" \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
   --set config.email.smtp.password="your-smtp-password" \
+  --set config.billing.security.jwt.secretKey="your-secure-symmetric-key" \
   --namespace iqscaffold-dev-env \
   --create-namespace
 ```
@@ -161,6 +165,7 @@ helm upgrade --install billing-service ./ \
   --set config.billing.stripe.connectClientId="${STRIPE_CONNECT_CLIENT_ID}" \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
+  --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
   --namespace iqscaffold-dev-env \
   --create-namespace
 ```
@@ -179,6 +184,7 @@ helm upgrade --install billing-service ./ \
   --set config.billing.stripe.connectClientId="${STRIPE_CONNECT_CLIENT_ID}" \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
+  --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
   --namespace iqscaffold-production-env \
   --create-namespace
 ```
@@ -204,6 +210,7 @@ drone secret add --repository IQKV/iqscaffold-billing-service --name STRIPE_CONN
 # Application Secrets
 drone secret add --repository IQKV/iqscaffold-billing-service --name ENCRYPTION_MASTER_KEY --data "your-32-char-encryption-master-key"
 drone secret add --repository IQKV/iqscaffold-billing-service --name SMTP_PASSWORD --data "your-smtp-password"
+drone secret add --repository IQKV/iqscaffold-billing-service --name JWT_SECRET_KEY --data "your-secure-symmetric-key"
 
 ```
 
@@ -222,6 +229,7 @@ The Helm chart maps Drone CI secrets to application environment variables:
 | `STRIPE_CONNECT_CLIENT_ID`  | `config.billing.stripe.connectClientId` | `STRIPE_CLIENT_ID`                       |
 | `ENCRYPTION_MASTER_KEY`     | `config.encryption.masterKey`           | `GATEWAY_CONFIG_ENCRYPTION_KEY`          |
 | `SMTP_PASSWORD`             | `config.email.smtp.password`            | `SMTP_PASSWORD`                          |
+| `JWT_SECRET_KEY`            | `config.billing.security.jwt.secretKey` | `JWT_SECRET_KEY`                         |
 
 #### External Services
 
