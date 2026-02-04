@@ -24,6 +24,9 @@ The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/C
 
 #### Drone Pipeline Overview
 
+<details>
+<summary>📋 Pipeline Stages</summary>
+
 The service uses Drone CI/CD pipeline with 10 stages:
 
 1. **VerifyCode** - Code quality, tests, static analysis
@@ -36,6 +39,34 @@ The service uses Drone CI/CD pipeline with 10 stages:
 8. **PromoteDeployment** - Release promotion
 9. **RollbackDeployment** - Release rollback
 10. **ReleasePackage** - Automated version management
+
+</details>
+
+<details>
+<summary>🔐 Required Drone Secrets</summary>
+
+| Secret Name | Purpose | Used In |
+|-------------|---------|---------|
+| `NEXUS_DEPLOYER_USERNAME` | Nexus repository authentication | Artifact publishing, dependency resolution |
+| `NEXUS_DEPLOYER_PASSWORD` | Nexus repository authentication | Artifact publishing, dependency resolution |
+| `SONAR_HOST` | SonarQube server URL | Static code analysis |
+| `SONAR_TOKEN` | SonarQube authentication token | Static code analysis |
+| `SLACK_WEBHOOK` | Slack notifications webhook URL | Build status notifications |
+| `GITHUB_API_ACCESS_TOKEN` | GitHub API access for releases | Release creation, changelog generation |
+| `SVC_CONTAINER_REGISTRY_USERNAME` | Container registry authentication | Docker image publishing |
+| `SVC_CONTAINER_REGISTRY_PASSWORD` | Container registry authentication | Docker image publishing |
+| `HELM_CHARTS_REPOSITORY` | Helm charts repository URL | Kubernetes deployments |
+| `INFRA_POSTGRESQL_PASSWORD` | PostgreSQL database password | Application configuration |
+| `INFRA_REDIS_PASSWORD` | Redis cache password | Application configuration |
+| `INFRA_RABBITMQ_PASSWORD` | RabbitMQ message broker password | Application configuration |
+| `STRIPE_PUBLIC_KEY` | Stripe publishable API key | Payment processing configuration |
+| `STRIPE_SECRET_KEY` | Stripe secret API key | Payment processing configuration |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook endpoint secret | Webhook signature validation |
+| `STRIPE_CONNECT_CLIENT_ID` | Stripe Connect application ID | Multi-party payment processing |
+| `ENCRYPTION_MASTER_KEY` | Data encryption master key | Sensitive data encryption at rest |
+| `SMTP_PASSWORD` | Email service password | Email notifications |
+
+</details>
 
 #### Branch Deployment Strategy
 
