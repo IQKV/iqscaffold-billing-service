@@ -270,7 +270,7 @@
     <insert tableName="feature_definition" schemaName="public">
       <column name="feature_key" value="audit_logging"/>
       <column name="display_name" value="Audit Logging"/>
-      <column name="description" value="Comprehensive audit trail and compliance logging"/>
+      <column name="description" value="Audit trail and compliance logging"/>
       <column name="type" value="BOOLEAN"/>
       <column name="category" value="security"/>
       <column name="sort_order" valueNumeric="100"/>
