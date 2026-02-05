@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service demonstrating optimal usage of entity graphs for Feature operations.
- * 
+ *
  * <p>This service showcases how to leverage entity graphs to optimize query performance
  * for feature-related operations by eagerly loading specific relationships based
  * on business requirements.
@@ -49,7 +49,7 @@ public class FeatureEntityGraphService {
    * Find plan feature with complete context for feature management.
    * Use this when configuring or managing plan features.
    *
-   * @param planId the plan ID
+   * @param planId     the plan ID
    * @param featureKey the feature key
    * @return Optional containing plan feature with complete context if found
    */
@@ -80,7 +80,7 @@ public class FeatureEntityGraphService {
    */
   public FeatureConfigurationSummary getFeatureConfigurationSummary(final UUID planId) {
     var planFeatures = findPlanFeaturesWithDefinitions(planId);
-    
+
     var enabledFeatures = planFeatures.stream()
         .filter(PlanFeature::isEnabled)
         .collect(Collectors.toMap(
@@ -110,7 +110,7 @@ public class FeatureEntityGraphService {
    * Check if a specific feature type is available in a plan.
    * Optimized method for feature type checking.
    *
-   * @param planId the plan ID
+   * @param planId      the plan ID
    * @param featureType the feature type to check
    * @return true if plan has enabled features of the specified type
    */
@@ -177,7 +177,8 @@ public class FeatureEntityGraphService {
       Long limit,
       String tier,
       boolean hasCustomConfig
-  ) {}
+  ) {
+  }
 
   /**
    * Data transfer object for feature configuration summary.
@@ -187,5 +188,6 @@ public class FeatureEntityGraphService {
       int totalFeatures,
       int enabledFeatures,
       Map<String, FeatureConfig> features
-  ) {}
+  ) {
+  }
 }

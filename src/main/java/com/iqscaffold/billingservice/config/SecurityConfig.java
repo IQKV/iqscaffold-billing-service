@@ -22,7 +22,7 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   public SecurityConfig(final IqScaffoldProperties iqScaffoldProperties,
-      final JwtAuthenticationFilter jwtAuthenticationFilter) {
+                        final JwtAuthenticationFilter jwtAuthenticationFilter) {
     this.iqScaffoldProperties = iqScaffoldProperties;
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }

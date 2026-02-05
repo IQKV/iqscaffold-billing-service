@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service demonstrating optimal usage of entity graphs for Subscription operations.
- * 
+ *
  * <p>This service showcases how to leverage entity graphs to optimize query performance
  * for subscription-related operations by eagerly loading specific relationships based
  * on business requirements.
@@ -150,9 +150,9 @@ public class SubscriptionEntityGraphService {
   public boolean isFeatureEnabled(final String featureKey) {
     return tenantSubscriptionRepository.findActiveWithPlanAndFeatures()
         .map(subscription -> subscription.getPlan().getPlanFeatures().stream()
-            .anyMatch(planFeature -> 
-                planFeature.getFeature().getFeatureKey().equals(featureKey) 
-                    && planFeature.isEnabled()))
+            .anyMatch(planFeature ->
+                planFeature.getFeature().getFeatureKey().equals(featureKey)
+                && planFeature.isEnabled()))
         .orElse(false);
   }
 
@@ -186,5 +186,6 @@ public class SubscriptionEntityGraphService {
       java.time.Instant currentPeriodEnd,
       java.time.Instant trialEnd,
       java.time.Instant cancelAt
-  ) {}
+  ) {
+  }
 }

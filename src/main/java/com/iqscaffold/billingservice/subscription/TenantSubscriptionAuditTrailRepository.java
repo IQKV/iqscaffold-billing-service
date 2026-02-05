@@ -32,7 +32,7 @@ public interface TenantSubscriptionAuditTrailRepository extends JpaRepository<Te
    * audit trail doesn't have a direct organizationId field.
    *
    * @param organizationId Organization ID
-   * @param pageable Pagination parameters
+   * @param pageable       Pagination parameters
    * @return Page of audit trail entries
    */
   @Query("SELECT a FROM TenantSubscriptionAuditTrail a WHERE a.tenantSubscription.organizationId = :organizationId ORDER BY a.createdAt DESC")

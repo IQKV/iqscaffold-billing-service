@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Test class demonstrating entity graph functionality for billing entities.
- * 
+ *
  * <p>These tests verify that entity graphs properly load associations
  * without causing lazy loading exceptions or N+1 query problems.
  */
@@ -54,7 +54,7 @@ class SubscriptionEntityGraphTest {
 
     var planFeature = new PlanFeature(subscriptionPlan, featureDefinition, true);
     entityManager.persist(planFeature);
-    
+
     subscriptionPlan.setPlanFeatures(Set.of(planFeature));
     entityManager.persistAndFlush(subscriptionPlan);
     entityManager.clear(); // Clear persistence context
@@ -64,7 +64,7 @@ class SubscriptionEntityGraphTest {
 
     // Then: Plan and features should be loaded
     assertThat(foundPlan).isPresent();
-    
+
     // Verify features are loaded without lazy loading exception
     assertDoesNotThrow(() -> {
       var features = foundPlan.get().getPlanFeatures();
@@ -93,7 +93,7 @@ class SubscriptionEntityGraphTest {
 
     var planFeature = new PlanFeature(subscriptionPlan, featureDefinition, true);
     entityManager.persist(planFeature);
-    
+
     subscriptionPlan.setPlanFeatures(Set.of(planFeature));
     entityManager.persistAndFlush(subscriptionPlan);
     entityManager.clear(); // Clear persistence context
@@ -103,18 +103,18 @@ class SubscriptionEntityGraphTest {
 
     // Then: Plan, features, and feature definitions should all be loaded
     assertThat(foundPlan).isPresent();
-    
+
     // Verify all associations are loaded without lazy loading exceptions
     assertDoesNotThrow(() -> {
       var loadedPlan = foundPlan.get();
-      
+
       // Check plan features
       var features = loadedPlan.getPlanFeatures();
       assertThat(features).hasSize(1);
-      
+
       var planFeatureLoaded = features.iterator().next();
       assertThat(planFeatureLoaded.isEnabled()).isTrue();
-      
+
       // Check feature definitions
       var featureDefinitionLoaded = planFeatureLoaded.getFeature();
       assertThat(featureDefinitionLoaded).isNotNull();
@@ -148,7 +148,7 @@ class SubscriptionEntityGraphTest {
 
     // Then: Subscription and plan should be loaded
     assertThat(foundSubscription).isPresent();
-    
+
     // Verify plan is loaded without lazy loading exception
     assertDoesNotThrow(() -> {
       var plan = foundSubscription.get().getPlan();
@@ -178,7 +178,7 @@ class SubscriptionEntityGraphTest {
 
     var planFeature = new PlanFeature(subscriptionPlan, featureDefinition, true);
     entityManager.persist(planFeature);
-    
+
     subscriptionPlan.setPlanFeatures(Set.of(planFeature));
     entityManager.persist(subscriptionPlan);
 
@@ -195,16 +195,16 @@ class SubscriptionEntityGraphTest {
 
     // Then: Subscription, plan, and features should all be loaded
     assertThat(foundSubscription).isPresent();
-    
+
     // Verify all associations are loaded without lazy loading exceptions
     assertDoesNotThrow(() -> {
       var loadedSubscription = foundSubscription.get();
-      
+
       // Check subscription plan
       var plan = loadedSubscription.getPlan();
       assertThat(plan).isNotNull();
       assertThat(plan.getName()).isEqualTo("Enterprise Plan");
-      
+
       // Note: This test uses findByIdWithPlan which only loads the plan
       // For features, we would need to use findActiveWithPlanAndFeatures
       // but that requires the subscription to be active and found by status

@@ -65,17 +65,17 @@ class FeatureEnablementServiceTest {
     testSubscription.setStatus(SubscriptionStatus.ACTIVE);
 
     // Create test features
-    booleanFeature = new FeatureDefinition("advanced_analytics", "Advanced Analytics", 
+    booleanFeature = new FeatureDefinition("advanced_analytics", "Advanced Analytics",
         "Access to advanced reporting", FeatureType.BOOLEAN);
-    
-    quotaFeature = new FeatureDefinition("api_calls_monthly", "API Calls per Month", 
+
+    quotaFeature = new FeatureDefinition("api_calls_monthly", "API Calls per Month",
         "Monthly API call quota", FeatureType.QUOTA);
     quotaFeature.setMetadata(Map.of("defaultQuota", 10000));
 
     // Create plan features
     enabledPlanFeature = new PlanFeature(testPlan, booleanFeature, true);
-    
-    quotaPlanFeature = new PlanFeature(testPlan, quotaFeature, true, 
+
+    quotaPlanFeature = new PlanFeature(testPlan, quotaFeature, true,
         Map.of("quota", 50000L));
   }
 
@@ -219,7 +219,7 @@ class FeatureEnablementServiceTest {
     String tenantId = "tenant-123";
 
     // Create feature with dependency
-    FeatureDefinition dependentFeature = new FeatureDefinition("premium_reports", "Premium Reports", 
+    FeatureDefinition dependentFeature = new FeatureDefinition("premium_reports", "Premium Reports",
         "Advanced reporting features", FeatureType.BOOLEAN);
     dependentFeature.setDependencies(List.of("advanced_analytics"));
 
@@ -229,7 +229,7 @@ class FeatureEnablementServiceTest {
         .thenReturn(Optional.of(testSubscription));
     when(planFeatureRepository.findEnabledFeaturesByPlanId(testPlan.getId()))
         .thenReturn(List.of(enabledPlanFeature, dependentPlanFeature));
-    
+
     // Mock the dependency validation calls
     when(featureDefinitionRepository.findByFeatureKey("advanced_analytics"))
         .thenReturn(Optional.of(booleanFeature));

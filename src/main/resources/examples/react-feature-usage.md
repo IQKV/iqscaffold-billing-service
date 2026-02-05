@@ -5,15 +5,19 @@ This document shows how React applications can consume the new Feature API endpo
 ## API Endpoints
 
 ### Get User Features (Complete)
+
 ```
 GET /api/v1/features/my-features
 ```
+
 Returns complete feature information including subscription details.
 
 ### Get Enabled Features Only (Lightweight)
+
 ```
 GET /api/v1/features/enabled
 ```
+
 Returns only enabled features for faster loading.
 
 ## Gateway Integration
@@ -21,15 +25,18 @@ Returns only enabled features for faster loading.
 The feature API endpoints are integrated with the Spring Cloud Gateway and include:
 
 ### Route Configuration
+
 - **Feature Routes**: Optimized for high-frequency frontend calls
-  - `/api/v1/features/my-features` - Rate limit: 100 req/min, burst: 150
-  - `/api/v1/features/enabled` - Rate limit: 200 req/min, burst: 300
+    - `/api/v1/features/my-features` - Rate limit: 100 req/min, burst: 150
+    - `/api/v1/features/enabled` - Rate limit: 200 req/min, burst: 300
 - **Circuit Breaker**: Automatic fallback when billing service is unavailable
 - **Retry Logic**: Automatic retries for transient failures
 - **Request Transformation**: Automatic header enrichment and tenant context
 
 ### Fallback Behavior
+
 When the billing service is unavailable, the gateway returns:
+
 ```json
 {
   "enabledFeatures": [],
@@ -394,21 +401,25 @@ export class FeatureErrorBoundary extends React.Component<Props, State> {
 ## Best Practices
 
 ### 1. Caching
+
 - Cache feature data in React context or state management library
 - Refresh features when subscription changes
 - Use lightweight endpoint for frequent checks
 
 ### 2. Performance
+
 - Load features early in app initialization
 - Use feature gates to conditionally load heavy components
 - Implement loading states for better UX
 
 ### 3. Error Handling
+
 - Gracefully handle API failures
 - Provide fallback UI when features can't be loaded
 - Log feature-related errors for debugging
 
 ### 4. Security
+
 - Always include authentication headers
 - Validate feature access on the backend
 - Don't rely solely on frontend feature gates for security
@@ -416,6 +427,7 @@ export class FeatureErrorBoundary extends React.Component<Props, State> {
 ## Example API Responses
 
 ### Complete Features Response
+
 ```json
 {
   "enabledFeatures": [
@@ -451,6 +463,7 @@ export class FeatureErrorBoundary extends React.Component<Props, State> {
 ```
 
 ### Enabled Features Only Response
+
 ```json
 [
   {

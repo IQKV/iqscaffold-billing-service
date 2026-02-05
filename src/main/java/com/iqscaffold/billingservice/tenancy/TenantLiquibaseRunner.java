@@ -33,34 +33,34 @@ public class TenantLiquibaseRunner {
   // System changelog typically sets up shared tables or the public schema itself if needed
   public void runSystemChangelog() throws Exception {
     logger.info("Running system changelog with contexts: {}", contexts);
-    
+
     var liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setDefaultSchema("public");
     liquibase.setLiquibaseSchema("public");
     liquibase.setChangeLog(systemChangeLog);
-    
+
     if (StringUtils.hasText(contexts)) {
       liquibase.setContexts(contexts);
     }
-    
+
     liquibase.afterPropertiesSet();
   }
 
   // Runs migrations for a specific tenant schema
   public void runTenantChangelog(String schema) throws Exception {
     logger.info("Running tenant changelog for schema '{}' with contexts: {}", schema, contexts);
-    
+
     var liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setDefaultSchema(schema);
     liquibase.setLiquibaseSchema(schema);
     liquibase.setChangeLog(tenantChangeLog);
-    
+
     if (StringUtils.hasText(contexts)) {
       liquibase.setContexts(contexts);
     }
-    
+
     liquibase.afterPropertiesSet();
   }
 }

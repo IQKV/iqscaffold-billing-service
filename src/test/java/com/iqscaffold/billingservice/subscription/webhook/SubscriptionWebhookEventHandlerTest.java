@@ -106,10 +106,10 @@ class SubscriptionWebhookEventHandlerTest {
             "subscription", stripeSubscription),
         null);
 
-    StripeSubscriptionDataExtractor.SubscriptionData subscriptionData = 
+    StripeSubscriptionDataExtractor.SubscriptionData subscriptionData =
         new StripeSubscriptionDataExtractor.SubscriptionData(
-            subscriptionId, 
-            customerId, 
+            subscriptionId,
+            customerId,
             com.iqscaffold.billingservice.subscription.SubscriptionStatus.ACTIVE);
 
     when(subscriptionRepository.findByStripeSubscriptionId(subscriptionId)).thenReturn(Optional.empty());
@@ -189,10 +189,10 @@ class SubscriptionWebhookEventHandlerTest {
             "subscription", stripeSubscription),
         null);
 
-    StripeSubscriptionDataExtractor.SubscriptionData subscriptionData = 
+    StripeSubscriptionDataExtractor.SubscriptionData subscriptionData =
         new StripeSubscriptionDataExtractor.SubscriptionData(
-            subscriptionId, 
-            "cus_123", 
+            subscriptionId,
+            "cus_123",
             com.iqscaffold.billingservice.subscription.SubscriptionStatus.PAST_DUE);
 
     when(subscriptionRepository.findByStripeSubscriptionId(subscriptionId)).thenReturn(Optional.of(subscription));

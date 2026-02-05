@@ -6,7 +6,6 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
 
-    
     <!-- Tenant-specific demo data (subscriptions, invoices, payments) -->
     <include file="db/changelog/tenant/demo/20250121000001-demo-tenant-billing-data.xml"/>
 

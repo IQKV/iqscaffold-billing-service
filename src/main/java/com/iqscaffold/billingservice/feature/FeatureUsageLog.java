@@ -181,11 +181,11 @@ public class FeatureUsageLog {
   @Override
   public String toString() {
     return "FeatureUsageLog{" +
-        "id=" + id +
-        ", tenantId='" + tenantId + '\'' +
-        ", featureKey='" + featureKey + '\'' +
-        ", endpoint='" + endpoint + '\'' +
-        ", timestamp=" + timestamp +
-        '}';
+           "id=" + id +
+           ", tenantId='" + tenantId + '\'' +
+           ", featureKey='" + featureKey + '\'' +
+           ", endpoint='" + endpoint + '\'' +
+           ", timestamp=" + timestamp +
+           '}';
   }
 }

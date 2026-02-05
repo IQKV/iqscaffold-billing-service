@@ -7,7 +7,7 @@
 
     <include file="db/changelog/tenant/20251110161000-tenant-subscription-schema.xml"/>
     <include file="db/changelog/tenant/20251110161100-feature-usage-tracking.xml"/>
-    
+
     <!-- Demo data for development and testing (context: demo) -->
     <include file="db/changelog/tenant/demo/master.xml"/>
 

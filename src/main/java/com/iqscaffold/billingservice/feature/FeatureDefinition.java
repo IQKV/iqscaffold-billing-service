@@ -38,7 +38,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  *
  * <p>
  * Example feature definitions:
- * 
+ *
  * <pre>
  * {
  *   "featureKey": "advanced_analytics",
@@ -112,7 +112,7 @@ public class FeatureDefinition {
   }
 
   public FeatureDefinition(final String featureKey, final String displayName, final String description,
-      final FeatureType type) {
+                           final FeatureType type) {
     this.featureKey = featureKey;
     this.displayName = displayName;
     this.description = description;
@@ -310,10 +310,10 @@ public class FeatureDefinition {
   @Override
   public String toString() {
     return "FeatureDefinition{" +
-        "featureKey='" + featureKey + '\'' +
-        ", displayName='" + displayName + '\'' +
-        ", type=" + type +
-        ", deprecated=" + deprecated +
-        '}';
+           "featureKey='" + featureKey + '\'' +
+           ", displayName='" + displayName + '\'' +
+           ", type=" + type +
+           ", deprecated=" + deprecated +
+           '}';
   }
 }

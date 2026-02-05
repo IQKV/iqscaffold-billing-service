@@ -110,7 +110,7 @@ public record IqScaffoldProperties(
      */
     public boolean isLocaleSupported(Locale locale) {
       return supportedLocales.contains(locale.toLanguageTag())
-          || supportedLocales.contains(locale.getLanguage());
+             || supportedLocales.contains(locale.getLanguage());
     }
   }
 
@@ -174,7 +174,8 @@ public record IqScaffoldProperties(
         @Min(0) @Max(30) int gracePeriodDays,
         @Min(1) @Max(10) int maxRetryAttempts,
         @Min(1) @Max(90) int autoCancelAfterDays,
-        @NotBlank @jakarta.validation.constraints.Pattern(regexp = "CREATE_PRORATIONS|NONE|ALWAYS_INVOICE", message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE") String prorationBehavior,
+        @NotBlank @jakarta.validation.constraints.Pattern(regexp = "CREATE_PRORATIONS|NONE|ALWAYS_INVOICE",
+                                                          message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE") String prorationBehavior,
         @Valid @NotNull SubscriptionNotifications notifications) {
       public record SubscriptionNotifications(
           @Min(1) @Max(30) int trialEndingDaysNotice,

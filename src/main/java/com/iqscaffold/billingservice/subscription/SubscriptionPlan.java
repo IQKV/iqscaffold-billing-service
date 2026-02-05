@@ -101,7 +101,6 @@ public class SubscriptionPlan {
   private Boolean isActive = true;
 
 
-
   /**
    * Structured features enabled for this plan.
    * Replaces the legacy JSON features field with proper entity relationships.
@@ -223,7 +222,6 @@ public class SubscriptionPlan {
   public void setIsActive(Boolean isActive) {
     this.isActive = isActive;
   }
-
 
 
   public Set<PlanFeature> getPlanFeatures() {

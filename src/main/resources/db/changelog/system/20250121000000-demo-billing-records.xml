@@ -25,7 +25,8 @@
             <column name="max_users" value="100"/>
             <column name="max_storage_gb" value="500"/>
             <column name="max_api_calls" value="1000000"/>
-            <column name="metadata" value='{"features": ["advanced_analytics", "sso_integration", "audit_logging", "third_party_integrations"], "support_level": "enterprise", "sla": "99.9%", "dedicated_support": true}'/>
+            <column name="metadata"
+                    value='{"features": ["advanced_analytics", "sso_integration", "audit_logging", "third_party_integrations"], "support_level": "enterprise", "sla": "99.9%", "dedicated_support": true}'/>
         </insert>
 
         <!-- 2. Merchant Stripe Configuration for Demo Tenant -->
@@ -42,7 +43,7 @@
 
         <!-- 3. Plan Features for Enterprise Plan -->
         <!-- Associate the enterprise plan with specific features and their configurations -->
-        
+
         <!-- Advanced Analytics Feature -->
         <insert tableName="plan_feature" schemaName="public">
             <column name="plan_id" value="550e8400-e29b-41d4-a716-446655440001"/>
@@ -103,12 +104,12 @@
             <delete tableName="plan_feature" schemaName="public">
                 <where>plan_id = '550e8400-e29b-41d4-a716-446655440001'</where>
             </delete>
-            
+
             <!-- Remove merchant config -->
             <delete tableName="merchant_stripe_config" schemaName="public">
                 <where>tenant_id = 'demo-tenant'</where>
             </delete>
-            
+
             <!-- Remove subscription plan -->
             <delete tableName="subscription_plan" schemaName="public">
                 <where>id = '550e8400-e29b-41d4-a716-446655440001'</where>

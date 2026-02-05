@@ -113,7 +113,7 @@ public class PlanFeature {
   }
 
   public PlanFeature(final SubscriptionPlan plan, final FeatureDefinition feature, final boolean enabled,
-      final Map<String, Object> configuration) {
+                     final Map<String, Object> configuration) {
     this.plan = plan;
     this.feature = feature;
     this.enabled = enabled;
@@ -281,10 +281,10 @@ public class PlanFeature {
   @Override
   public String toString() {
     return "PlanFeature{" +
-        "plan=" + (plan != null ? plan.getId() : null) +
-        ", feature=" + (feature != null ? feature.getFeatureKey() : null) +
-        ", enabled=" + enabled +
-        '}';
+           "plan=" + (plan != null ? plan.getId() : null) +
+           ", feature=" + (feature != null ? feature.getFeatureKey() : null) +
+           ", enabled=" + enabled +
+           '}';
   }
 
   /**

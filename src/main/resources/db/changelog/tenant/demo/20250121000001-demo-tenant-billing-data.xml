@@ -23,7 +23,8 @@
             <column name="cancel_at" value=""/>
             <column name="canceled_at" value=""/>
             <column name="cancellation_reason" value=""/>
-            <column name="metadata" value='{"signup_source": "website", "sales_rep": "alice.johnson", "contract_type": "monthly", "auto_renewal": true, "payment_method": "card", "billing_contact": "billing@demo.iqscaffold.com"}'/>
+            <column name="metadata"
+                    value='{"signup_source": "website", "sales_rep": "alice.johnson", "contract_type": "monthly", "auto_renewal": true, "payment_method": "card", "billing_contact": "billing@demo.iqscaffold.com"}'/>
         </insert>
 
         <!-- 2. Demo Subscription Invoice - December 2024 Billing Cycle -->
@@ -41,7 +42,8 @@
             <column name="stripe_invoice_id" value="in_demo_december_2024"/>
             <column name="hosted_invoice_url" value="https://invoice.stripe.com/i/acct_demo/in_demo_december_2024"/>
             <column name="invoice_pdf_url" value="https://pay.stripe.com/invoice/acct_demo/in_demo_december_2024/pdf"/>
-            <column name="metadata" value='{"billing_period": "2024-12-01 to 2025-01-01", "payment_method": "card_ending_4242", "tax_rate": 0.0875, "tax_amount": 26.18, "subtotal": 299.00, "total": 325.18, "auto_collection": true}'/>
+            <column name="metadata"
+                    value='{"billing_period": "2024-12-01 to 2025-01-01", "payment_method": "card_ending_4242", "tax_rate": 0.0875, "tax_amount": 26.18, "subtotal": 299.00, "total": 325.18, "auto_collection": true}'/>
         </insert>
 
         <!-- 3. Demo Payment Record - Successful Payment for December Invoice -->
@@ -77,7 +79,8 @@
             <column name="new_status" value="ACTIVE"/>
             <column name="changed_by" value="system"/>
             <column name="reason" value="Trial period ended successfully, first payment processed"/>
-            <column name="metadata" value='{"trial_start": "2024-11-01T00:00:00Z", "trial_end": "2024-11-15T23:59:59Z", "first_payment_date": "2024-12-01T14:32:15Z", "payment_method_verified": true, "billing_address_confirmed": true}'/>
+            <column name="metadata"
+                    value='{"trial_start": "2024-11-01T00:00:00Z", "trial_end": "2024-11-15T23:59:59Z", "first_payment_date": "2024-12-01T14:32:15Z", "payment_method_verified": true, "billing_address_confirmed": true}'/>
         </insert>
 
         <!-- 6. Feature Usage Log Samples - Demonstrate feature usage tracking -->
@@ -122,27 +125,27 @@
             <delete tableName="feature_usage_log">
                 <where>tenant_id = 'demo-tenant'</where>
             </delete>
-            
+
             <!-- Remove audit trail -->
             <delete tableName="tenant_subscription_audit_trail">
                 <where>tenant_subscription_id = '550e8400-e29b-41d4-a716-446655440010'</where>
             </delete>
-            
+
             <!-- Remove subscription item -->
             <delete tableName="subscription_item">
                 <where>tenant_subscription_id = '550e8400-e29b-41d4-a716-446655440010'</where>
             </delete>
-            
+
             <!-- Remove payment -->
             <delete tableName="payment">
                 <where>id = '550e8400-e29b-41d4-a716-446655440030'</where>
             </delete>
-            
+
             <!-- Remove invoice -->
             <delete tableName="subscription_invoice">
                 <where>tenant_subscription_id = '550e8400-e29b-41d4-a716-446655440010'</where>
             </delete>
-            
+
             <!-- Remove subscription -->
             <delete tableName="tenant_subscription">
                 <where>id = '550e8400-e29b-41d4-a716-446655440010'</where>

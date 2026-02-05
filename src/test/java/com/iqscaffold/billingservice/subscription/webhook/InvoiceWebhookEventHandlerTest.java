@@ -119,7 +119,7 @@ class InvoiceWebhookEventHandlerTest {
         null
     );
 
-    StripeInvoiceDataExtractor.InvoiceData invoiceData = 
+    StripeInvoiceDataExtractor.InvoiceData invoiceData =
         new StripeInvoiceDataExtractor.InvoiceData(invoiceId, subscriptionId);
 
     when(invoiceRepository.findByStripeInvoiceId(invoiceId)).thenReturn(Optional.empty());
