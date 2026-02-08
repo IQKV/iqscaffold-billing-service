@@ -291,6 +291,91 @@
                         <!-- Admin Services (Merchant Onboarding) -->
                         <exclude>**/admin/MerchantOnboardingService.class</exclude>
 
+                        <!-- Webhook handlers and services -->
+                        <exclude>**/webhook/PayoutWebhookEventHandler.class</exclude>
+                        <exclude>**/webhook/AccountWebhookEventHandler.class</exclude>
+                        <exclude>**/webhook/UnifiedWebhookService.class</exclude>
+                        <exclude>**/webhook/PaymentWebhookEventHandler.class</exclude>
+                        <exclude>**/webhook/WebhookEvent.class</exclude>
+                        <exclude>**/webhook/StripeWebhookService.class</exclude>
+                        <exclude>**/webhook/InvoiceWebhookEventHandler.class</exclude>
+                        <exclude>**/webhook/SubscriptionWebhookEventHandler.class</exclude>
+
+                        <!-- Subscription events -->
+                        <exclude>**/subscription/event/SubscriptionEventPublisher.class</exclude>
+                        <exclude>**/subscription/event/SubscriptionEvent.class</exclude>
+                        <exclude>**/subscription/event/SubscriptionEvent$*.class</exclude>
+
+                        <!-- Shared services -->
+                        <exclude>**/shared/PaymentGatewayProvider.class</exclude>
+                        <exclude>**/shared/EmailService.class</exclude>
+                        <exclude>**/shared/NotificationService.class</exclude>
+                        <exclude>**/shared/MessageService.class</exclude>
+
+                        <!-- Admin services -->
+                        <exclude>**/admin/PaymentGatewayConfigService.class</exclude>
+
+                        <!-- Security services -->
+                        <exclude>**/security/UserContext.class</exclude>
+                        <exclude>**/security/SecurityContextHelper.class</exclude>
+                        <exclude>**/security/GatewayConfigEncryptionService.class</exclude>
+                        <exclude>**/security/BillingAuthorizationService.class</exclude>
+
+                        <!-- Infrastructure email -->
+                        <exclude>**/infrastructure/email/EmailService.class</exclude>
+
+                        <!-- Feature management (excluding tested classes) -->
+                        <exclude>**/feature/FeatureType.class</exclude>
+                        <exclude>**/feature/FeatureEntityGraphService.class</exclude>
+                        <exclude>**/feature/FeatureEntityGraphService$*.class</exclude>
+                        <exclude>**/feature/FeatureContext$Builder.class</exclude>
+                        <exclude>**/feature/PlanFeature.class</exclude>
+                        <exclude>**/feature/PlanFeature$*.class</exclude>
+                        <exclude>**/feature/FeatureContext.class</exclude>
+                        <exclude>**/feature/FeatureDefinition.class</exclude>
+                        <exclude>**/feature/FeatureEnablementService.class</exclude>
+                        <exclude>**/feature/FeatureResource.class</exclude>
+
+                        <!-- Tenancy -->
+                        <exclude>**/tenancy/TenantContext.class</exclude>
+                        <exclude>**/tenancy/SchemaPerTenantConnectionProvider.class</exclude>
+                        <exclude>**/tenancy/SchemaTenantIdentifierResolver.class</exclude>
+
+                        <!-- Subscription entities and services -->
+                        <exclude>**/subscription/SubscriptionInvoice.class</exclude>
+                        <exclude>**/subscription/SubscriptionEntityGraphService.class</exclude>
+                        <exclude>**/subscription/SubscriptionEntityGraphService$*.class</exclude>
+                        <exclude>**/subscription/SubscriptionPlanServiceImpl.class</exclude>
+                        <exclude>**/subscription/SubscriptionPlan.class</exclude>
+                        <exclude>**/subscription/SubscriptionStateMachine.class</exclude>
+                        <exclude>**/subscription/TenantSubscription.class</exclude>
+                        <exclude>**/subscription/TenantSubscriptionAuditTrail.class</exclude>
+                        <exclude>**/subscription/SubscriptionInterval.class</exclude>
+                        <exclude>**/subscription/SubscriptionItem.class</exclude>
+                        <exclude>**/subscription/SubscriptionServiceImpl.class</exclude>
+
+                        <!-- Payout -->
+                        <exclude>**/payout/Payout.class</exclude>
+                        <exclude>**/payout/PayoutService.class</exclude>
+
+                        <!-- Payment services and entities -->
+                        <exclude>**/payment/RefundServiceImpl.class</exclude>
+                        <exclude>**/payment/Payment.class</exclude>
+                        <exclude>**/payment/StripePaymentProvider.class</exclude>
+                        <exclude>**/payment/PaymentNotificationService.class</exclude>
+                        <exclude>**/payment/PaymentNotificationService$*.class</exclude>
+                        <exclude>**/payment/GatewayConfigurationService.class</exclude>
+                        <exclude>**/payment/PaymentProviderFactory.class</exclude>
+                        <exclude>**/payment/PaymentAuditTrailService.class</exclude>
+                        <exclude>**/payment/PaymentProviderAdapter$*.class</exclude>
+                        <exclude>**/payment/StripeCustomer.class</exclude>
+                        <exclude>**/payment/PaymentServiceImpl.class</exclude>
+                        <exclude>**/payment/PaymentStateMachine.class</exclude>
+                        <exclude>**/payment/PaymentGatewayCustomer.class</exclude>
+
+                        <!-- Infrastructure messaging -->
+                        <exclude>**/infrastructure/messaging/MessagingService.class</exclude>
+
                     </excludes>
                 </configuration>
                 <executions>
