@@ -44,6 +44,8 @@ iqscaffold:
   liquibase:
     system-change-log: classpath:db/changelog/system/master.xml
     tenant-change-log: classpath:db/changelog/tenant/master.xml
+    system-schema:
+      enabled: false
   
   email:
     smtp:
