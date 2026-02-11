@@ -53,7 +53,7 @@
     </root>
 
     <!-- Profile-specific configurations -->
-    <springProfile name="local,dev">
+    <springProfile name="local">
         <!-- Local development: Console only with pretty JSON -->
         <appender name="CONSOLE_PRETTY" class="ch.qos.logback.core.ConsoleAppender">
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
@@ -68,6 +68,33 @@
         <root level="INFO">
             <appender-ref ref="CONSOLE_PRETTY"/>
         </root>
+
+        <logger name="com.iqscaffold.billingservice" level="DEBUG"/>
+        <logger name="org.springframework.security" level="DEBUG"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+    </springProfile>
+
+    <springProfile name="dev">
+        <!-- Development Environment (Kubernetes) - Human Readable for easier debugging -->
+        <appender name="CONSOLE_DEV" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{correlationId:-}] [%X{traceId:-}] [%X{spanId:-}] [%X{tenantId:-}] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_DEV"/>
+        </root>
+
+        <logger name="com.iqscaffold.billingservice" level="DEBUG"/>
+        <logger name="org.springframework.security" level="INFO"/>
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+        <logger name="com.stripe" level="DEBUG"/>
+        <logger name="PAYMENT" level="DEBUG"/>
+        <logger name="BILLING" level="DEBUG"/>
+        <logger name="SECURITY" level="INFO"/>
     </springProfile>
 
     <springProfile name="test">
