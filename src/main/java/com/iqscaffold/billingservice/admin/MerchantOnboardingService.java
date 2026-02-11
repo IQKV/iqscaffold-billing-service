@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.iqscaffold.billingservice.admin.dto.OnboardingLinkResponse;
 import com.iqscaffold.billingservice.admin.dto.OrganizationDto;
 import com.iqscaffold.billingservice.infrastructure.client.UserServiceClient;
-import com.iqscaffold.billingservice.infrastructure.email.EmailService;
+import com.iqscaffold.billingservice.infrastructure.email.EmailSenderService;
 import com.iqscaffold.billingservice.infrastructure.messaging.EventPublisher;
 import com.iqscaffold.billingservice.infrastructure.messaging.MerchantOnboardedEvent;
 import com.iqscaffold.billingservice.payment.PaymentProviderAdapter;
@@ -31,14 +31,14 @@ public class MerchantOnboardingService {
 
   private final MerchantPaymentConfigRepository repository;
   private final PaymentProviderFactory paymentProviderFactory;
-  private final EmailService emailService;
+  private final EmailSenderService emailService;
   private final UserServiceClient userServiceClient;
   private final EventPublisher eventPublisher;
 
   public MerchantOnboardingService(
       final MerchantPaymentConfigRepository repository,
       final PaymentProviderFactory paymentProviderFactory,
-      final EmailService emailService,
+      final EmailSenderService emailService,
       final UserServiceClient userServiceClient,
       final EventPublisher eventPublisher) {
     this.repository = repository;

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.iqscaffold.billingservice.infrastructure.email.EmailService;
+import com.iqscaffold.billingservice.infrastructure.email.EmailSenderService;
 import com.iqscaffold.billingservice.security.SecurityContextHelper;
 import com.iqscaffold.billingservice.security.UserContext;
 import com.iqscaffold.billingservice.shared.BillingConstants;
@@ -33,13 +33,13 @@ public class RefundServiceImpl implements RefundService {
   private final PaymentRepository paymentRepository;
   private final PaymentProviderAdapter paymentProvider;
   private final PaymentAuditTrailService auditService;
-  private final EmailService emailService;
+  private final EmailSenderService emailService;
 
   public RefundServiceImpl(
       final PaymentRepository paymentRepository,
       final PaymentProviderAdapter paymentProvider,
       final PaymentAuditTrailService auditService,
-      final EmailService emailService
+      final EmailSenderService emailService
   ) {
     this.paymentRepository = paymentRepository;
     this.paymentProvider = paymentProvider;

@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-@Service
-public class EmailService {
+@Service("emailSenderService")
+public class EmailSenderService {
 
   private final JavaMailSender mailSender;
   private final SpringTemplateEngine templateEngine;
   private final IqScaffoldProperties iqScaffoldProperties;
   private final MessageSource messageSource;
 
-  public EmailService(
+  public EmailSenderService(
       final JavaMailSender mailSender,
       final SpringTemplateEngine templateEngine,
       final IqScaffoldProperties iqScaffoldProperties,

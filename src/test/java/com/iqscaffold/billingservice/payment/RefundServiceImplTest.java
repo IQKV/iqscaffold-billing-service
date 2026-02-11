@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.iqscaffold.billingservice.infrastructure.email.EmailService;
+import com.iqscaffold.billingservice.infrastructure.email.EmailSenderService;
 import com.iqscaffold.billingservice.shared.BillingConstants;
 import com.iqscaffold.billingservice.shared.exception.InvalidPaymentStateException;
 import com.iqscaffold.billingservice.shared.exception.PaymentNotFoundException;
@@ -37,7 +37,7 @@ class RefundServiceImplTest {
   private PaymentAuditTrailService auditService;
 
   @Mock
-  private EmailService emailService;
+  private EmailSenderService emailService;
 
   private RefundServiceImpl refundService;
 
