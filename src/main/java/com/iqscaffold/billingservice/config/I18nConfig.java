@@ -1,5 +1,6 @@
 package com.iqscaffold.billingservice.config;
 
+import jakarta.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.MessageSource;
@@ -20,6 +21,16 @@ public class I18nConfig {
 
   public I18nConfig(final IqScaffoldProperties properties) {
     this.properties = properties;
+  }
+
+  /**
+   * Validates configuration properties after bean construction.
+   * This ensures validation happens after MessageSource is initialized.
+   */
+  @PostConstruct
+  public void validateProperties() {
+    properties.i18n().validate();
+    properties.billing().subscription().notifications().validate();
   }
 
   /**

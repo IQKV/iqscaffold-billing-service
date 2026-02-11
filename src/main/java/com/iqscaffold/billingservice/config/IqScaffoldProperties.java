@@ -74,14 +74,6 @@ public record IqScaffoldProperties(
       boolean fallbackToSystemLocale,
       boolean useCodeAsDefaultMessage) {
 
-    public I18n {
-      // Validation: default locale must be in supported locales
-      if (supportedLocales != null && !supportedLocales.contains(defaultLocale)) {
-        throw new IllegalArgumentException(
-            "Default locale '" + defaultLocale + "' must be included in supported locales");
-      }
-    }
-
     /**
      * Get supported locales as Locale objects.
      */
@@ -111,6 +103,17 @@ public record IqScaffoldProperties(
     public boolean isLocaleSupported(Locale locale) {
       return supportedLocales.contains(locale.toLanguageTag())
              || supportedLocales.contains(locale.getLanguage());
+    }
+
+    /**
+     * Validate that default locale is in supported locales.
+     * This is called after construction to avoid MessageSource initialization issues.
+     */
+    public void validate() {
+      if (supportedLocales != null && !supportedLocales.contains(defaultLocale)) {
+        throw new IllegalArgumentException(
+            "Default locale '" + defaultLocale + "' must be included in supported locales");
+      }
     }
   }
 
@@ -180,7 +183,12 @@ public record IqScaffoldProperties(
       public record SubscriptionNotifications(
           @Min(1) @Max(30) int trialEndingDaysNotice,
           @NotNull List<@Min(1) @Max(30) Integer> paymentRetrySchedule) {
-        public SubscriptionNotifications {
+
+        /**
+         * Validate payment retry schedule constraints.
+         * This is called after construction to avoid MessageSource initialization issues.
+         */
+        public void validate() {
           // Validation: payment retry schedule must not be empty
           if (paymentRetrySchedule == null || paymentRetrySchedule.isEmpty()) {
             throw new IllegalArgumentException("Payment retry schedule must contain at least one value");
