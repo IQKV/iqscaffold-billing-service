@@ -41,11 +41,11 @@ class EmailServiceTest {
   @Mock
   private MimeMessage mimeMessage;
 
-  private EmailService emailService;
+  private EmailSenderService emailService;
 
   @BeforeEach
   void setUp() {
-    emailService = new EmailService(mailSender, templateEngine, iqScaffoldProperties, messageSource);
+    emailService = new EmailSenderService(mailSender, templateEngine, iqScaffoldProperties, messageSource);
 
     // Setup default mocks
     IqScaffoldProperties.Email emailConfig = mock(IqScaffoldProperties.Email.class);
