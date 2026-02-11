@@ -1,14 +1,37 @@
+# Production Environment Configuration
+
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
     hikari:
       pool-name: BillingServiceHikariPool-Production
 
 iqscaffold:
+  database:
+    url: ${IQSCAFFOLD_DATABASE_URL}
+    username: ${IQSCAFFOLD_DATABASE_USERNAME}
+    password: ${IQSCAFFOLD_DATABASE_PASSWORD}
+    pool:
+      maximum-size: 50
+      minimum-idle: 10
+  
+  cache:
+    redis:
+      host: ${IQSCAFFOLD_CACHE_REDIS_HOST}
+      password: ${IQSCAFFOLD_CACHE_REDIS_PASSWORD}
+      pool:
+        max-active: 32
+        max-idle: 16
+        min-idle: 4
+      key-prefix: "iqscaffold:billing:production"
+      default-ttl: PT15M
+  
+  messaging:
+    rabbitmq:
+      host: ${IQSCAFFOLD_MESSAGING_RABBITMQ_HOST}
+      username: ${IQSCAFFOLD_MESSAGING_RABBITMQ_USERNAME}
+      password: ${IQSCAFFOLD_MESSAGING_RABBITMQ_PASSWORD}
+  
   liquibase:
-    # Exclude demo context to prevent demo data in production
     contexts: "!demo"
 
 logging:

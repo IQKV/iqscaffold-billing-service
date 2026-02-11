@@ -1,29 +1,30 @@
+# Local Development Environment Configuration
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/billing_db
-    username: ${DB_USERNAME:billing_user}
-    password: ${DB_PASSWORD:billing_pass}
     hikari:
       pool-name: BillingServiceHikariPool-Local
-      leak-detection-threshold: 60000
 
   jpa:
     show-sql: true
 
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-
-# Local development overrides for IQ Scaffold properties
 iqscaffold:
+  database:
+    url: ${IQSCAFFOLD_DATABASE_URL:jdbc:postgresql://localhost:5432/iqscaffold_billing_local}
+  
+  cache:
+    redis:
+      key-prefix: "iqscaffold:billing:local"
+      enable-statistics: true
+  
   email:
     smtp:
-      host: ${SMTP_HOST:localhost}
-      port: ${SMTP_PORT:1025}  # MailHog default port for local development
+      port: ${SMTP_PORT:1025}
       username: ""
       password: ""
       auth: false
       starttls: false
+
   billing:
     payment:
       stripe:
@@ -35,3 +36,7 @@ iqscaffold:
       secret-key: ${STRIPE_SECRET_KEY:sk_test_dummy}
       webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_dummy}
       connect-client-id: ${STRIPE_CONNECT_CLIENT_ID:ca_test_dummy}
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
