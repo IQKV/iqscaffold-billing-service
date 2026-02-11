@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20251110160901-create-feature-definition-table" author="iqscaffold">
+    <changeSet id="20251110160901-create-feature-definition-table" author="iqscaffold" context="public">
         <comment>Create feature_definition table for platform-wide feature definitions</comment>
 
         <createTable tableName="feature_definition" schemaName="public">
@@ -73,7 +73,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160902-create-plan-feature-table" author="iqscaffold">
+    <changeSet id="20251110160902-create-plan-feature-table" author="iqscaffold" context="public">
         <comment>Create plan_feature table for plan-feature associations</comment>
 
         <createTable tableName="plan_feature" schemaName="public">
@@ -145,7 +145,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160903-insert-default-features" author="iqscaffold">
+    <changeSet id="20251110160903-insert-default-features" author="iqscaffold" context="public">
         <comment>Insert default platform features</comment>
 
         <!-- Core Features -->
