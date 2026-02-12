@@ -18,8 +18,7 @@ public class GatewayConfigDtos {
    * Base DTO for gateway-specific configuration data.
    * Implementations contain provider-specific fields (API keys, secrets, etc.).
    */
-  public sealed
-  interface GatewayConfigData permits
+  public sealed interface GatewayConfigData permits
       StripeGatewayConfigData,
       PayPalGatewayConfigData,
       SquareGatewayConfigData,
