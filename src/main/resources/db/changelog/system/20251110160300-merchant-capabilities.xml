@@ -6,9 +6,9 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20251110160300-merchant-capabilities" author="iqscaffold">
-        <comment>Add charges_enabled and payouts_enabled capabilities to merchant_stripe_config table</comment>
+        <comment>Add charges_enabled and payouts_enabled capabilities to merchant_payment_config table</comment>
 
-        <addColumn tableName="merchant_stripe_config">
+        <addColumn tableName="merchant_payment_config">
             <column name="charges_enabled" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
@@ -18,8 +18,8 @@
         </addColumn>
 
         <rollback>
-            <dropColumn tableName="merchant_stripe_config" columnName="charges_enabled"/>
-            <dropColumn tableName="merchant_stripe_config" columnName="payouts_enabled"/>
+            <dropColumn tableName="merchant_payment_config" columnName="charges_enabled"/>
+            <dropColumn tableName="merchant_payment_config" columnName="payouts_enabled"/>
         </rollback>
     </changeSet>
 

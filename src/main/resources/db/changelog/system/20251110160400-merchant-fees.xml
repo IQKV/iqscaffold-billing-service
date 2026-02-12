@@ -6,12 +6,12 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20251110160400-merchant-fees" author="iqscaffold">
-        <addColumn tableName="merchant_stripe_config">
+        <addColumn tableName="merchant_payment_config">
             <column name="application_fee_percent" type="decimal(5,2)"/>
         </addColumn>
 
         <rollback>
-            <dropColumn tableName="merchant_stripe_config" columnName="application_fee_percent"/>
+            <dropColumn tableName="merchant_payment_config" columnName="application_fee_percent"/>
         </rollback>
     </changeSet>
 
