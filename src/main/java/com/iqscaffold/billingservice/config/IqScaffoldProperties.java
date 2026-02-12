@@ -11,15 +11,17 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Configuration properties for IQ Scaffold Billing Service. All custom
  * configuration properties use the 'iqscaffold.' prefix for clear namespace
  * separation.
+ * <p>
+ * Note: @Validated is intentionally omitted to prevent validation during early
+ * property binding when MessageSource is not yet initialized. Validation is
+ * performed explicitly via validate() methods called from I18nConfig.
  */
 @ConfigurationProperties(prefix = "iqscaffold")
-@Validated
 public record IqScaffoldProperties(
     @Valid @NotNull Email email,
     @Valid @NotNull I18n i18n,
@@ -102,12 +104,13 @@ public record IqScaffoldProperties(
      */
     public boolean isLocaleSupported(Locale locale) {
       return supportedLocales.contains(locale.toLanguageTag())
-             || supportedLocales.contains(locale.getLanguage());
+          || supportedLocales.contains(locale.getLanguage());
     }
 
     /**
      * Validate that default locale is in supported locales.
-     * This is called after construction to avoid MessageSource initialization issues.
+     * This is called after construction to avoid MessageSource initialization
+     * issues.
      */
     public void validate() {
       if (supportedLocales != null && !supportedLocales.contains(defaultLocale)) {
@@ -178,7 +181,7 @@ public record IqScaffoldProperties(
         @Min(1) @Max(10) int maxRetryAttempts,
         @Min(1) @Max(90) int autoCancelAfterDays,
         @NotBlank @jakarta.validation.constraints.Pattern(regexp = "CREATE_PRORATIONS|NONE|ALWAYS_INVOICE",
-                                                          message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE") String prorationBehavior,
+        message = "Proration behavior must be CREATE_PRORATIONS, NONE, or ALWAYS_INVOICE") String prorationBehavior,
         @Valid @NotNull SubscriptionNotifications notifications) {
       public record SubscriptionNotifications(
           @Min(1) @Max(30) int trialEndingDaysNotice,
@@ -186,7 +189,8 @@ public record IqScaffoldProperties(
 
         /**
          * Validate payment retry schedule constraints.
-         * This is called after construction to avoid MessageSource initialization issues.
+         * This is called after construction to avoid MessageSource initialization
+         * issues.
          */
         public void validate() {
           // Validation: payment retry schedule must not be empty
