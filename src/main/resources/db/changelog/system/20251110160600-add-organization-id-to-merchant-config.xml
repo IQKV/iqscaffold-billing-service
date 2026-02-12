@@ -6,34 +6,44 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20251110160600-add-organization-id" author="iqscaffold">
-        <comment>Add organization_id to merchant_stripe_config for user service integration</comment>
+        <comment>Add organization_id to merchant_payment_config for user service integration</comment>
 
-        <addColumn tableName="merchant_stripe_config" schemaName="public">
+        <addColumn tableName="merchant_payment_config" schemaName="public">
             <column name="organization_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
 
         <createIndex indexName="idx_merchant_config_organization_id"
-                     tableName="merchant_stripe_config"
+                     tableName="merchant_payment_config"
                      schemaName="public">
             <column name="organization_id"/>
         </createIndex>
 
+        <createIndex indexName="idx_merchant_payment_config_org_provider"
+                     tableName="merchant_payment_config"
+                     schemaName="public">
+            <column name="organization_id"/>
+            <column name="gateway_provider"/>
+        </createIndex>
+
         <addUniqueConstraint
-                tableName="merchant_stripe_config"
+                tableName="merchant_payment_config"
                 columnNames="organization_id"
                 constraintName="uq_merchant_config_organization_id"
                 schemaName="public"/>
 
         <rollback>
-            <dropUniqueConstraint tableName="merchant_stripe_config"
+            <dropUniqueConstraint tableName="merchant_payment_config"
                                   constraintName="uq_merchant_config_organization_id"
                                   schemaName="public"/>
-            <dropIndex indexName="idx_merchant_config_organization_id"
-                       tableName="merchant_stripe_config"
+            <dropIndex indexName="idx_merchant_payment_config_org_provider"
+                       tableName="merchant_payment_config"
                        schemaName="public"/>
-            <dropColumn tableName="merchant_stripe_config"
+            <dropIndex indexName="idx_merchant_config_organization_id"
+                       tableName="merchant_payment_config"
+                       schemaName="public"/>
+            <dropColumn tableName="merchant_payment_config"
                         columnName="organization_id"
                         schemaName="public"/>
         </rollback>

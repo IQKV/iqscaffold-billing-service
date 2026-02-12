@@ -59,18 +59,12 @@
             <column name="gateway_provider"/>
         </createIndex>
 
-        <createIndex indexName="idx_merchant_payment_config_org_provider" tableName="merchant_payment_config">
-            <column name="organization_id"/>
-            <column name="gateway_provider"/>
-        </createIndex>
-
         <createIndex indexName="idx_merchant_payment_config_tenant" tableName="merchant_payment_config">
             <column name="tenant_id"/>
         </createIndex>
 
         <rollback>
             <dropIndex tableName="merchant_payment_config" indexName="idx_merchant_payment_config_gateway_account"/>
-            <dropIndex tableName="merchant_payment_config" indexName="idx_merchant_payment_config_org_provider"/>
             <dropIndex tableName="merchant_payment_config" indexName="idx_merchant_payment_config_tenant"/>
         </rollback>
     </changeSet>
