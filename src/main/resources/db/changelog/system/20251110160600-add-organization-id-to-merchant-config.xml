@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20251110160600-add-organization-id" author="iqscaffold" context="public">
+    <changeSet id="20251110160600-add-organization-id" author="iqscaffold">
         <comment>Add organization_id to merchant_stripe_config for user service integration</comment>
 
         <addColumn tableName="merchant_stripe_config" schemaName="public">

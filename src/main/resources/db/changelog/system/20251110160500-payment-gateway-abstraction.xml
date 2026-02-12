@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20251110160500-rename-stripe-customer-table" author="iqscaffold" context="public">
+    <changeSet id="20251110160500-rename-stripe-customer-table" author="iqscaffold">
         <comment>Rename stripe_customer table to payment_gateway_customer for multi-gateway support</comment>
 
         <renameTable
@@ -19,7 +19,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160501-rename-customer-columns" author="iqscaffold" context="public">
+    <changeSet id="20251110160501-rename-customer-columns" author="iqscaffold">
         <comment>Rename stripe-specific columns in payment_gateway_customer table</comment>
 
         <renameColumn
@@ -48,7 +48,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160502-add-customer-gateway-provider" author="iqscaffold" context="public">
+    <changeSet id="20251110160502-add-customer-gateway-provider" author="iqscaffold">
         <comment>Add gateway_provider column to payment_gateway_customer table</comment>
 
         <addColumn tableName="payment_gateway_customer">
@@ -62,7 +62,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160503-create-customer-indexes" author="iqscaffold" context="public">
+    <changeSet id="20251110160503-create-customer-indexes" author="iqscaffold">
         <comment>Create indexes for payment_gateway_customer table</comment>
 
         <createIndex indexName="idx_payment_gateway_customer_email_provider" tableName="payment_gateway_customer">

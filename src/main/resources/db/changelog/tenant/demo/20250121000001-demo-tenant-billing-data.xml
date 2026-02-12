@@ -13,7 +13,7 @@
         <insert tableName="tenant_subscription">
             <column name="id" value="550e8400-e29b-41d4-a716-446655440010"/>
             <column name="plan_id" value="550e8400-e29b-41d4-a716-446655440001"/>
-            <column name="organization_id" valueComputed="(SELECT id FROM public.organizations WHERE tenant_id = 'demo-tenant')"/>
+            <column name="organization_id" value="1"/>
             <column name="status" value="ACTIVE"/>
             <column name="stripe_subscription_id" value="sub_demo_tech_enterprise"/>
             <column name="stripe_customer_id" value="cus_demo_tech_solutions"/>

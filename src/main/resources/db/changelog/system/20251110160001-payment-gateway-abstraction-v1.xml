@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20251110160001-rename-merchant-stripe-config-table" author="iqscaffold" context="public">
+    <changeSet id="20251110160001-rename-merchant-stripe-config-table" author="iqscaffold">
         <comment>Rename merchant_stripe_config table to merchant_payment_config for multi-gateway support</comment>
 
         <renameTable
@@ -19,7 +19,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160002-rename-merchant-stripe-account-column" author="iqscaffold" context="public">
+    <changeSet id="20251110160002-rename-merchant-stripe-account-column" author="iqscaffold">
         <comment>Rename stripe_account_id to gateway_account_id in merchant_payment_config table</comment>
 
         <renameColumn
@@ -37,7 +37,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160003-add-merchant-gateway-provider" author="iqscaffold" context="public">
+    <changeSet id="20251110160003-add-merchant-gateway-provider" author="iqscaffold">
         <comment>Add gateway_provider column to merchant_payment_config table</comment>
 
         <addColumn tableName="merchant_payment_config">
@@ -51,7 +51,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="20251110160004-create-merchant-indexes" author="iqscaffold" context="public">
+    <changeSet id="20251110160004-create-merchant-indexes" author="iqscaffold">
         <comment>Create indexes for merchant_payment_config table</comment>
 
         <createIndex indexName="idx_merchant_payment_config_gateway_account" tableName="merchant_payment_config">

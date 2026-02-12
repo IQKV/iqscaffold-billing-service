@@ -14,7 +14,7 @@
         Since this is a greenfield project, we can safely remove this legacy column
         without any migration logic.
     -->
-    <changeSet id="20251110160900-drop-legacy-features-column" author="iqscaffold" context="public">
+    <changeSet id="20251110160900-drop-legacy-features-column" author="iqscaffold">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="subscription_plan" columnName="features" schemaName="public"/>
         </preConditions>

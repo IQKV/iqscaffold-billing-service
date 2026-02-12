@@ -15,7 +15,7 @@
         has been moved to tenant-specific schemas. See:
         - db/changelog/tenant/001-tenant-subscription-schema.xml
     -->
-    <changeSet id="20251110160800-subscription-plan-table" author="iqscaffold" context="public">
+    <changeSet id="20251110160800-subscription-plan-table" author="iqscaffold">
         <createTable tableName="subscription_plan" schemaName="public">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>

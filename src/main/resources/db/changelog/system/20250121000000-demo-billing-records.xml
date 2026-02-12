@@ -16,7 +16,7 @@
             <column name="description" value="Enterprise plan with advanced features, unlimited users, and premium support for growing businesses"/>
             <column name="amount" value="299.00"/>
             <column name="currency" value="USD"/>
-            <column name="interval" value="MONTHLY"/>
+            <column name="subscription_interval" value="MONTHLY"/>
             <column name="interval_count" value="1"/>
             <column name="trial_period_days" value="14"/>
             <column name="stripe_product_id" value="prod_demo_enterprise"/>
@@ -31,11 +31,12 @@
 
         <!-- 2. Merchant Stripe Configuration for Demo Tenant -->
         <!-- Links the demo tenant to a Stripe Connect account for payment processing -->
-        <insert tableName="merchant_stripe_config" schemaName="public">
+        <insert tableName="merchant_payment_config" schemaName="public">
             <column name="id" value="550e8400-e29b-41d4-a716-446655440002"/>
             <column name="tenant_id" value="demo-tenant"/>
-            <column name="organization_id" valueComputed="(SELECT id FROM public.organizations WHERE tenant_id = 'demo-tenant')"/>
-            <column name="stripe_account_id" value="acct_demo_tech_solutions"/>
+            <column name="organization_id" value="1"/>
+            <column name="gateway_account_id" value="acct_demo_tech_solutions"/>
+            <column name="gateway_provider" value="STRIPE"/>
             <column name="charges_enabled" valueBoolean="true"/>
             <column name="payouts_enabled" valueBoolean="true"/>
             <column name="application_fee_percent" value="2.50"/>
@@ -106,7 +107,7 @@
             </delete>
 
             <!-- Remove merchant config -->
-            <delete tableName="merchant_stripe_config" schemaName="public">
+            <delete tableName="merchant_payment_config" schemaName="public">
                 <where>tenant_id = 'demo-tenant'</where>
             </delete>
 

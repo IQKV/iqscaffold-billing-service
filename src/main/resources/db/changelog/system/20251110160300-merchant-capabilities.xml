@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20251110160300-merchant-capabilities" author="iqscaffold" context="public">
+    <changeSet id="20251110160300-merchant-capabilities" author="iqscaffold">
         <comment>Add charges_enabled and payouts_enabled capabilities to merchant_stripe_config table</comment>
 
         <addColumn tableName="merchant_stripe_config">
