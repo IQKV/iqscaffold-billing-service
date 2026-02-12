@@ -1,11 +1,12 @@
 package com.iqscaffold.billingservice.config;
 
-import jakarta.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -24,10 +25,11 @@ public class I18nConfig {
   }
 
   /**
-   * Validates configuration properties after bean construction.
-   * This ensures validation happens after MessageSource is initialized.
+   * Validates configuration properties after application is fully ready.
+   * This ensures validation happens after MessageSource and all other beans are
+   * initialized.
    */
-  @PostConstruct
+  @EventListener(ApplicationReadyEvent.class)
   public void validateProperties() {
     properties.i18n().validate();
     properties.billing().subscription().notifications().validate();
@@ -53,7 +55,8 @@ public class I18nConfig {
   }
 
   /**
-   * Configures locale resolution based on Accept-Language header and X-User-Locale.
+   * Configures locale resolution based on Accept-Language header and
+   * X-User-Locale.
    * <p>
    * Supports configurable locales from properties.
    *
