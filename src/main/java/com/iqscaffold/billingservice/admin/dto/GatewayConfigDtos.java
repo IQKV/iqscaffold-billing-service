@@ -18,7 +18,8 @@ public class GatewayConfigDtos {
    * Base DTO for gateway-specific configuration data.
    * Implementations contain provider-specific fields (API keys, secrets, etc.).
    */
-  public sealed interface GatewayConfigData permits
+  public sealed
+  interface GatewayConfigData permits
       StripeGatewayConfigData,
       PayPalGatewayConfigData,
       SquareGatewayConfigData,
@@ -35,7 +36,9 @@ public class GatewayConfigDtos {
       @NotBlank String webhookSecret,
       String clientId,
       String publicKey
-  ) implements GatewayConfigData {
+  ) implements
+
+      GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
       return PaymentGatewayProvider.STRIPE;
@@ -51,7 +54,9 @@ public class GatewayConfigDtos {
       @NotBlank String clientSecret,
       String webhookId,
       @NotBlank @Pattern(regexp = "sandbox|live") String mode
-  ) implements GatewayConfigData {
+  ) implements
+
+      GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
       return PaymentGatewayProvider.PAYPAL;
@@ -67,7 +72,9 @@ public class GatewayConfigDtos {
       @NotBlank String locationId,
       String webhookSignatureKey,
       String applicationId
-  ) implements GatewayConfigData {
+  ) implements
+
+      GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
       return PaymentGatewayProvider.SQUARE;
@@ -83,7 +90,9 @@ public class GatewayConfigDtos {
       @NotBlank String publicKey,
       @NotBlank String privateKey,
       @NotBlank @Pattern(regexp = "sandbox|production") String environment
-  ) implements GatewayConfigData {
+  ) implements
+
+      GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
       return PaymentGatewayProvider.BRAINTREE;

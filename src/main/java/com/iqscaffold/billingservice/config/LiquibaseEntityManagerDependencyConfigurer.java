@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Configures EntityManagerFactory to depend on SystemLiquibaseInitializer when it exists.
- * 
+ *
  * <p>This ensures Liquibase migrations run before JPA initialization without causing
  * failures when SystemLiquibaseInitializer is disabled (e.g., in tests).
  */
@@ -21,9 +21,9 @@ public class LiquibaseEntityManagerDependencyConfigurer implements BeanFactoryPo
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
     // Only add dependency if SystemLiquibaseInitializer bean exists
-    if (beanFactory.containsBean(LIQUIBASE_INITIALIZER_BEAN) 
+    if (beanFactory.containsBean(LIQUIBASE_INITIALIZER_BEAN)
         && beanFactory.containsBean(ENTITY_MANAGER_FACTORY_BEAN)) {
-      
+
       BeanDefinition emfDefinition = beanFactory.getBeanDefinition(ENTITY_MANAGER_FACTORY_BEAN);
       emfDefinition.setDependsOn(LIQUIBASE_INITIALIZER_BEAN);
     }

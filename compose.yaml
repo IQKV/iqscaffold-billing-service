@@ -22,7 +22,6 @@ networks:
     name: iqscaffold-billing-network-dev
     external: false
 
-
 volumes:
   postgres_billing_data:
     name: iqscaffold_billing_postgres_data_dev

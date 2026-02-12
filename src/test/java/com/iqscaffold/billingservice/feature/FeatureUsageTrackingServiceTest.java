@@ -133,8 +133,8 @@ class FeatureUsageTrackingServiceTest {
     Instant startTime = Instant.now().minus(30, ChronoUnit.DAYS);
     Instant endTime = Instant.now();
     List<Object[]> mockResults = List.of(
-        new Object[]{"feature1", 100L},
-        new Object[]{"feature2", 50L}
+        new Object[] {"feature1", 100L},
+        new Object[] {"feature2", 50L}
     );
     when(usageLogRepository.getFeatureUsageStatsByTenant(tenantId, startTime, endTime))
         .thenReturn(mockResults);
@@ -214,9 +214,9 @@ class FeatureUsageTrackingServiceTest {
     // Arrange
     int limit = 5;
     List<Object[]> mockResults = List.of(
-        new Object[]{"api_access", 1000L},
-        new Object[]{"advanced_reports", 750L},
-        new Object[]{"export_data", 500L}
+        new Object[] {"api_access", 1000L},
+        new Object[] {"advanced_reports", 750L},
+        new Object[] {"export_data", 500L}
     );
     when(usageLogRepository.getMostUsedFeatures(any(Instant.class), any(Instant.class), any(PageRequest.class)))
         .thenReturn(mockResults);
