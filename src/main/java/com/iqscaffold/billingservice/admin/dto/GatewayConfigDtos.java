@@ -59,6 +59,7 @@ public class GatewayConfigDtos {
       GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
+
       return PaymentGatewayProvider.PAYPAL;
     }
   }
@@ -77,6 +78,7 @@ public class GatewayConfigDtos {
       GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
+
       return PaymentGatewayProvider.SQUARE;
     }
   }
@@ -95,6 +97,7 @@ public class GatewayConfigDtos {
       GatewayConfigData {
     @Override
     public PaymentGatewayProvider getProvider() {
+
       return PaymentGatewayProvider.BRAINTREE;
     }
   }
