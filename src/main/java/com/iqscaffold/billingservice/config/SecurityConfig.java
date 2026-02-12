@@ -25,7 +25,7 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   public SecurityConfig(final IqScaffoldProperties iqScaffoldProperties,
-                        final JwtAuthenticationFilter jwtAuthenticationFilter) {
+      final JwtAuthenticationFilter jwtAuthenticationFilter) {
     this.iqScaffoldProperties = iqScaffoldProperties;
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
   }
@@ -35,7 +35,9 @@ public class SecurityConfig {
   public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
     return http
         .securityMatcher(EndpointRequest.toAnyEndpoint())
-        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+            .anyRequest().authenticated())
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .build();
@@ -50,6 +52,11 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/error",
                 "/api/v1/billing/webhooks/**")
             .permitAll()
+            // Administrative endpoints (defense in depth besides @PreAuthorize)
+            .requestMatchers("/api/v1/admin/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN", "BILLING_ADMIN")
+            .requestMatchers("/api/v1/billing/subscription-plans/**")
+            .hasAnyAuthority("ADMIN", "SUPER_ADMIN", "BILLING_ADMIN")
+            // All other requests require authentication
             .anyRequest().authenticated())
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
             .decoder(jwtDecoder())
