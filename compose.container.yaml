@@ -1,0 +1,41 @@
+services:
+  # PostgreSQL Database for Billing Service
+  postgres-billing:
+    extends:
+      file: compose.base.yaml
+      service: postgres-billing
+
+  # Redis for Billing Service
+  redis-billing:
+    extends:
+      file: compose.base.yaml
+      service: redis-billing
+
+  # RabbitMQ for Billing Service
+  rabbitmq-billing:
+    extends:
+      file: compose.base.yaml
+      service: rabbitmq-billing
+
+  # Billing Service - Full platform run including build phase
+  billing-service:
+    extends:
+      file: compose.base.yaml
+      service: billing-service
+
+networks:
+  billing-service-network:
+    name: iqscaffold-billing-network-dev
+    external: false
+
+volumes:
+  postgres_billing_data:
+    name: iqscaffold_billing_postgres_data_dev
+  redis_billing_data:
+    name: iqscaffold_billing_redis_data_dev
+  rabbitmq_billing_data:
+    name: iqscaffold_billing_rabbitmq_data_dev
+  billing_logs:
+    name: iqscaffold_billing_logs_dev
+  billing_tmp:
+    name: iqscaffold_billing_tmp_dev
