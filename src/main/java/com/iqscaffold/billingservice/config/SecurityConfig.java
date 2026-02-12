@@ -4,6 +4,9 @@ import com.iqscaffold.billingservice.security.JwtAuthenticationFilter;
 import com.iqscaffold.billingservice.security.JwtClaimNames;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,12 +31,23 @@ public class SecurityConfig {
   }
 
   @Bean
+  @Order(Ordered.HIGHEST_PRECEDENCE)
+  public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http
+        .securityMatcher(EndpointRequest.toAnyEndpoint())
+        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .build();
+  }
+
+  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
-        .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/actuator/**"))
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**", "/error",
+            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/error",
                 "/api/v1/billing/webhooks/**")
             .permitAll()
             .anyRequest().authenticated())
