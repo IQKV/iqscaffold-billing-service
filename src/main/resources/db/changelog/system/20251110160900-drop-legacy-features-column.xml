@@ -15,11 +15,11 @@
         without any migration logic.
     -->
     <changeSet id="20251110160900-drop-legacy-features-column" author="iqscaffold" context="public">
-        <comment>Drop legacy JSON features column from subscription_plan table</comment>
-
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="subscription_plan" columnName="features" schemaName="public"/>
         </preConditions>
+
+        <comment>Drop legacy JSON features column from subscription_plan table</comment>
 
         <dropColumn tableName="subscription_plan" columnName="features" schemaName="public"/>
 
