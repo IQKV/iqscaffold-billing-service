@@ -50,7 +50,9 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/error",
-                "/api/v1/billing/webhooks/**")
+                "/api/v1/billing/webhooks/**",
+                "/api/v1/billing/subscription-plans/active",
+                "/api/v1/billing/subscription-plans")
             .permitAll()
             // Administrative endpoints (defense in depth besides @PreAuthorize)
             .requestMatchers("/api/v1/admin/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN", "BILLING_ADMIN")
