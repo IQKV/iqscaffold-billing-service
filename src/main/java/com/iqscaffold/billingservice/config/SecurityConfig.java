@@ -2,7 +2,7 @@ package com.iqscaffold.billingservice.config;
 
 import com.iqscaffold.billingservice.security.JwtAuthenticationFilter;
 import com.iqscaffold.billingservice.security.JwtClaimNames;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.security.autoconfigure.actuate.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
