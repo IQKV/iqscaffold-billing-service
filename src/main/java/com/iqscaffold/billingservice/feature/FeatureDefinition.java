@@ -78,11 +78,11 @@ public class FeatureDefinition {
   @Column(name = "category", length = 100)
   private String category;
 
-  @Column(name = "metadata", columnDefinition = "text")
+  @Column(name = "metadata", columnDefinition = "jsonb")
   @Convert(converter = JsonMapConverter.class)
   private Map<String, Object> metadata;
 
-  @Column(name = "dependencies", columnDefinition = "text")
+  @Column(name = "dependencies", columnDefinition = "jsonb")
   @Convert(converter = JsonListConverter.class)
   private List<String> dependencies;
 

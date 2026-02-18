@@ -121,7 +121,7 @@ public class SubscriptionPlan {
   /**
    * Additional metadata (JSON format).
    */
-  @Column(columnDefinition = "text")
+  @Column(columnDefinition = "jsonb")
   private String metadata;
 
   @Column(name = "created_at", nullable = false, updatable = false)
