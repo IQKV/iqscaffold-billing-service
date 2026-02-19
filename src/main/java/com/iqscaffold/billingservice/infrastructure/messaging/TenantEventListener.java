@@ -197,9 +197,18 @@ public class TenantEventListener {
 
   /**
    * Resolve schema name from tenant ID.
-   * Matches the naming convention from user service.
+   * Matches the naming convention from user service SchemaNameResolver.
    */
   private String resolveSchemaName(String tenantId) {
-    return "tenant_" + tenantId.replaceAll("[^a-z0-9_]", "_");
+    if (tenantId == null || tenantId.isBlank()) {
+      return "public";
+    }
+    var lower = tenantId.toLowerCase(java.util.Locale.ROOT).trim();
+    var replaced = lower.replace('-', '_');
+    var cleaned = replaced.replaceAll("[^a-z0-9_]", "");
+    if (cleaned.length() > 48) {
+      cleaned = cleaned.substring(0, 48);
+    }
+    return "tenant_" + cleaned;
   }
 }
