@@ -56,14 +56,16 @@
             <column name="correlation_id"/>
         </createIndex>
 
-        <!-- Partial index for recent usage (last 30 days) for better performance -->
-        <sql>
-            CREATE INDEX idx_feature_usage_recent
-                ON feature_usage_log (tenant_id, feature_key, timestamp) WHERE timestamp > (NOW() - INTERVAL '30 days');
-        </sql>
+        <!-- Composite index for recent usage queries - covers tenant_id, feature_key, and timestamp -->
+        <!-- Note: Removed time-based partial index predicate as NOW() is not immutable in PostgreSQL -->
+        <createIndex tableName="feature_usage_log" indexName="idx_feature_usage_recent">
+            <column name="tenant_id"/>
+            <column name="feature_key"/>
+            <column name="timestamp" descending="true"/>
+        </createIndex>
 
         <rollback>
-            <sql>DROP INDEX IF EXISTS idx_feature_usage_recent;</sql>
+            <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_recent"/>
             <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_correlation_id"/>
             <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_user_id"/>
             <dropIndex tableName="feature_usage_log" indexName="idx_feature_usage_feature_timestamp"/>
