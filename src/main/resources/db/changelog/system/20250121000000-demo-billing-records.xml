@@ -6,7 +6,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
     <changeSet id="20250121000000-demo-billing-records" author="iqscaffold" context="demo">
-        <comment>Create demo billing records for demo-tenant organization with subscription, invoice, and payment data</comment>
+        <comment>Create demo billing records for default organization with subscription, invoice, and payment data</comment>
 
         <!-- 1. Demo Subscription Plan - Enterprise Plan for Demo Organization -->
         <!-- This plan matches the subscription_plan referenced in the user service organization -->
@@ -33,7 +33,7 @@
         <!-- Links the demo tenant to a Stripe Connect account for payment processing -->
         <insert tableName="merchant_payment_config" schemaName="public">
             <column name="id" value="550e8400-e29b-41d4-a716-446655440002"/>
-            <column name="tenant_id" value="demo-tenant"/>
+            <column name="tenant_id" value="default"/>
             <column name="organization_id" value="1"/>
             <column name="gateway_account_id" value="acct_demo_tech_solutions"/>
             <column name="gateway_provider" value="STRIPE"/>
@@ -108,7 +108,7 @@
 
             <!-- Remove merchant config -->
             <delete tableName="merchant_payment_config" schemaName="public">
-                <where>tenant_id = 'demo-tenant'</where>
+                <where>tenant_id = 'default'</where>
             </delete>
 
             <!-- Remove subscription plan -->

@@ -1,13 +1,13 @@
 # Demo Billing Records
 
-This directory contains demo billing data migrations for development and testing purposes. The migrations create a complete billing scenario for the `demo-tenant` organization with
+This directory contains demo billing data migrations for development and testing purposes. The migrations create a complete billing scenario for the `default` organization with
 subscription, payment, and feature usage data.
 
 ## Demo Billing Scenario
 
 ### Organization Context
 
-- **Tenant**: `demo-tenant` (Demo Tech Solutions)
+- **Tenant**: `default` (Demo Tech Solutions)
 - **Billing Email**: billing@demo.iqscaffold.com
 - **Stripe Account**: acct_demo_tech_solutions
 - **Application Fee**: 2.5% platform fee
@@ -117,12 +117,12 @@ subscription_plan (Enterprise)
 └── plan_feature (support_level)
 
 merchant_stripe_config
-├── tenant_id: demo-tenant
+├── tenant_id: default
 ├── stripe_account_id: acct_demo_tech_solutions
 └── application_fee_percent: 2.50%
 ```
 
-### Tenant Schema (demo-tenant)
+### Tenant Schema (default)
 
 ```
 tenant_subscription (Active)

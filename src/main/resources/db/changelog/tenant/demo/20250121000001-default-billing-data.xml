@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20250121000001-demo-tenant-billing-data" author="iqscaffold" context="demo">
+    <changeSet id="20250121000001-default-billing-data" author="iqscaffold" context="demo">
         <comment>Create demo tenant-specific billing data: active subscription, paid invoice, and successful payment</comment>
 
         <!-- 1. Demo Tenant Subscription - Active Enterprise Subscription -->
@@ -86,7 +86,7 @@
         <!-- 6. Feature Usage Log Samples - Demonstrate feature usage tracking -->
         <!-- Sample API usage for quota tracking -->
         <insert tableName="feature_usage_log">
-            <column name="tenant_id" value="demo-tenant"/>
+            <column name="tenant_id" value="default"/>
             <column name="feature_key" value="api_calls_monthly"/>
             <column name="endpoint" value="/api/v1/analytics/reports"/>
             <column name="user_id" value="owner"/>
@@ -98,7 +98,7 @@
 
         <!-- Sample advanced analytics usage -->
         <insert tableName="feature_usage_log">
-            <column name="tenant_id" value="demo-tenant"/>
+            <column name="tenant_id" value="default"/>
             <column name="feature_key" value="advanced_analytics"/>
             <column name="endpoint" value="/api/v1/analytics/dashboard/custom"/>
             <column name="user_id" value="admin"/>
@@ -110,7 +110,7 @@
 
         <!-- Sample SSO integration usage -->
         <insert tableName="feature_usage_log">
-            <column name="tenant_id" value="demo-tenant"/>
+            <column name="tenant_id" value="default"/>
             <column name="feature_key" value="sso_integration"/>
             <column name="endpoint" value="/auth/sso/saml/login"/>
             <column name="user_id" value="manager"/>
@@ -123,7 +123,7 @@
         <rollback>
             <!-- Remove feature usage logs -->
             <delete tableName="feature_usage_log">
-                <where>tenant_id = 'demo-tenant'</where>
+                <where>tenant_id = 'default'</where>
             </delete>
 
             <!-- Remove audit trail -->

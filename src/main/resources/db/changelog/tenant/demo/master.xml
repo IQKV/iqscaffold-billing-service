@@ -7,6 +7,6 @@
 
 
     <!-- Tenant-specific demo data (subscriptions, invoices, payments) -->
-    <include file="db/changelog/tenant/demo/20250121000001-demo-tenant-billing-data.xml"/>
+    <include file="db/changelog/tenant/demo/20250121000001-default-billing-data.xml"/>
 
 </databaseChangeLog>
