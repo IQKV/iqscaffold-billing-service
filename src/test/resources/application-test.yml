@@ -46,6 +46,10 @@ iqscaffold:
     system-schema:
       enabled: false
   
+  bootstrap:
+    default-tenant-schema:
+      enabled: false
+  
   email:
     smtp:
       host: localhost
