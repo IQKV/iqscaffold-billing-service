@@ -17,9 +17,9 @@
             <column name="status" value="ACTIVE"/>
             <column name="stripe_subscription_id" value="sub_demo_tech_enterprise"/>
             <column name="stripe_customer_id" value="cus_demo_tech_solutions"/>
-            <column name="current_period_start" valueDate="2024-12-01T00:00:00Z"/>
-            <column name="current_period_end" valueDate="2025-01-01T00:00:00Z"/>
-            <column name="trial_end" valueDate="2024-11-15T23:59:59Z"/>
+            <column name="current_period_start" valueDate="2024-12-01T00:00:00"/>
+            <column name="current_period_end" valueDate="2025-01-01T00:00:00"/>
+            <column name="trial_end" valueDate="2024-11-15T23:59:59"/>
             <column name="cancel_at" value=""/>
             <column name="canceled_at" value=""/>
             <column name="cancellation_reason" value=""/>
@@ -37,8 +37,8 @@
             <column name="amount_paid" value="299.00"/>
             <column name="currency" value="USD"/>
             <column name="status" value="PAID"/>
-            <column name="due_date" valueDate="2024-12-01T23:59:59Z"/>
-            <column name="paid_at" valueDate="2024-12-01T14:32:15Z"/>
+            <column name="due_date" valueDate="2024-12-01T23:59:59"/>
+            <column name="paid_at" valueDate="2024-12-01T14:32:15"/>
             <column name="stripe_invoice_id" value="in_demo_december_2024"/>
             <column name="hosted_invoice_url" value="https://invoice.stripe.com/i/acct_demo/in_demo_december_2024"/>
             <column name="invoice_pdf_url" value="https://pay.stripe.com/invoice/acct_demo/in_demo_december_2024/pdf"/>
@@ -90,7 +90,7 @@
             <column name="feature_key" value="api_calls_monthly"/>
             <column name="endpoint" value="/api/v1/analytics/reports"/>
             <column name="user_id" value="owner"/>
-            <column name="timestamp" valueDate="2024-12-15T10:30:00Z"/>
+            <column name="timestamp" valueDate="2024-12-15T10:30:00"/>
             <column name="session_id" value="sess_demo_analytics_001"/>
             <column name="correlation_id" value="corr_demo_report_generation"/>
             <column name="metadata" value='{"request_size": 1024, "response_size": 15360, "processing_time_ms": 245, "cache_hit": false}'/>
@@ -102,7 +102,7 @@
             <column name="feature_key" value="advanced_analytics"/>
             <column name="endpoint" value="/api/v1/analytics/dashboard/custom"/>
             <column name="user_id" value="admin"/>
-            <column name="timestamp" valueDate="2024-12-15T14:45:00Z"/>
+            <column name="timestamp" valueDate="2024-12-15T14:45:00"/>
             <column name="session_id" value="sess_demo_dashboard_002"/>
             <column name="correlation_id" value="corr_demo_custom_dashboard"/>
             <column name="metadata" value='{"dashboard_type": "custom", "widgets_count": 8, "data_points": 50000, "export_format": "pdf"}'/>
@@ -114,7 +114,7 @@
             <column name="feature_key" value="sso_integration"/>
             <column name="endpoint" value="/auth/sso/saml/login"/>
             <column name="user_id" value="manager"/>
-            <column name="timestamp" valueDate="2024-12-15T09:15:00Z"/>
+            <column name="timestamp" valueDate="2024-12-15T09:15:00"/>
             <column name="session_id" value="sess_demo_sso_003"/>
             <column name="correlation_id" value="corr_demo_saml_auth"/>
             <column name="metadata" value='{"sso_provider": "Azure AD", "authentication_method": "SAML", "login_success": true, "session_duration_minutes": 480}'/>
