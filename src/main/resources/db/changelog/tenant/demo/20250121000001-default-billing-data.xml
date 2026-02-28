@@ -20,9 +20,9 @@
             <column name="current_period_start" valueDate="2024-12-01T00:00:00"/>
             <column name="current_period_end" valueDate="2025-01-01T00:00:00"/>
             <column name="trial_end" valueDate="2024-11-15T23:59:59"/>
-            <column name="cancel_at" value=""/>
-            <column name="canceled_at" value=""/>
-            <column name="cancellation_reason" value=""/>
+            <column name="cancel_at" valueDate="NULL"/>
+            <column name="canceled_at" valueDate="NULL"/>
+            <column name="cancellation_reason" value="NULL"/>
             <column name="metadata"
                     value='{"signup_source": "website", "sales_rep": "alice.johnson", "contract_type": "monthly", "auto_renewal": true, "payment_method": "card", "billing_contact": "billing@demo.iqscaffold.com"}'/>
         </insert>
