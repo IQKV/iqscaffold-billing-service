@@ -46,20 +46,7 @@
                     value='{"billing_period": "2024-12-01 to 2025-01-01", "payment_method": "card_ending_4242", "tax_rate": 0.0875, "tax_amount": 26.18, "subtotal": 299.00, "total": 325.18, "auto_collection": true}'/>
         </insert>
 
-        <!-- 3. Demo Payment Record - Successful Payment for December Invoice -->
-        <!-- Represents the successful credit card payment that settled the December invoice -->
-        <insert tableName="payment">
-            <column name="id" value="550e8400-e29b-41d4-a716-446655440030"/>
-            <column name="amount" value="325.18"/>
-            <column name="currency" value="USD"/>
-            <column name="status" value="succeeded"/>
-            <column name="payment_intent_id" value="pi_demo_december_payment"/>
-            <column name="client_secret" value="pi_demo_december_payment_secret_demo"/>
-            <column name="application_fee_amount" value="8.13"/>
-            <column name="merchant_account_id" value="acct_demo_tech_solutions"/>
-        </insert>
-
-        <!-- 4. Subscription Item - Line item for the Enterprise plan -->
+        <!-- 3. Subscription Item - Line item for the Enterprise plan -->
         <!-- Represents the specific plan item within the subscription -->
         <insert tableName="subscription_item">
             <column name="id" value="550e8400-e29b-41d4-a716-446655440040"/>
@@ -70,7 +57,7 @@
             <column name="stripe_subscription_item_id" value="si_demo_enterprise_item"/>
         </insert>
 
-        <!-- 5. Subscription Audit Trail - Record of subscription activation -->
+        <!-- 4. Subscription Audit Trail - Record of subscription activation -->
         <!-- Tracks the subscription lifecycle event when it moved from trial to active -->
         <insert tableName="tenant_subscription_audit_trail">
             <column name="id" value="550e8400-e29b-41d4-a716-446655440050"/>
@@ -83,7 +70,7 @@
                     value='{"trial_start": "2024-11-01T00:00:00Z", "trial_end": "2024-11-15T23:59:59Z", "first_payment_date": "2024-12-01T14:32:15Z", "payment_method_verified": true, "billing_address_confirmed": true}'/>
         </insert>
 
-        <!-- 6. Feature Usage Log Samples - Demonstrate feature usage tracking -->
+        <!-- 5. Feature Usage Log Samples - Demonstrate feature usage tracking -->
         <!-- Sample API usage for quota tracking -->
         <insert tableName="feature_usage_log">
             <column name="tenant_id" value="default"/>
@@ -134,11 +121,6 @@
             <!-- Remove subscription item -->
             <delete tableName="subscription_item">
                 <where>tenant_subscription_id = '550e8400-e29b-41d4-a716-446655440010'</where>
-            </delete>
-
-            <!-- Remove payment -->
-            <delete tableName="payment">
-                <where>id = '550e8400-e29b-41d4-a716-446655440030'</where>
             </delete>
 
             <!-- Remove invoice -->

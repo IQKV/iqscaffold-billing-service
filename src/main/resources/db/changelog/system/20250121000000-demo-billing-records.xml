@@ -100,7 +100,25 @@
             <column name="created_by" value="system"/>
         </insert>
 
+        <!-- 3. Demo Payment Record - Successful Payment for December Invoice -->
+        <!-- Represents the successful credit card payment that settled the December invoice -->
+        <insert tableName="payment" schemaName="public">
+            <column name="id" value="550e8400-e29b-41d4-a716-446655440030"/>
+            <column name="amount" value="325.18"/>
+            <column name="currency" value="USD"/>
+            <column name="status" value="succeeded"/>
+            <column name="payment_intent_id" value="pi_demo_december_payment"/>
+            <column name="client_secret" value="pi_demo_december_payment_secret_demo"/>
+            <column name="application_fee_amount" value="8.13"/>
+            <column name="merchant_account_id" value="acct_demo_tech_solutions"/>
+        </insert>
+
         <rollback>
+            <!-- Remove payment -->
+            <delete tableName="payment" schemaName="public">
+                <where>id = '550e8400-e29b-41d4-a716-446655440030'</where>
+            </delete>
+
             <!-- Remove plan features -->
             <delete tableName="plan_feature" schemaName="public">
                 <where>plan_id = '550e8400-e29b-41d4-a716-446655440001'</where>
