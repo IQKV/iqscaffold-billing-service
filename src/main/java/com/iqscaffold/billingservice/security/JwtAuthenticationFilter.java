@@ -36,6 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     String tenantId = null;
 
+    // Log all relevant headers for debugging
+    logger.debug("Request headers - X-Tenant-ID: {}, X-User-ID: {}, X-Correlation-ID: {}, Authorization: {}",
+        request.getHeader("X-Tenant-ID"),
+        request.getHeader("X-User-ID"),
+        request.getHeader("X-Correlation-ID"),
+        request.getHeader("Authorization") != null ? "present" : "absent");
+
     // Priority 1: Extract tenant ID from JWT token
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication instanceof JwtAuthenticationToken jwtAuthToken) {
@@ -45,8 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       request.setAttribute("userContext", userContext);
       
       if (tenantId != null && !tenantId.trim().isEmpty()) {
-        logger.debug("Tenant ID extracted from JWT: {}", tenantId);
+        logger.info("Tenant ID extracted from JWT: {}", tenantId);
+      } else {
+        logger.warn("JWT token present but no tenant_id claim found");
       }
+    } else {
+      logger.warn("No JWT authentication found, authentication type: {}", 
+          authentication != null ? authentication.getClass().getSimpleName() : "null");
     }
 
     // Priority 2: Fallback to X-Tenant-ID header (sent by gateway)
@@ -54,15 +66,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       String headerTenantId = request.getHeader("X-Tenant-ID");
       if (headerTenantId != null && !headerTenantId.trim().isEmpty()) {
         tenantId = headerTenantId.trim();
-        logger.debug("Tenant ID extracted from X-Tenant-ID header: {}", tenantId);
+        logger.info("Tenant ID extracted from X-Tenant-ID header: {}", tenantId);
+      } else {
+        logger.warn("X-Tenant-ID header is missing or empty");
       }
     }
 
     // Set tenant context if available
     if (tenantId != null && !tenantId.trim().isEmpty()) {
       TenantContext.setCurrentTenantId(tenantId);
+      logger.info("Tenant context set to: {}", tenantId);
     } else {
-      logger.warn("No tenant context available - neither JWT claim nor X-Tenant-ID header present for request: {} {}",
+      logger.error("CRITICAL: No tenant context available - neither JWT claim nor X-Tenant-ID header present for request: {} {}",
           request.getMethod(), request.getRequestURI());
     }
 

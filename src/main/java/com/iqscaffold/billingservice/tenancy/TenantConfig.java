@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Configuration;
 public class TenantConfig {
 
   @Bean
-  public CurrentTenantIdentifierResolver currentTenantIdentifierResolver() {
-    return new SchemaTenantIdentifierResolver();
+  public CurrentTenantIdentifierResolver currentTenantIdentifierResolver(
+      final SchemaNameResolver schemaNameResolver) {
+    return new SchemaTenantIdentifierResolver(schemaNameResolver);
   }
 
   @Bean
