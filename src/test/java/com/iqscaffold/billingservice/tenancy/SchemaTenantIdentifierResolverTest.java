@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class SchemaTenantIdentifierResolverTest {
 
-  private final SchemaNameResolver schemaNameResolver = new SchemaNameResolver();
+  private final SchemaNameResolver schemaNameResolver = new SchemaNameResolver("tenant_");
   private final SchemaTenantIdentifierResolver resolver = new SchemaTenantIdentifierResolver(schemaNameResolver);
 
   @AfterEach
