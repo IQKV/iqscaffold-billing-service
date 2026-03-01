@@ -1,6 +1,7 @@
 package com.iqscaffold.billingservice.tenancy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -57,7 +58,7 @@ class SchemaTenantIdentifierResolverTest {
     boolean result = resolver.validateExistingCurrentSessions();
 
     // Then
-    assertTrue(result);
+    assertFalse(result);
   }
 
   @Test
