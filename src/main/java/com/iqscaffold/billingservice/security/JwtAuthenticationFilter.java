@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.iqscaffold.billingservice.tenancy.TenantContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -21,6 +23,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+  private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
@@ -30,16 +34,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       org.slf4j.MDC.put("correlationId", correlationId);
     }
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String tenantId = null;
 
+    // Priority 1: Extract tenant ID from JWT token
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication instanceof JwtAuthenticationToken jwtAuthToken) {
       Jwt jwt = jwtAuthToken.getToken();
       UserContext userContext = extractUserContext(jwt);
-
-      if (userContext.tenantId() != null) {
-        TenantContext.setCurrentTenantId(userContext.tenantId());
-      }
+      tenantId = userContext.tenantId();
       request.setAttribute("userContext", userContext);
+      
+      if (tenantId != null && !tenantId.trim().isEmpty()) {
+        logger.debug("Tenant ID extracted from JWT: {}", tenantId);
+      }
+    }
+
+    // Priority 2: Fallback to X-Tenant-ID header (sent by gateway)
+    if (tenantId == null || tenantId.trim().isEmpty()) {
+      String headerTenantId = request.getHeader("X-Tenant-ID");
+      if (headerTenantId != null && !headerTenantId.trim().isEmpty()) {
+        tenantId = headerTenantId.trim();
+        logger.debug("Tenant ID extracted from X-Tenant-ID header: {}", tenantId);
+      }
+    }
+
+    // Set tenant context if available
+    if (tenantId != null && !tenantId.trim().isEmpty()) {
+      TenantContext.setCurrentTenantId(tenantId);
+    } else {
+      logger.warn("No tenant context available - neither JWT claim nor X-Tenant-ID header present for request: {} {}",
+          request.getMethod(), request.getRequestURI());
     }
 
     try {
