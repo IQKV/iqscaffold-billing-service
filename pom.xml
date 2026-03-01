@@ -360,6 +360,7 @@
                         <exclude>**/tenancy/TenantContext.class</exclude>
                         <exclude>**/tenancy/SchemaPerTenantConnectionProvider.class</exclude>
                         <exclude>**/tenancy/SchemaTenantIdentifierResolver.class</exclude>
+                        <exclude>**/tenancy/SchemaNameResolver.class</exclude>
 
                         <!-- Subscription entities and services -->
                         <exclude>**/subscription/SubscriptionInvoice.class</exclude>
