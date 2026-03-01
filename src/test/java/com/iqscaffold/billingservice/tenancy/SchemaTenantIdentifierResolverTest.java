@@ -1,7 +1,7 @@
 package com.iqscaffold.billingservice.tenancy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.iqscaffold.billingservice.shared.exception.TenantContextException;
@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 
 class SchemaTenantIdentifierResolverTest {
 
-  private final SchemaTenantIdentifierResolver resolver = new SchemaTenantIdentifierResolver();
+  private final SchemaNameResolver schemaNameResolver = new SchemaNameResolver();
+  private final SchemaTenantIdentifierResolver resolver = new SchemaTenantIdentifierResolver(schemaNameResolver);
 
   @AfterEach
   void tearDown() {
@@ -27,7 +28,7 @@ class SchemaTenantIdentifierResolverTest {
     String result = resolver.resolveCurrentTenantIdentifier();
 
     // Then
-    assertEquals(tenantId, result);
+    assertEquals("tenant_tenant_123", result);
   }
 
   @Test
@@ -56,7 +57,7 @@ class SchemaTenantIdentifierResolverTest {
     boolean result = resolver.validateExistingCurrentSessions();
 
     // Then
-    assertFalse(result);
+    assertTrue(result);
   }
 
   @Test
@@ -67,10 +68,10 @@ class SchemaTenantIdentifierResolverTest {
 
     // When & Then
     TenantContext.setCurrentTenantId(tenant1);
-    assertEquals(tenant1, resolver.resolveCurrentTenantIdentifier());
+    assertEquals("tenant_tenant_1", resolver.resolveCurrentTenantIdentifier());
 
     TenantContext.setCurrentTenantId(tenant2);
-    assertEquals(tenant2, resolver.resolveCurrentTenantIdentifier());
+    assertEquals("tenant_tenant_2", resolver.resolveCurrentTenantIdentifier());
   }
 
   @Test
