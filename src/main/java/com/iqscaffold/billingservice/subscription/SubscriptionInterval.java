@@ -20,6 +20,11 @@ public enum SubscriptionInterval {
   MONTH,
 
   /**
+   * Monthly billing interval (alias for backward compatibility).
+   */
+  MONTHLY,
+
+  /**
    * Quarterly billing interval (3 months).
    */
   QUARTER,
