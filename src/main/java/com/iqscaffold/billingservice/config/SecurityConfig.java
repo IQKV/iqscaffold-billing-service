@@ -52,7 +52,11 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/error",
                 "/api/v1/billing/webhooks/**",
                 "/api/v1/billing/subscription-plans/active",
-                "/api/v1/billing/subscription-plans")
+                "/api/v1/billing/subscription-plans",
+                "/api/v1/billing/payments/health",
+                "/api/v1/billing/subscriptions/health",
+                "/api/v1/billing/invoices/health",
+                "/api/v1/billing/gateway/health")
             .permitAll()
             // Administrative endpoints (defense in depth besides @PreAuthorize)
             .requestMatchers("/api/v1/admin/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN", "BILLING_ADMIN")
