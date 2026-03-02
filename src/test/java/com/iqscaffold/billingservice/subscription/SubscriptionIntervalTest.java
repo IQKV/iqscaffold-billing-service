@@ -9,10 +9,11 @@ class SubscriptionIntervalTest {
   @Test
   void subscriptionInterval_shouldHaveAllExpectedValues() {
     // When & Then
-    assertEquals(5, SubscriptionInterval.values().length);
+    assertEquals(6, SubscriptionInterval.values().length);
     assertEquals(SubscriptionInterval.DAY, SubscriptionInterval.valueOf("DAY"));
     assertEquals(SubscriptionInterval.WEEK, SubscriptionInterval.valueOf("WEEK"));
     assertEquals(SubscriptionInterval.MONTH, SubscriptionInterval.valueOf("MONTH"));
+    assertEquals(SubscriptionInterval.MONTHLY, SubscriptionInterval.valueOf("MONTHLY"));
     assertEquals(SubscriptionInterval.QUARTER, SubscriptionInterval.valueOf("QUARTER"));
     assertEquals(SubscriptionInterval.YEAR, SubscriptionInterval.valueOf("YEAR"));
   }
@@ -51,7 +52,8 @@ class SubscriptionIntervalTest {
     assertEquals(0, SubscriptionInterval.DAY.ordinal());
     assertEquals(1, SubscriptionInterval.WEEK.ordinal());
     assertEquals(2, SubscriptionInterval.MONTH.ordinal());
-    assertEquals(3, SubscriptionInterval.QUARTER.ordinal());
-    assertEquals(4, SubscriptionInterval.YEAR.ordinal());
+    assertEquals(3, SubscriptionInterval.MONTHLY.ordinal());
+    assertEquals(4, SubscriptionInterval.QUARTER.ordinal());
+    assertEquals(5, SubscriptionInterval.YEAR.ordinal());
   }
 }
