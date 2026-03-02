@@ -126,8 +126,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service:8080}/.well-known/jwks.json
-          issuer-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service:8080}
+          jwk-set-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service}/.well-known/jwks.json
+          issuer-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service}
 
 # SpringDoc OpenAPI Configuration
 springdoc:
@@ -224,7 +224,7 @@ iqscaffold:
   tenant-id-header: X-Tenant-ID
   
   # User Service URL for inter-service communication
-  user-service-url: ${USER_SERVICE_URL:http://iqscaffold-user-service:8080}
+  user-service-url: ${USER_SERVICE_URL:http://iqscaffold-user-service}
   
   # Database Configuration
   database:
@@ -354,7 +354,7 @@ iqscaffold:
   billing:
     security:
       jwt:
-        jwk-set-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service:8080}/.well-known/jwks.json
+        jwk-set-uri: ${IQSCAFFOLD_USER_SERVICE_URL:http://iqscaffold-user-service}/.well-known/jwks.json
         issuer: ${JWT_ISSUER:iqscaffold-user-service}
         secret-key: ${JWT_SECRET_KEY:change-me-in-production}
         algorithm: HS256
