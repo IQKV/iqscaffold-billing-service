@@ -302,6 +302,8 @@
                         <exclude>**/infrastructure/messaging/*Event.class</exclude>
                         <exclude>**/infrastructure/messaging/*Publisher.class</exclude>
 
+                        <exclude>**/health/*.class</exclude>
+
                         <!-- Infrastructure Clients -->
                         <exclude>**/infrastructure/client/*Client.class</exclude>
 
