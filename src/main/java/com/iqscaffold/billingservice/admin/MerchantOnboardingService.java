@@ -77,11 +77,11 @@ public class MerchantOnboardingService {
     // Get payment provider adapter
     PaymentProviderAdapter paymentProvider = paymentProviderFactory.getProvider(gatewayProvider);
 
-    // 2. Validate organization exists and belongs to tenant
+    // 2. Validate organization exists and belongs to tenant (skip tenant check for SUPER_ADMIN)
     OrganizationDto organization = userServiceClient.getOrganization(organizationId)
         .orElseThrow(() -> new IllegalArgumentException("Organization not found: " + organizationId));
 
-    if (!organization.tenantId().equals(tenantId)) {
+    if (!user.isSuperAdmin() && !organization.tenantId().equals(tenantId)) {
       logger.warn("Access denied: Organization {} does not belong to tenant {}", organizationId, tenantId);
       throw new AccessDeniedException("Organization does not belong to current tenant");
     }
@@ -154,11 +154,12 @@ public class MerchantOnboardingService {
    */
   public Optional<MerchantPaymentConfig> getMerchantStatusByOrganization(Long organizationId) {
     String tenantId = SecurityContextHelper.getCurrentTenantId();
+    UserContext user = SecurityContextHelper.getCurrentUserContextOrThrow();
 
     var config = repository.findByOrganizationId(organizationId);
 
-    // Validate tenant access
-    if (config.isPresent() && !config.get().getTenantId().equals(tenantId)) {
+    // Validate tenant access (skip for SUPER_ADMIN who has platform-wide access)
+    if (config.isPresent() && !user.isSuperAdmin() && !config.get().getTenantId().equals(tenantId)) {
       logger.warn("Access denied: Merchant config for organization {} does not belong to tenant {}",
           organizationId, tenantId);
       throw new AccessDeniedException("Access denied to merchant configuration");
