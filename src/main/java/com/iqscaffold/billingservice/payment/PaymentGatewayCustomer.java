@@ -22,7 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * without coupling the domain model to a specific gateway.
  */
 @Entity
-@Table(name = "payment_gateway_customer")
+@Table(name = "payment_gateway_customer", schema = "public")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "com.iqscaffold.billingservice.payment.PaymentGatewayCustomer")
 public class PaymentGatewayCustomer {
