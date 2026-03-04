@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/billing")
 @Tag(name = "Billing Health", description = "Public health check endpoints for billing service monitoring")
-public class BillingHealthRestRespurce {
+public class BillingHealthRestResource {
 
   @Operation(
       summary = "Payments module health check",
