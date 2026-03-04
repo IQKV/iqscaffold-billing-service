@@ -18,6 +18,7 @@ public final class JwtClaimNames {
 
   // Custom IQ Scaffold claims
   public static final String TYPE = "type";
+  public static final String USER_ID = "userId";
   public static final String USERNAME = "username";
   public static final String EMAIL = "email";
   public static final String AUTHORITIES = "authorities";

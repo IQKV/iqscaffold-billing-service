@@ -90,7 +90,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private UserContext extractUserContext(Jwt jwt) {
+    // Try to extract user ID from multiple possible claims
     Long userId = extractLong(jwt.getClaim(JwtClaimNames.SUBJECT));
+    if (userId == null) {
+      // Fallback to userId claim if sub is not available
+      userId = extractLong(jwt.getClaim(JwtClaimNames.USER_ID));
+    }
+    
     String username = jwt.getClaim(JwtClaimNames.USERNAME);
     String email = jwt.getClaim(JwtClaimNames.EMAIL);
     Set<String> authorities = extractAuthorities(jwt.getClaim(JwtClaimNames.AUTHORITIES));
@@ -98,6 +104,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     Long organizationId = extractLong(jwt.getClaim(JwtClaimNames.ORGANIZATION_ID));
     String firstName = jwt.getClaim(JwtClaimNames.FIRST_NAME);
     String lastName = jwt.getClaim(JwtClaimNames.LAST_NAME);
+
+    logger.debug("Extracted user context - userId: {}, username: {}, tenantId: {}", userId, username, tenantId);
 
     return new UserContext(userId, username, email, authorities, tenantId, organizationId, firstName, lastName);
   }
