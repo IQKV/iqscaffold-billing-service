@@ -43,27 +43,33 @@ import org.springframework.stereotype.Component;
 public class SchemaNameResolver {
 
   private final String prefix;
+  private final String defaultTenantId;
   private final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<>();
   private static final Pattern ILLEGAL = Pattern.compile("[^a-z0-9_]");
 
   /**
-   * Constructor with configurable schema prefix.
+   * Constructor with configurable schema prefix and default tenant.
    *
    * @param prefix the schema prefix (default: "tenant_")
+   * @param defaultTenantId the default tenant ID to use when tenant context is missing
    */
-  public SchemaNameResolver(@Value("${iqscaffold.tenancy.schema.prefix:tenant_}") final String prefix) {
+  public SchemaNameResolver(
+      @Value("${iqscaffold.tenancy.schema.prefix:tenant_}") final String prefix,
+      @Value("${iqscaffold.bootstrap.default-tenant-schema.tenant-id:default}") final String defaultTenantId) {
     this.prefix = prefix;
+    this.defaultTenantId = defaultTenantId;
   }
 
   /**
    * Convert tenant ID to schema name.
    *
    * @param tenantId the tenant identifier
-   * @return the schema name (e.g., "tenant_default") or "public" if tenant ID is null/blank
+   * @return the schema name (e.g., "tenant_default")
    */
   public String toSchema(String tenantId) {
     if (tenantId == null || tenantId.isBlank()) {
-      return "public";
+      // Use default tenant instead of public schema
+      return cache.computeIfAbsent(defaultTenantId, this::normalize);
     }
     return cache.computeIfAbsent(tenantId, this::normalize);
   }
