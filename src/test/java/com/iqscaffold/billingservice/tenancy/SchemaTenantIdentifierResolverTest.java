@@ -33,7 +33,7 @@ class SchemaTenantIdentifierResolverTest {
   }
 
   @Test
-  void resolveCurrentTenantIdentifier_shouldReturnPublicWhenNoTenantSet() {
+  void resolveCurrentTenantIdentifier_shouldReturnDefaultTenantWhenNoTenantSet() {
     // Given
     TenantContext.clear();
 
@@ -41,11 +41,11 @@ class SchemaTenantIdentifierResolverTest {
     String result = resolver.resolveCurrentTenantIdentifier();
 
     // Then
-    assertEquals("public", result);
+    assertEquals("tenant_default", result);
   }
 
   @Test
-  void resolveCurrentTenantIdentifier_shouldReturnPublicWhenTenantIsNull() {
+  void resolveCurrentTenantIdentifier_shouldThrowExceptionWhenTenantIsNull() {
     // Given / When / Then
     assertThrows(TenantContextException.InvalidTenantIdException.class, () -> {
       TenantContext.setCurrentTenantId(null);
