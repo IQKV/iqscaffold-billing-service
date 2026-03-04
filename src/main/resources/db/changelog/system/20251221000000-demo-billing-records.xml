@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
-    <changeSet id="20250121000000-demo-billing-records" author="iqscaffold" context="demo">
+    <changeSet id="20251221000000-demo-billing-records" author="iqscaffold" context="demo">
         <comment>Create demo billing records for default organization with subscription, invoice, and payment data</comment>
 
         <!-- 1. Demo Subscription Plan - Enterprise Plan for Demo Organization -->
