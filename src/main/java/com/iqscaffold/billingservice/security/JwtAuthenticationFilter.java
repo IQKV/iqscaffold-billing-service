@@ -13,28 +13,32 @@ import java.util.Set;
 import com.iqscaffold.billingservice.tenancy.TenantContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+  private static final String TENANT_ID_HEADER = "X-Tenant-ID";
+  private static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    String correlationId = request.getHeader("X-Correlation-ID");
+    // Add correlation ID to MDC for distributed tracing
+    String correlationId = request.getHeader(CORRELATION_ID_HEADER);
     if (correlationId != null) {
       org.slf4j.MDC.put("correlationId", correlationId);
     }
-
-    String tenantId = null;
 
     // Log all relevant headers for debugging
     logger.debug("Request headers - X-Tenant-ID: {}, X-User-ID: {}, X-Correlation-ID: {}, Authorization: {}",
@@ -43,52 +47,90 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         request.getHeader("X-Correlation-ID"),
         request.getHeader("Authorization") != null ? "present" : "absent");
 
-    // Priority 1: Extract tenant ID from JWT token
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication instanceof JwtAuthenticationToken jwtAuthToken) {
-      Jwt jwt = jwtAuthToken.getToken();
-      UserContext userContext = extractUserContext(jwt);
-      tenantId = userContext.tenantId();
-      request.setAttribute("userContext", userContext);
-      
-      if (tenantId != null && !tenantId.trim().isEmpty()) {
-        logger.info("Tenant ID extracted from JWT: {}", tenantId);
-      } else {
-        logger.warn("JWT token present but no tenant_id claim found");
-      }
-    } else {
-      logger.warn("No JWT authentication found, authentication type: {}", 
-          authentication != null ? authentication.getClass().getSimpleName() : "null");
-    }
-
-    // Priority 2: Fallback to X-Tenant-ID header (sent by gateway)
-    if (tenantId == null || tenantId.trim().isEmpty()) {
-      String headerTenantId = request.getHeader("X-Tenant-ID");
-      if (headerTenantId != null && !headerTenantId.trim().isEmpty()) {
-        tenantId = headerTenantId.trim();
-        logger.info("Tenant ID extracted from X-Tenant-ID header: {}", tenantId);
-      } else {
-        logger.warn("X-Tenant-ID header is missing or empty");
-      }
-    }
-
-    // Set tenant context if available
-    if (tenantId != null && !tenantId.trim().isEmpty()) {
-      TenantContext.setCurrentTenantId(tenantId);
-      logger.info("Tenant context set to: {}", tenantId);
-    } else {
-      logger.error("CRITICAL: No tenant context available - neither JWT claim nor X-Tenant-ID header present for request: {} {}",
-          request.getMethod(), request.getRequestURI());
-    }
-
     try {
+      // Extract user context from JWT if available
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+      if (authentication instanceof JwtAuthenticationToken jwtAuthToken) {
+        Jwt jwt = jwtAuthToken.getToken();
+        UserContext userContext = extractUserContext(jwt);
+
+        // Set tenant context with priority: X-Tenant-ID header > JWT claim
+        String tenantId = extractTenantId(request, userContext);
+        if (tenantId != null) {
+          TenantContext.setCurrentTenantId(tenantId);
+          logger.info("Tenant context set to: {}", tenantId);
+        }
+
+        // Add user context to MDC for structured logging
+        if (userContext.userId() != null) {
+          org.slf4j.MDC.put("userId", userContext.userId().toString());
+        }
+        if (userContext.username() != null) {
+          org.slf4j.MDC.put("username", userContext.username());
+        }
+
+        // Create new authentication with UserContext as principal
+        // This allows @AuthenticationPrincipal UserContext and SecurityContextHelper to work
+        var authorities = userContext.authorities().stream()
+            .map(SimpleGrantedAuthority::new)
+            .toList();
+        
+        var newAuth = new UsernamePasswordAuthenticationToken(
+            userContext,  // principal
+            jwt,          // credentials
+            authorities   // authorities
+        );
+        newAuth.setDetails(jwtAuthToken.getDetails());
+        
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        
+        logger.debug("User context set as authentication principal - userId: {}, username: {}, tenantId: {}", 
+            userContext.userId(), userContext.username(), userContext.tenantId());
+      } else {
+        logger.warn("No JWT authentication found, authentication type: {}", 
+            authentication != null ? authentication.getClass().getSimpleName() : "null");
+      }
+
       filterChain.doFilter(request, response);
     } finally {
+      // Clear context to prevent memory leaks in thread pool
       TenantContext.clear();
       org.slf4j.MDC.clear();
     }
   }
 
+  /**
+   * Extract tenant ID with priority: X-Tenant-ID header > JWT claim.
+   *
+   * @param request     the HTTP request
+   * @param userContext the user context extracted from JWT
+   * @return the tenant ID or null if not found
+   */
+  private String extractTenantId(HttpServletRequest request, UserContext userContext) {
+    // Priority 1: X-Tenant-ID header (from Gateway)
+    String tenantId = request.getHeader(TENANT_ID_HEADER);
+    if (StringUtils.hasText(tenantId)) {
+      logger.info("Tenant ID extracted from X-Tenant-ID header: {}", tenantId);
+      return tenantId.trim();
+    }
+
+    // Priority 2: JWT tenant_id claim
+    if (userContext.tenantId() != null) {
+      logger.info("Tenant ID extracted from JWT: {}", userContext.tenantId());
+      return userContext.tenantId();
+    }
+
+    logger.warn("No tenant ID found in X-Tenant-ID header or JWT claim");
+    return null;
+  }
+
+  /**
+   * Extract user context from JWT claims with fallback support for different claim formats.
+   *
+   * @param jwt the JWT token
+   * @return the user context
+   */
   private UserContext extractUserContext(Jwt jwt) {
     // Try to extract user ID from multiple possible claims
     Long userId = extractLong(jwt.getClaim(JwtClaimNames.SUBJECT));
@@ -110,6 +152,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     return new UserContext(userId, username, email, authorities, tenantId, organizationId, firstName, lastName);
   }
 
+  /**
+   * Extract Long value from JWT claim, handling various numeric types.
+   *
+   * @param value the claim value
+   * @return the Long value or null
+   */
   private Long extractLong(Object value) {
     return switch (value) {
       case Long l -> l;
@@ -125,6 +173,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     };
   }
 
+  /**
+   * Extract authorities from JWT claim, handling List or Set types.
+   *
+   * @param value the claim value
+   * @return the set of authorities
+   */
   @SuppressWarnings("unchecked")
   private Set<String> extractAuthorities(Object value) {
     return switch (value) {

@@ -67,7 +67,9 @@ public class SecurityConfig {
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
             .decoder(jwtDecoder())
             .jwtAuthenticationConverter(jwtAuthenticationConverter())))
-        .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        // JWT Authentication Filter (after BearerTokenAuthenticationFilter to extract UserContext)
+        // BearerTokenAuthenticationFilter is added by oauth2ResourceServer() configuration
+        .addFilterAfter(jwtAuthenticationFilter, org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.class)
         .build();
   }
 
