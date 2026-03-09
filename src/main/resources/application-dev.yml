@@ -1,27 +1,19 @@
 # Development Profile Configuration
 # This profile enables demo data for development and enhanced logging
+#
+# Logging Configuration (via environment variables):
+# LOG_LEVEL_ROOT=INFO
+# LOG_LEVEL_APP=DEBUG
+# LOG_LEVEL_SPRING=INFO
+# LOG_LEVEL_SECURITY=INFO
+# LOG_LEVEL_SQL=DEBUG
+# LOG_LEVEL_HIKARI=INFO
+# LOG_LEVEL_MESSAGING=INFO
+# LOG_LEVEL_STRIPE=DEBUG
+# LOG_LEVEL_PAYMENT=DEBUG
+# LOG_LEVEL_BILLING=DEBUG
+# LOG_FORMAT=TEXT
 
 iqscaffold:
   liquibase:
     contexts: "demo"
-
-logging:
-  level:
-    # Application logging
-    com.iqscaffold.billingservice: DEBUG
-    com.iqscaffold.billingservice.tenancy.TenantLiquibaseRunner: DEBUG
-    
-    # Spring Framework
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    
-    # Database and JPA
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    
-    # Payment providers
-    com.stripe: DEBUG
-    
-    # Infrastructure
-    liquibase: INFO
-    com.zaxxer.hikari: INFO

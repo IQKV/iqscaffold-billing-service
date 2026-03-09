@@ -1,4 +1,17 @@
 # Local Development Environment Configuration
+#
+# Logging Configuration (via environment variables):
+# LOG_LEVEL_ROOT=INFO
+# LOG_LEVEL_APP=DEBUG
+# LOG_LEVEL_SPRING=DEBUG
+# LOG_LEVEL_SECURITY=DEBUG
+# LOG_LEVEL_SQL=DEBUG
+# LOG_LEVEL_HIKARI=DEBUG
+# LOG_LEVEL_MESSAGING=DEBUG
+# LOG_LEVEL_STRIPE=DEBUG
+# LOG_LEVEL_PAYMENT=DEBUG
+# LOG_LEVEL_BILLING=DEBUG
+# LOG_FORMAT=TEXT
 
 spring:
   datasource:
@@ -36,7 +49,3 @@ iqscaffold:
       secret-key: ${STRIPE_SECRET_KEY:sk_test_dummy}
       webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_dummy}
       connect-client-id: ${STRIPE_CONNECT_CLIENT_ID:ca_test_dummy}
-
-logging:
-  level:
-    org.hibernate.SQL: DEBUG

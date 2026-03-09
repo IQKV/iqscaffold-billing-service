@@ -1,4 +1,17 @@
 # Production Environment Configuration
+#
+# Logging Configuration (via environment variables):
+# LOG_LEVEL_ROOT=WARN
+# LOG_LEVEL_APP=INFO
+# LOG_LEVEL_SPRING=ERROR
+# LOG_LEVEL_SECURITY=WARN
+# LOG_LEVEL_SQL=ERROR
+# LOG_LEVEL_HIKARI=ERROR
+# LOG_LEVEL_MESSAGING=ERROR
+# LOG_LEVEL_STRIPE=WARN
+# LOG_LEVEL_PAYMENT=INFO
+# LOG_LEVEL_BILLING=INFO
+# LOG_FORMAT=JSON
 
 spring:
   datasource:
@@ -33,11 +46,3 @@ iqscaffold:
   
   liquibase:
     contexts: "!demo"
-
-logging:
-  level:
-    root: WARN
-    com.iqscaffold.billingservice: INFO
-    org.springframework.security: WARN
-    org.hibernate.SQL: WARN
-    liquibase: WARN

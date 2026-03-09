@@ -1,4 +1,17 @@
 # Staging Environment Configuration
+#
+# Logging Configuration (via environment variables):
+# LOG_LEVEL_ROOT=INFO
+# LOG_LEVEL_APP=INFO
+# LOG_LEVEL_SPRING=WARN
+# LOG_LEVEL_SECURITY=INFO
+# LOG_LEVEL_SQL=WARN
+# LOG_LEVEL_HIKARI=WARN
+# LOG_LEVEL_MESSAGING=WARN
+# LOG_LEVEL_STRIPE=INFO
+# LOG_LEVEL_PAYMENT=INFO
+# LOG_LEVEL_BILLING=INFO
+# LOG_FORMAT=JSON
 
 spring:
   datasource:
@@ -25,9 +38,3 @@ iqscaffold:
     rabbitmq:
       host: ${IQSCAFFOLD_MESSAGING_RABBITMQ_HOST:rabbitmq-staging}
       password: ${IQSCAFFOLD_MESSAGING_RABBITMQ_PASSWORD}
-
-logging:
-  level:
-    com.iqscaffold.billingservice: INFO
-    org.springframework.security: INFO
-    org.hibernate.SQL: WARN
