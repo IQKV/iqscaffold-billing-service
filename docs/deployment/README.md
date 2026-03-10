@@ -310,51 +310,51 @@ Production deployments include:
 
 1. **Database Connection Failures**
 
-   ```bash
-   kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env
-   ```
+    ```bash
+    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env
+    ```
 
 2. **Redis Connection Issues**
 
-   ```bash
-   # Check Redis connectivity
-   kubectl exec -it deployment/iqscaffold-billing-service -n iqscaffold-dev-env -- \
-     redis-cli -h iqscaffold-infra-redis-master.iqscaffold-dev-env.svc.cluster.local ping
-   ```
+    ```bash
+    # Check Redis connectivity
+    kubectl exec -it deployment/iqscaffold-billing-service -n iqscaffold-dev-env -- \
+      redis-cli -h iqscaffold-infra-redis-master.iqscaffold-dev-env.svc.cluster.local ping
+    ```
 
 3. **Stripe Webhook Validation Errors**
 
-   ```bash
-   kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env | grep "webhook"
-   ```
+    ```bash
+    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env | grep "webhook"
+    ```
 
 4. **Encryption Key Issues**
 
-   ```bash
-   # Check if encryption key is properly configured
-   kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
-   # Should return 32 or more characters
-   ```
+    ```bash
+    # Check if encryption key is properly configured
+    kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
+    # Should return 32 or more characters
+    ```
 
 5. **Stripe Configuration Issues**
 
-   ```bash
-   # Verify Stripe secrets are set
-   kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
-   ```
+    ```bash
+    # Verify Stripe secrets are set
+    kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
+    ```
 
 6. **Check Configuration**
 
-   ```bash
-   kubectl describe configmap iqscaffold-billing-service-config -n iqscaffold-dev-env
-   kubectl describe secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env
-   ```
+    ```bash
+    kubectl describe configmap iqscaffold-billing-service-config -n iqscaffold-dev-env
+    kubectl describe secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env
+    ```
 
 7. **Test Health Endpoints**
-   ```bash
-   kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqscaffold-dev-env
-   curl http://localhost:8081/actuator/health
-   ```
+    ```bash
+    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqscaffold-dev-env
+    curl http://localhost:8081/actuator/health
+    ```
 
 #### Missing Secrets Diagnosis
 

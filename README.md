@@ -214,10 +214,10 @@ Request Flow:
 ### Internal/Webhook
 
 - `POST /api/v1/billing/webhooks/{provider}` - Unified endpoint for webhook events from any payment provider (Crypto-secured)
-  - `/api/v1/billing/webhooks/stripe` - Stripe webhook endpoint (Stripe-Signature header)
-  - `/api/v1/billing/webhooks/paypal` - PayPal webhook endpoint (PayPal-Transmission-Sig header)
-  - `/api/v1/billing/webhooks/square` - Square webhook endpoint (X-Square-Signature header)
-  - `/api/v1/billing/webhooks/braintree` - Braintree webhook endpoint (X-Braintree-Signature header)
+    - `/api/v1/billing/webhooks/stripe` - Stripe webhook endpoint (Stripe-Signature header)
+    - `/api/v1/billing/webhooks/paypal` - PayPal webhook endpoint (PayPal-Transmission-Sig header)
+    - `/api/v1/billing/webhooks/square` - Square webhook endpoint (X-Square-Signature header)
+    - `/api/v1/billing/webhooks/braintree` - Braintree webhook endpoint (X-Braintree-Signature header)
 
 </details>
 
@@ -392,9 +392,9 @@ The service implements a unified webhook handling system that works across all p
 - **PaymentProviderAdapter**: Each provider implements `verifyAndParseWebhook()` for signature verification
 - **UnifiedWebhookService**: Central orchestrator that routes events to appropriate handlers
 - **Event Handlers**: Specialized handlers for payment, payout, and account events
-  - `PaymentWebhookEventHandler` - Handles payment lifecycle events
-  - `PayoutWebhookEventHandler` - Handles payout events
-  - `AccountWebhookEventHandler` - Handles merchant account updates
+    - `PaymentWebhookEventHandler` - Handles payment lifecycle events
+    - `PayoutWebhookEventHandler` - Handles payout events
+    - `AccountWebhookEventHandler` - Handles merchant account updates
 
 #### Normalized Event Types
 
@@ -462,12 +462,12 @@ The service implements a unified webhook handling system that works across all p
 - Or configure per-tenant in gateway configuration
 
 3. **Test Webhook**:
-   ```bash
-   curl -X POST https://your-domain.com/api/v1/billing/webhooks/stripe \
-     -H "Stripe-Signature: t=timestamp,v1=signature" \
-     -H "Content-Type: application/json" \
-     -d @stripe-event.json
-   ```
+    ```bash
+    curl -X POST https://your-domain.com/api/v1/billing/webhooks/stripe \
+      -H "Stripe-Signature: t=timestamp,v1=signature" \
+      -H "Content-Type: application/json" \
+      -d @stripe-event.json
+    ```
 
 #### PayPal Webhook Configuration (Future)
 
@@ -541,18 +541,18 @@ Each gateway configuration includes:
 
 ```json
 {
-  "gatewayProvider": "STRIPE",
-  "configData": {
-    "apiKey": "sk_test_...",
-    "webhookSecret": "whsec_...",
-    "clientId": "ca_...",
-    "publicKey": "pk_test_..."
-  },
-  "mode": "test",
-  "isActive": true,
-  "isPrimary": true,
-  "displayName": "Production Stripe Account",
-  "description": "Main payment gateway for production transactions"
+    "gatewayProvider": "STRIPE",
+    "configData": {
+        "apiKey": "sk_test_...",
+        "webhookSecret": "whsec_...",
+        "clientId": "ca_...",
+        "publicKey": "pk_test_..."
+    },
+    "mode": "test",
+    "isActive": true,
+    "isPrimary": true,
+    "displayName": "Production Stripe Account",
+    "description": "Main payment gateway for production transactions"
 }
 ```
 
@@ -574,38 +574,38 @@ The service uses type-safe properties via `BillingProperties` (record-based):
 
 ```yaml
 iqscaffold:
-  billing:
-    security:
-      encryption:
-        master-key: ${GATEWAY_CONFIG_ENCRYPTION_KEY}
-        use-tenant-specific-config: true
-    payment:
-      provider: stripe
-      saas-mode: true
-      stripe:
-        api-key: ${STRIPE_API_KEY}
-        webhook-secret: ${STRIPE_WEBHOOK_SECRET}
-        client-id: ${STRIPE_CLIENT_ID}
-    notifications:
-      enable-email-notifications: true
-      enable-webhook-notifications: true
-      retry-delay: PT5S
-      max-retries: 3
-    subscription:
-      enable-subscriptions: true
-      trial-period-days: 14
-      grace-period-days: 3
-      max-retry-attempts: 3
-      auto-cancel-after-days: 30
-      proration-behavior: CREATE_PRORATIONS
-      notifications:
-        trial-ending-days-notice: 3
-        payment-retry-schedule: [1, 3, 5, 7]
-  email:
-    smtp:
-      host: ${SMTP_HOST}
-      port: ${SMTP_PORT}
-      username: ${SMTP_USERNAME}
+    billing:
+        security:
+            encryption:
+                master-key: ${GATEWAY_CONFIG_ENCRYPTION_KEY}
+                use-tenant-specific-config: true
+        payment:
+            provider: stripe
+            saas-mode: true
+            stripe:
+                api-key: ${STRIPE_API_KEY}
+                webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+                client-id: ${STRIPE_CLIENT_ID}
+        notifications:
+            enable-email-notifications: true
+            enable-webhook-notifications: true
+            retry-delay: PT5S
+            max-retries: 3
+        subscription:
+            enable-subscriptions: true
+            trial-period-days: 14
+            grace-period-days: 3
+            max-retry-attempts: 3
+            auto-cancel-after-days: 30
+            proration-behavior: CREATE_PRORATIONS
+            notifications:
+                trial-ending-days-notice: 3
+                payment-retry-schedule: [1, 3, 5, 7]
+    email:
+        smtp:
+            host: ${SMTP_HOST}
+            port: ${SMTP_PORT}
+            username: ${SMTP_USERNAME}
 ```
 
 </details>
@@ -725,12 +725,12 @@ The dashboard uses Prometheus as the data source and auto-refreshes every 30 sec
 - **JWT Validation**: OAuth2 Resource Server with JWK Set validation from User Service
 - **Authority-Based Access Control**: Method-level security with @PreAuthorize using granular authorities
 - **Billing Authorities**: Dedicated authorities for billing operations separate from general admin access
-  - `SUPER_ADMIN`: Platform-wide access to all operations
-  - `TENANT_OWNER`: Full organizational access including billing
-  - `BILLING_ADMIN`: Dedicated billing management authority (write access)
-  - `FINANCE_VIEWER`: Read-only billing access for compliance/audit
-  - `ADMIN`: General administration (NO billing access by design)
-  - `USER`: Regular user access
+    - `SUPER_ADMIN`: Platform-wide access to all operations
+    - `TENANT_OWNER`: Full organizational access including billing
+    - `BILLING_ADMIN`: Dedicated billing management authority (write access)
+    - `FINANCE_VIEWER`: Read-only billing access for compliance/audit
+    - `ADMIN`: General administration (NO billing access by design)
+    - `USER`: Regular user access
 - **Separation of Concerns**: ADMIN authority does NOT grant billing access - requires explicit BILLING_ADMIN or higher
 - **Webhook Signature Verification**: Cryptographic validation of Stripe events
 - **Tenant Isolation**: Schema-per-tenant prevents cross-tenant data access
@@ -931,20 +931,20 @@ curl -X POST http://localhost:8080/api/v1/admin/billing/gateway-config/STRIPE/se
 
 ```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "tenantId": "tenant-123",
-  "gatewayProvider": "STRIPE",
-  "isActive": true,
-  "isPrimary": true,
-  "mode": "test",
-  "displayName": "Test Stripe Account",
-  "maskedConfigData": {
-    "provider": "STRIPE",
-    "isConfigured": true,
-    "lastFourChars": "****"
-  },
-  "createdAt": "2026-01-11T08:00:00Z",
-  "updatedAt": "2026-01-11T08:00:00Z"
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "tenantId": "tenant-123",
+    "gatewayProvider": "STRIPE",
+    "isActive": true,
+    "isPrimary": true,
+    "mode": "test",
+    "displayName": "Test Stripe Account",
+    "maskedConfigData": {
+        "provider": "STRIPE",
+        "isConfigured": true,
+        "lastFourChars": "****"
+    },
+    "createdAt": "2026-01-11T08:00:00Z",
+    "updatedAt": "2026-01-11T08:00:00Z"
 }
 ```
 
@@ -952,17 +952,17 @@ curl -X POST http://localhost:8080/api/v1/admin/billing/gateway-config/STRIPE/se
 
 ```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440001",
-  "tenantId": "tenant-123",
-  "planId": "550e8400-e29b-41d4-a716-446655440000",
-  "planName": "Professional Plan",
-  "status": "active",
-  "stripeSubscriptionId": "sub_1234567890",
-  "stripeCustomerId": "cus_1234567890",
-  "currentPeriodStart": "2026-01-11T08:00:00Z",
-  "currentPeriodEnd": "2026-02-11T08:00:00Z",
-  "trialStart": "2026-01-11T08:00:00Z",
-  "trialEnd": "2026-01-25T08:00:00Z"
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "tenantId": "tenant-123",
+    "planId": "550e8400-e29b-41d4-a716-446655440000",
+    "planName": "Professional Plan",
+    "status": "active",
+    "stripeSubscriptionId": "sub_1234567890",
+    "stripeCustomerId": "cus_1234567890",
+    "currentPeriodStart": "2026-01-11T08:00:00Z",
+    "currentPeriodEnd": "2026-02-11T08:00:00Z",
+    "trialStart": "2026-01-11T08:00:00Z",
+    "trialEnd": "2026-01-25T08:00:00Z"
 }
 ```
 
