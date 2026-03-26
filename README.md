@@ -802,7 +802,7 @@ public ResponseEntity<Response> cancelSubscription(@PathVariable UUID id) {
 
 ### Key Dependencies
 
-- Spring Boot 3.x (Web, Data JPA, Security, OAuth2, AMQP, Mail, Thymeleaf)
+- Spring Boot 4.x (Web, Data JPA, Security, OAuth2, AMQP, Mail, Thymeleaf)
 - PostgreSQL driver with Liquibase migrations
 - Stripe Java SDK for payment processing
 - JWT libraries (JJWT) for token validation
