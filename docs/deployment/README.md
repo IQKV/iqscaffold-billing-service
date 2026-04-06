@@ -15,7 +15,7 @@ The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/C
 
 | Environment | Namespace                   | Purpose                      |
 | ----------- | --------------------------- | ---------------------------- |
-| Dev         | `iqscaffold-dev-env`        | Development and WIP branches |
+| Dev         | `iqkvdev-dev-env`        | Development and WIP branches |
 | Test        | `iqscaffold-test-env`       | Feature branch testing       |
 | Staging     | `iqscaffold-staging-env`    | Pre-production validation    |
 | Production  | `iqscaffold-production-env` | Live production environment  |
@@ -101,7 +101,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
-  --namespace iqscaffold-dev-env
+  --namespace iqkvdev-dev-env
 
 # Production (Tagged releases)
 helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service ./ \
@@ -145,7 +145,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
   --set config.email.smtp.password="your-smtp-password" \
   --set config.billing.security.jwt.secretKey="your-secure-symmetric-key" \
-  --namespace iqscaffold-dev-env \
+  --namespace iqkvdev-dev-env \
   --create-namespace
 ```
 
@@ -166,7 +166,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
-  --namespace iqscaffold-dev-env \
+  --namespace iqkvdev-dev-env \
   --create-namespace
 ```
 
@@ -311,28 +311,28 @@ Production deployments include:
 1. **Database Connection Failures**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-dev-env
     ```
 
 2. **Redis Connection Issues**
 
     ```bash
     # Check Redis connectivity
-    kubectl exec -it deployment/iqscaffold-billing-service -n iqscaffold-dev-env -- \
-      redis-cli -h iqscaffold-infra-redis-master.iqscaffold-dev-env.svc.cluster.local ping
+    kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-dev-env -- \
+      redis-cli -h iqkvdev-infra-redis-master.iqkvdev-dev-env.svc.cluster.local ping
     ```
 
 3. **Stripe Webhook Validation Errors**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqscaffold-dev-env | grep "webhook"
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-dev-env | grep "webhook"
     ```
 
 4. **Encryption Key Issues**
 
     ```bash
     # Check if encryption key is properly configured
-    kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
     # Should return 32 or more characters
     ```
 
@@ -340,19 +340,19 @@ Production deployments include:
 
     ```bash
     # Verify Stripe secrets are set
-    kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o yaml
     ```
 
 6. **Check Configuration**
 
     ```bash
-    kubectl describe configmap iqscaffold-billing-service-config -n iqscaffold-dev-env
-    kubectl describe secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env
+    kubectl describe configmap iqscaffold-billing-service-config -n iqkvdev-dev-env
+    kubectl describe secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env
     ```
 
 7. **Test Health Endpoints**
     ```bash
-    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqscaffold-dev-env
+    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqkvdev-dev-env
     curl http://localhost:8081/actuator/health
     ```
 
@@ -362,10 +362,10 @@ If deployments fail due to missing secrets, check:
 
 ```bash
 # List all secrets in namespace
-kubectl get secrets -n iqscaffold-dev-env
+kubectl get secrets -n iqkvdev-dev-env
 
 # Check specific secret content
-kubectl get secret iqscaffold-billing-service-secrets -n iqscaffold-dev-env -o yaml
+kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o yaml
 
 # Verify Drone CI secrets are configured
 drone secret ls --repository IQKV/iqscaffold-billing-service
@@ -375,7 +375,7 @@ drone secret ls --repository IQKV/iqscaffold-billing-service
 
 ```bash
 # Test webhook endpoint locally
-kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqscaffold-dev-env
+kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqkvdev-dev-env
 
 # Use Stripe CLI to forward webhooks
 stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
