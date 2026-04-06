@@ -16,9 +16,9 @@ The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/C
 | Environment | Namespace                   | Purpose                      |
 | ----------- | --------------------------- | ---------------------------- |
 | Dev         | `iqkvdev-dev-env`        | Development and WIP branches |
-| Test        | `iqscaffold-test-env`       | Feature branch testing       |
-| Staging     | `iqscaffold-staging-env`    | Pre-production validation    |
-| Production  | `iqscaffold-production-env` | Live production environment  |
+| Test        | `iqkvdev-test-env`       | Feature branch testing       |
+| Staging     | `iqkvdev-staging-env`    | Pre-production validation    |
+| Production  | `iqkvdev-production-env` | Live production environment  |
 
 ### Automated Deployment (CI/CD)
 
@@ -118,7 +118,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
-  --namespace iqscaffold-production-env
+  --namespace iqkvdev-production-env
 ```
 
 </details>
@@ -185,7 +185,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
-  --namespace iqscaffold-production-env \
+  --namespace iqkvdev-production-env \
   --create-namespace
 ```
 
@@ -385,10 +385,10 @@ stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
 
 ```bash
 # Rollback to previous version
-helm rollback iqscaffold-billing-service -n iqscaffold-production-env
+helm rollback iqscaffold-billing-service -n iqkvdev-production-env
 
 # Or uninstall completely
-helm uninstall iqscaffold-billing-service -n iqscaffold-production-env
+helm uninstall iqscaffold-billing-service -n iqkvdev-production-env
 ```
 
 ### Security
