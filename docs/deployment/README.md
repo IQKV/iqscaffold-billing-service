@@ -32,8 +32,8 @@ The service uses Drone CI/CD pipeline with 10 stages:
 1. **VerifyCode** - Code quality, tests, static analysis
 2. **PublishArtifacts** - Maven artifacts to Nexus
 3. **PublishDockerImage** - Container images to registry
-4. **DeployWorkInProgressOnDev** - WIP branch auto-deployment
-5. **RollbackWorkInProgressOnDev** - WIP rollback
+4. **DeployWorkInProgressToTestEnv** - WIP branch auto-deployment
+5. **RollbackWorkInProgressFromTestEnv** - WIP rollback
 6. **PromoteFeatureDeployment** - Feature branch promotion
 7. **RollbackFeatureDeployment** - Feature rollback
 8. **PromoteDeployment** - Release promotion
@@ -89,7 +89,7 @@ The pipeline uses these Helm commands for deployment:
 # Development (WIP branches)
 helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service ./ \
   --values ./values.yaml \
-  --values ./values-dev.yaml \
+  --values ./values-test.yaml \
   --set image.tag=wip \
   --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
   --set infraServices.redis.password=${INFRA_REDIS_PASSWORD} \
@@ -311,28 +311,28 @@ Production deployments include:
 1. **Database Connection Failures**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-dev-env
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-test-env
     ```
 
 2. **Redis Connection Issues**
 
     ```bash
     # Check Redis connectivity
-    kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-dev-env -- \
+    kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-test-env -- \
       redis-cli -h iqkvdev-infra-redis-master.iqkvdev-dev-env.svc.cluster.local ping
     ```
 
 3. **Stripe Webhook Validation Errors**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-dev-env | grep "webhook"
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-test-env | grep "webhook"
     ```
 
 4. **Encryption Key Issues**
 
     ```bash
     # Check if encryption key is properly configured
-    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
     # Should return 32 or more characters
     ```
 
@@ -340,19 +340,19 @@ Production deployments include:
 
     ```bash
     # Verify Stripe secrets are set
-    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o yaml
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o yaml
     ```
 
 6. **Check Configuration**
 
     ```bash
-    kubectl describe configmap iqscaffold-billing-service-config -n iqkvdev-dev-env
-    kubectl describe secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env
+    kubectl describe configmap iqscaffold-billing-service-config -n iqkvdev-test-env
+    kubectl describe secret iqscaffold-billing-service-secrets -n iqkvdev-test-env
     ```
 
 7. **Test Health Endpoints**
     ```bash
-    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqkvdev-dev-env
+    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqkvdev-test-env
     curl http://localhost:8081/actuator/health
     ```
 
@@ -362,10 +362,10 @@ If deployments fail due to missing secrets, check:
 
 ```bash
 # List all secrets in namespace
-kubectl get secrets -n iqkvdev-dev-env
+kubectl get secrets -n iqkvdev-test-env
 
 # Check specific secret content
-kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-dev-env -o yaml
+kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o yaml
 
 # Verify Drone CI secrets are configured
 drone secret ls --repository IQKV/iqscaffold-billing-service
@@ -375,7 +375,7 @@ drone secret ls --repository IQKV/iqscaffold-billing-service
 
 ```bash
 # Test webhook endpoint locally
-kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqkvdev-dev-env
+kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqkvdev-test-env
 
 # Use Stripe CLI to forward webhooks
 stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
