@@ -15,7 +15,7 @@ The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/C
 
 | Environment | Namespace                | Purpose                      |
 | ----------- | ------------------------ | ---------------------------- |
-| Dev         | `iqkvdev-dev-env`        | Development and WIP branches |
+| Dev         | `iqkvdev-test-env`        | Development and WIP branches |
 | Test        | `iqkvdev-test-env`       | Feature branch testing       |
 | Staging     | `iqkvdev-staging-env`    | Pre-production validation    |
 | Production  | `iqkvdev-production-env` | Live production environment  |
@@ -101,7 +101,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
-  --namespace iqkvdev-dev-env
+  --namespace iqkvdev-test-env
 
 # Production (Tagged releases)
 helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service ./ \
@@ -145,7 +145,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
   --set config.email.smtp.password="your-smtp-password" \
   --set config.billing.security.jwt.secretKey="your-secure-symmetric-key" \
-  --namespace iqkvdev-dev-env \
+  --namespace iqkvdev-test-env \
   --create-namespace
 ```
 
@@ -166,7 +166,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
-  --namespace iqkvdev-dev-env \
+  --namespace iqkvdev-test-env \
   --create-namespace
 ```
 
@@ -319,7 +319,7 @@ Production deployments include:
     ```bash
     # Check Redis connectivity
     kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-test-env -- \
-      redis-cli -h iqkvdev-infra-redis-master.iqkvdev-dev-env.svc.cluster.local ping
+      redis-cli -h iqkvdev-infra-redis-master.iqkvdev-test-env.svc.cluster.local ping
     ```
 
 3. **Stripe Webhook Validation Errors**
