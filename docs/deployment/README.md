@@ -15,10 +15,9 @@ The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/C
 
 | Environment | Namespace                | Purpose                      |
 | ----------- | ------------------------ | ---------------------------- |
-| Dev         | `iqkvdev-test-env`       | Development and WIP branches |
-| Test        | `iqkvdev-test-env`       | Feature branch testing       |
-| Staging     | `iqkvdev-staging-env`    | Pre-production validation    |
-| Production  | `iqkvdev-production-env` | Live production environment  |
+| Test        | `iqkvdev-sit-env`       | Feature branch testing       |
+| Staging     | `iqkvdev-uat-env`    | Pre-production validation    |
+| Production  | `iqkvdev-prd-env` | Live production environment  |
 
 ### Automated Deployment (CI/CD)
 
@@ -32,8 +31,8 @@ The service uses Drone CI/CD pipeline with 10 stages:
 1. **VerifyCode** - Code quality, tests, static analysis
 2. **PublishArtifacts** - Maven artifacts to Nexus
 3. **PublishDockerImage** - Container images to registry
-4. **DeployWorkInProgressToTestEnv** - WIP branch auto-deployment
-5. **RollbackWorkInProgressFromTestEnv** - WIP rollback
+4. **DeployWorkInProgress** - WIP branch auto-deployment
+5. **RollbackWorkInProgress** - WIP rollback
 6. **PromoteFeatureDeployment** - Feature branch promotion
 7. **RollbackFeatureDeployment** - Feature rollback
 8. **PromoteDeployment** - Release promotion
@@ -101,12 +100,12 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
-  --namespace iqkvdev-test-env
+  --namespace iqkvdev-sit-env
 
 # Production (Tagged releases)
 helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service ./ \
   --values ./values.yaml \
-  --values ./values-production.yaml \
+  --values ./values-prd.yaml \
   --set image.tag=${DRONE_TAG} \
   --set infraServices.postgresql.password=${INFRA_POSTGRESQL_PASSWORD} \
   --set infraServices.redis.password=${INFRA_REDIS_PASSWORD} \
@@ -118,7 +117,7 @@ helm upgrade --install --atomic --wait --timeout 5m iqscaffold-billing-service .
   --set config.encryption.masterKey=${ENCRYPTION_MASTER_KEY} \
   --set config.email.smtp.password=${SMTP_PASSWORD} \
   --set config.billing.security.jwt.secretKey=${JWT_SECRET_KEY} \
-  --namespace iqkvdev-production-env
+  --namespace iqkvdev-prd-env
 ```
 
 </details>
@@ -134,7 +133,7 @@ cd charts/IQKV/iqscaffold-billing-service
 
 # Deploy to development
 helm upgrade --install billing-service ./ \
-  --values values-dev.yaml \
+  --values values-sit.yaml \
   --set infraServices.postgresql.password="your-db-password" \
   --set infraServices.redis.password="your-redis-password" \
   --set infraServices.rabbitmq.password="your-rabbitmq-password" \
@@ -145,7 +144,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="your-32-char-encryption-key" \
   --set config.email.smtp.password="your-smtp-password" \
   --set config.billing.security.jwt.secretKey="your-secure-symmetric-key" \
-  --namespace iqkvdev-test-env \
+  --namespace iqkvdev-sit-env \
   --create-namespace
 ```
 
@@ -155,7 +154,7 @@ helm upgrade --install billing-service ./ \
 
 ```bash
 helm upgrade --install billing-service ./ \
-  --values values-dev.yaml \
+  --values values-sit.yaml \
   --set infraServices.postgresql.password="${DB_PASSWORD}" \
   --set infraServices.redis.password="${REDIS_PASSWORD}" \
   --set infraServices.rabbitmq.password="${RABBITMQ_PASSWORD}" \
@@ -166,7 +165,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
-  --namespace iqkvdev-test-env \
+  --namespace iqkvdev-sit-env \
   --create-namespace
 ```
 
@@ -174,7 +173,7 @@ helm upgrade --install billing-service ./ \
 
 ```bash
 helm upgrade --install billing-service ./ \
-  --values values-production.yaml \
+  --values values-prd.yaml \
   --set infraServices.postgresql.password="${DB_PASSWORD}" \
   --set infraServices.redis.password="${REDIS_PASSWORD}" \
   --set infraServices.rabbitmq.password="${RABBITMQ_PASSWORD}" \
@@ -185,7 +184,7 @@ helm upgrade --install billing-service ./ \
   --set config.encryption.masterKey="${ENCRYPTION_MASTER_KEY}" \
   --set config.email.smtp.password="${SMTP_PASSWORD}" \
   --set config.billing.security.jwt.secretKey="${JWT_SECRET_KEY}" \
-  --namespace iqkvdev-production-env \
+  --namespace iqkvdev-prd-env \
   --create-namespace
 ```
 
@@ -311,28 +310,28 @@ Production deployments include:
 1. **Database Connection Failures**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-test-env
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-sit-env
     ```
 
 2. **Redis Connection Issues**
 
     ```bash
     # Check Redis connectivity
-    kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-test-env -- \
-      redis-cli -h iqkvdev-infra-redis-master.iqkvdev-test-env.svc.cluster.local ping
+    kubectl exec -it deployment/iqscaffold-billing-service -n iqkvdev-sit-env -- \
+      redis-cli -h iqkvdev-infra-redis-master.iqkvdev-sit-env.svc.cluster.local ping
     ```
 
 3. **Stripe Webhook Validation Errors**
 
     ```bash
-    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-test-env | grep "webhook"
+    kubectl logs deployment/iqscaffold-billing-service -n iqkvdev-sit-env | grep "webhook"
     ```
 
 4. **Encryption Key Issues**
 
     ```bash
     # Check if encryption key is properly configured
-    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-sit-env -o jsonpath='{.data.encryption-master-key}' | base64 -d | wc -c
     # Should return 32 or more characters
     ```
 
@@ -340,19 +339,19 @@ Production deployments include:
 
     ```bash
     # Verify Stripe secrets are set
-    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o yaml
+    kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-sit-env -o yaml
     ```
 
 6. **Check Configuration**
 
     ```bash
-    kubectl describe configmap iqscaffold-billing-service-config -n iqkvdev-test-env
-    kubectl describe secret iqscaffold-billing-service-secrets -n iqkvdev-test-env
+    kubectl describe configmap iqscaffold-billing-service-config -n iqkvdev-sit-env
+    kubectl describe secret iqscaffold-billing-service-secrets -n iqkvdev-sit-env
     ```
 
 7. **Test Health Endpoints**
     ```bash
-    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqkvdev-test-env
+    kubectl port-forward deployment/iqscaffold-billing-service 8081:8081 -n iqkvdev-sit-env
     curl http://localhost:8081/actuator/health
     ```
 
@@ -362,10 +361,10 @@ If deployments fail due to missing secrets, check:
 
 ```bash
 # List all secrets in namespace
-kubectl get secrets -n iqkvdev-test-env
+kubectl get secrets -n iqkvdev-sit-env
 
 # Check specific secret content
-kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-test-env -o yaml
+kubectl get secret iqscaffold-billing-service-secrets -n iqkvdev-sit-env -o yaml
 
 # Verify Drone CI secrets are configured
 drone secret ls --repository IQKV/iqscaffold-billing-service
@@ -375,7 +374,7 @@ drone secret ls --repository IQKV/iqscaffold-billing-service
 
 ```bash
 # Test webhook endpoint locally
-kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqkvdev-test-env
+kubectl port-forward deployment/iqscaffold-billing-service 8080:8080 -n iqkvdev-sit-env
 
 # Use Stripe CLI to forward webhooks
 stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
@@ -385,10 +384,10 @@ stripe listen --forward-to localhost:8080/api/v1/billing/webhooks/stripe
 
 ```bash
 # Rollback to previous version
-helm rollback iqscaffold-billing-service -n iqkvdev-production-env
+helm rollback iqscaffold-billing-service -n iqkvdev-prd-env
 
 # Or uninstall completely
-helm uninstall iqscaffold-billing-service -n iqkvdev-production-env
+helm uninstall iqscaffold-billing-service -n iqkvdev-prd-env
 ```
 
 ### Security
