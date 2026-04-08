@@ -92,7 +92,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: builder
     image: iqscaffold/iqscaffold-billing-service:dev
     container_name: iqscaffold-billing-service-dev
     environment:
@@ -168,7 +167,7 @@ services:
     networks:
       - billing-service-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://iqscaffold-billing-service:8080/actuator/health/readiness"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health/readiness"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -176,7 +175,7 @@ services:
     restart: unless-stopped
     volumes:
       - billing_logs:/app/logs
-      - billing_tmp:/tmp
+      - billing_tmp:/app/tmp
     deploy:
       resources:
         limits:

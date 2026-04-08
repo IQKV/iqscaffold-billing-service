@@ -9,20 +9,18 @@ WORKDIR /app
 
 # Copy Maven configuration files first for better layer caching
 COPY pom.xml .
-COPY iqscaffold-billing-service/pom.xml iqscaffold-billing-service/
 
 # Download dependencies in separate layer for better caching
-RUN mvn dependency:go-offline -pl iqscaffold-billing-service -B
+RUN mvn dependency:go-offline -B
 
 # Copy source code
-COPY iqscaffold-billing-service/src iqscaffold-billing-service/src
+COPY src ./src
 
-# Build the application with optimizations
-RUN mvn clean package -pl iqscaffold-billing-service -DskipTests -B && \
+# Build the application
+RUN mvn clean package -DskipTests -B && \
     # Extract JAR layers for better Docker layer caching
     mkdir -p target/dependency && \
-    cd iqscaffold-billing-service/target && \
-    java -Djarmode=layertools -jar iqscaffold-billing-service-*.jar extract --destination ../target/dependency
+    java -Djarmode=layertools -jar target/iqscaffold-billing-service-*.jar extract --destination target/dependency
 
 # Production runtime stage with security hardening
 FROM eclipse-temurin:21-jre-alpine
