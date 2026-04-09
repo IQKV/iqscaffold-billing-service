@@ -318,7 +318,7 @@ Production deployments include:
     ```bash
     # Check Redis connectivity
     kubectl exec -it deployment/iqscaffold-billing-service -n iqkv-sit-env -- \
-      redis-cli -h iqkv-infra-redis-master.iqkv-sit-env.svc.cluster.local ping
+      redis-cli -h foundation-infra-redis-master.iqkv-sit-env.svc.cluster.local ping
     ```
 
 3. **Stripe Webhook Validation Errors**
