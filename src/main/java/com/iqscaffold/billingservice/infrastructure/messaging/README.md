@@ -149,7 +149,7 @@ spring:
     host: localhost
     port: 5672
     username: iqscaffold
-    password: iqscaffold_password
+    password: iqkv_password
     publisher-confirm-type: correlated
     publisher-returns: true
     listener:
