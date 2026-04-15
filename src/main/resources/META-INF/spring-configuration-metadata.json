@@ -4,7 +4,7 @@
             "name": "iqscaffold",
             "type": "com.iqscaffold.billingservice.config.IqScaffoldProperties",
             "sourceType": "com.iqscaffold.billingservice.config.IqScaffoldProperties",
-            "description": "Root configuration properties for IQ  Key Value Billing Service. All custom properties use the 'iqscaffold.' prefix for clear namespace separation."
+            "description": "Root configuration properties for IQ Key Value Billing Service. All custom properties use the 'iqscaffold.' prefix for clear namespace separation."
         },
         {
             "name": "iqscaffold.email",
@@ -205,7 +205,7 @@
             "name": "iqscaffold.email.sender.from-name",
             "type": "java.lang.String",
             "description": "Default 'from' display name shown in email clients for outgoing emails.",
-            "defaultValue": "IQ  Key Value Billing"
+            "defaultValue": "IQ Key Value Billing"
         },
         {
             "name": "iqscaffold.email.sender.base-url",

@@ -218,7 +218,7 @@ logging:
     net.logstash.logback: INFO
   config: classpath:logback-spring.xml
 
-# IQ  Key Value-specific configuration properties
+# IQ Key Value-specific configuration properties
 iqscaffold:
   # Tenant identification header
   tenant-id-header: X-Tenant-ID
@@ -341,7 +341,7 @@ iqscaffold:
       timeout: PT30S
     sender:
       from-email: ${EMAIL_FROM_EMAIL:billing@iqscaffold.com}
-      from-name: ${EMAIL_FROM_NAME:IQ  Key Value Billing}
+      from-name: ${EMAIL_FROM_NAME:IQ Key Value Billing}
       base-url: ${APP_BASE_URL:https://app.iqscaffold.com}
     templates:
       merchant-onboarding-template: "email/merchant-onboarding.html"

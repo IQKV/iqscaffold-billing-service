@@ -1,4 +1,4 @@
-# 💰 IQ  Key Value Billing Service
+# 💰 IQ Key Value Billing Service
 
 > Multi-tenant billing and payment orchestration service providing Stripe integration, merchant onboarding, automated payment lifecycle management, and comprehensive financial operations.
 
@@ -27,7 +27,7 @@
 
 ## Business Purpose
 
-A core domain service for the IQ  Key Value platform that handles comprehensive financial operations:
+A core domain service for the IQ Key Value platform that handles comprehensive financial operations:
 
 - **Payment Orchestration** - End-to-end management of payment intents, from creation to final settlement with external providers.
 - **Subscription Management** - Complete subscription lifecycle including recurring billing, trial periods, plan changes, and automated invoice generation.
@@ -42,7 +42,7 @@ A core domain service for the IQ  Key Value platform that handles comprehensive 
 
 ## Overview
 
-The Billing Service acts as the financial engine of the IQ  Key Value ecosystem. It abstracts the complexities of payment gateways (primarily Stripe) while providing a multi-tenant-aware API
+The Billing Service acts as the financial engine of the IQ Key Value ecosystem. It abstracts the complexities of payment gateways (primarily Stripe) while providing a multi-tenant-aware API
 for creating payments, managing subscriptions, processing refunds, and onboarding new merchants. It ensures that every transaction is tracked, audited, and correctly attributed to the
 appropriate tenant.
 
@@ -614,7 +614,7 @@ iqscaffold:
       starttls: true
     sender:
       from-email: billing@iqscaffold.com
-      from-name: IQ  Key Value Billing
+      from-name: IQ Key Value Billing
     templates:
       merchant-onboarding-template: email/merchant-onboarding.html
       payment-successful-template: email/payment-successful.html
