@@ -60,7 +60,7 @@ iqscaffold:
       starttls: false
       timeout: PT5S
     sender:
-      from-email: test@iqscaffold.com
+      from-email: test@iqkv.dev
       from-name: IQ Key Value Test
       base-url: http://localhost:8080
     templates:

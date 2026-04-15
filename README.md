@@ -613,7 +613,7 @@ iqscaffold:
       auth: true
       starttls: true
     sender:
-      from-email: billing@iqscaffold.com
+      from-email: billing@iqkv.dev
       from-name: IQ Key Value Billing
     templates:
       merchant-onboarding-template: email/merchant-onboarding.html
@@ -668,7 +668,7 @@ IQSCAFFOLD_MESSAGING_RABBITMQ_PASSWORD=rabbitmq_password
 # Email Configuration
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USERNAME=billing@iqscaffold.com
+SMTP_USERNAME=billing@iqkv.dev
 SMTP_PASSWORD=email_password
 
 # Service Integration

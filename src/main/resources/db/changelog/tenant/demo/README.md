@@ -8,7 +8,7 @@ subscription, payment, and feature usage data.
 ### Organization Context
 
 - **Tenant**: `default` (Demo Tech Solutions)
-- **Billing Email**: billing@demo.iqscaffold.com
+- **Billing Email**: billing@demo.iqkv.dev
 - **Stripe Account**: acct_demo_tech_solutions
 - **Application Fee**: 2.5% platform fee
 

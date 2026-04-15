@@ -24,7 +24,7 @@
             <column name="canceled_at" valueDate="NULL"/>
             <column name="cancellation_reason" value="NULL"/>
             <column name="metadata"
-                    value='{"signup_source": "website", "sales_rep": "alice.johnson", "contract_type": "monthly", "auto_renewal": true, "payment_method": "card", "billing_contact": "billing@demo.iqscaffold.com"}'/>
+                    value='{"signup_source": "website", "sales_rep": "alice.johnson", "contract_type": "monthly", "auto_renewal": true, "payment_method": "card", "billing_contact": "billing@demo.iqkv.dev"}'/>
         </insert>
 
         <!-- 2. Demo Subscription Invoice - December 2024 Billing Cycle -->

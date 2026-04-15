@@ -340,9 +340,9 @@ iqscaffold:
       starttls: true
       timeout: PT30S
     sender:
-      from-email: ${EMAIL_FROM_EMAIL:billing@iqscaffold.com}
+      from-email: ${EMAIL_FROM_EMAIL:billing@iqkv.dev}
       from-name: ${EMAIL_FROM_NAME:IQ Key Value Billing}
-      base-url: ${APP_BASE_URL:https://app.iqscaffold.com}
+      base-url: ${APP_BASE_URL:https://app.iqkv.dev}
     templates:
       merchant-onboarding-template: "email/merchant-onboarding.html"
       payment-successful-template: "email/payment-successful.html"

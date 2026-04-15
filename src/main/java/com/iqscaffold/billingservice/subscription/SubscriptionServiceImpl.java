@@ -413,7 +413,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     // For now, we'll use a placeholder email based on tenant ID if we can't fetch
     // real user details
     // TODO: Integrate with User/Tenant Service to get actual admin email
-    String email = "admin@" + tenantId + ".iqscaffold.com";
+    String email = "admin@" + tenantId + ".iqkv.dev";
     String name = "Admin for " + tenantId;
 
     log.debug("Creating/Retrieving Stripe customer for tenant: {}, email: {}", tenantId, email);

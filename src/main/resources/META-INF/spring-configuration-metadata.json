@@ -199,7 +199,7 @@
             "name": "iqscaffold.email.sender.from-email",
             "type": "java.lang.String",
             "description": "Default 'from' email address for all outgoing billing notification emails.",
-            "defaultValue": "billing@iqscaffold.com"
+            "defaultValue": "billing@iqkv.dev"
         },
         {
             "name": "iqscaffold.email.sender.from-name",
@@ -211,7 +211,7 @@
             "name": "iqscaffold.email.sender.base-url",
             "type": "java.lang.String",
             "description": "Base URL for generating clickable links in email templates (e.g., invoice links, dashboard links).",
-            "defaultValue": "https://app.iqscaffold.com"
+            "defaultValue": "https://app.iqkv.dev"
         },
         {
             "name": "iqscaffold.email.templates.merchant-onboarding-template",
