@@ -14,7 +14,7 @@
     <artifactId>iqscaffold-billing-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>IQ Scaffold Billing Service</name>
+    <name>IQ  Key Value Billing Service</name>
     <description>Billing and subscription management service</description>
 
     <properties>

@@ -15,7 +15,7 @@
             }
         ]
     },
-    "description": "IQ Scaffold Billing Service - Comprehensive Spring Boot monitoring dashboard with JVM, HTTP, Database, Cache, and Business metrics",
+    "description": "IQ  Key Value Billing Service - Comprehensive Spring Boot monitoring dashboard with JVM, HTTP, Database, Cache, and Business metrics",
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 1,
@@ -1735,7 +1735,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "IQ Scaffold Billing Service - Spring Boot Metrics",
+    "title": "IQ  Key Value Billing Service - Spring Boot Metrics",
     "uid": "iqscaffold-billing-service",
     "version": 1,
     "weekStart": ""

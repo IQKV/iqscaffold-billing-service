@@ -2,7 +2,7 @@
 
 ### Overview
 
-The IQ Scaffold Billing Service is deployed using Helm charts and automated CI/CD pipelines. The service provides Stripe payment integration, subscription management, multi-tenancy, and webhook processing capabilities.
+The IQ  Key Value Billing Service is deployed using Helm charts and automated CI/CD pipelines. The service provides Stripe payment integration, subscription management, multi-tenancy, and webhook processing capabilities.
 
 ### Prerequisites
 

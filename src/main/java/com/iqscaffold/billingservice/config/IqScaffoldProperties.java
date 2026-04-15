@@ -13,7 +13,7 @@ import java.util.Locale;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuration properties for IQ Scaffold Billing Service. All custom
+ * Configuration properties for IQ  Key Value Billing Service. All custom
  * configuration properties use the 'iqscaffold.' prefix for clear namespace
  * separation.
  * <p>

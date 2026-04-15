@@ -123,7 +123,7 @@ services:
       IQSCAFFOLD_EMAIL_SMTP_AUTH: false
       IQSCAFFOLD_EMAIL_SMTP_STARTTLS: false
       IQSCAFFOLD_EMAIL_SENDER_FROM_EMAIL: billing@iqscaffold.site
-      IQSCAFFOLD_EMAIL_SENDER_FROM_NAME: IQ Scaffold Billing
+      IQSCAFFOLD_EMAIL_SENDER_FROM_NAME: IQ  Key Value Billing
       IQSCAFFOLD_EMAIL_SENDER_BASE_URL: http://localhost:3000
 
       # Billing Configuration
